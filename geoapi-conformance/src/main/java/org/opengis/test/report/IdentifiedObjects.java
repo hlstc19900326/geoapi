@@ -49,7 +49,7 @@ import org.opengis.referencing.IdentifiedObject;
  *
  * @since 3.1
  */
-final class IdentifiedObjects {
+final strictfp class IdentifiedObjects {
     /**
      * The default separator between code spaces (or scopes) and codes.
      */
@@ -131,7 +131,7 @@ final class IdentifiedObjects {
      * values if possible, otherwise as strings using a case-insensitive comparator.
      */
     static int compare(final String[] s1, final String[] s2) {
-        final int length = Math.min(s1.length, s2.length);
+        final int length = StrictMath.min(s1.length, s2.length);
         for (int i=0; i<length; i++) {
             final int c = compare(s1[i], s2[i]);
             if (c != 0) {

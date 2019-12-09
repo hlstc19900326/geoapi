@@ -33,9 +33,9 @@ package org.opengis.test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import org.junit.*;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -60,18 +60,17 @@ public strictfp class ValidatorTest {
     public void testMandatory() {
         validator.mandatory("Should not fail.", "dummy");
         validator.mandatory("Should not fail.", Collections.singleton("dummy"));
-        try {
+        AssertionError e = assertThrows(AssertionError.class, () -> {
             validator.mandatory("Should fail.", null);
-        } catch (AssertionError e) {
-            // This is the expected exception.
-            assertEquals("Should fail.", e.getMessage());
-        }
-        try {
+        });
+        assertTrue(e.getMessage().startsWith("Should fail."));
+        /*
+         * Same test than above, but with a collection instead than a single object.
+         */
+        e = assertThrows(AssertionError.class, () -> {
             validator.mandatory("Should fail.", Collections.emptySet());
-        } catch (AssertionError e) {
-            // This is the expected exception.
-            assertEquals("Should fail.", e.getMessage());
-        }
+        });
+        assertTrue(e.getMessage().startsWith("Should fail."));
     }
 
     /**
@@ -81,19 +80,17 @@ public strictfp class ValidatorTest {
     public void testForbidden() {
         validator.forbidden("Should not fail.", null);
         validator.forbidden("Should not fail.", Collections.emptySet());
-        try {
+        AssertionError e = assertThrows(AssertionError.class, () -> {
             validator.forbidden("Should fail.", "dummy");
-        } catch (AssertionError e) {
-            // This is the expected exception.
-            final String message = e.getMessage();
-            assertTrue(message, message.startsWith("Should fail."));
-        }
-        try {
+        });
+        assertTrue(e.getMessage().startsWith("Should fail."));
+        /*
+         * Same test than above, but with a collection instead than a single object.
+         */
+        e = assertThrows(AssertionError.class, () -> {
             validator.forbidden("Should fail.", Collections.singleton("dummy"));
-        } catch (AssertionError e) {
-            // This is the expected exception.
-            assertEquals("Should fail.", e.getMessage());
-        }
+        });
+        assertTrue(e.getMessage().startsWith("Should fail."));
     }
 
     /**

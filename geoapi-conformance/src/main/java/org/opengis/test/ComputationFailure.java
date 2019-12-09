@@ -31,6 +31,8 @@
  */
 package org.opengis.test;
 
+import org.opentest4j.AssertionFailedError;
+
 
 /**
  * Base class for exceptions thrown when a numerical computation did not produced
@@ -40,7 +42,7 @@ package org.opengis.test;
  * @version 3.1
  * @since   3.1
  */
-public abstract class ComputationFailure extends AssertionError {
+public abstract strictfp class ComputationFailure extends AssertionFailedError {
     /**
      * For cross-version compatibility.
      */

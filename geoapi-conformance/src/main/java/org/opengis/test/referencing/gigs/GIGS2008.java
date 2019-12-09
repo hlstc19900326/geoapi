@@ -43,12 +43,10 @@ import org.opengis.referencing.datum.VerticalDatum;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -79,11 +77,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2008;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2008;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2008 {
  *    public MyTest() {
  *        super(new MyDatumAuthorityFactory(),
@@ -98,7 +93,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
     /**
      * The EPSG code of the expected {@link VerticalDatum}.
@@ -137,7 +131,6 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2008} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class, CRSAuthorityFactory.class);
@@ -194,7 +187,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
     @Override
     public VerticalCRS getIdentifiedObject() throws FactoryException {
         if (crs == null) {
-            assumeNotNull(crsAuthorityFactory);
+            assumeTrue(crsAuthorityFactory != null);
             try {
                 crs = crsAuthorityFactory.createVerticalCRS(String.valueOf(code));
             } catch (NoSuchAuthorityCodeException e) {
@@ -220,7 +213,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             }
 
             // Datum validation.
-            assertNotNull("VerticalDatum", datum);
+            assertNotNull(datum, "VerticalDatum");
             validators.validate(datum);
 
             // Datum identifier. Important in order to distinguish datum.
@@ -229,7 +222,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             // Datum name.
             if (isStandardNameSupported) {
                 configurationTip = Configuration.Key.isStandardNameSupported;
-                assertEquals("VerticalDatum.getName()", datumName, getVerifiableName(datum));
+                assertEquals(datumName, getVerifiableName(datum), "VerticalDatum.getName()");
                 configurationTip = null;
             }
         }
@@ -243,7 +236,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             final VerticalCRS crs = getIdentifiedObject();
 
             // CRS validation.
-            assertNotNull("VerticalCRS", crs);
+            assertNotNull(crs, "VerticalCRS");
             validators.validate(crs);
 
             // CRS identifier.
@@ -252,13 +245,13 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             // CRS name.
             if (isStandardNameSupported) {
                 configurationTip = Configuration.Key.isStandardNameSupported;
-                assertEquals("VerticalCRS.getName()", name, getVerifiableName(crs));
+                assertEquals(name, getVerifiableName(crs), "VerticalCRS.getName()");
                 configurationTip = null;
             }
 
             // Datum associated to the CRS.
             final VerticalDatum datum = crs.getDatum();
-            assertNotNull("VerticalCRS.getDatum()", datum);
+            assertNotNull(datum, "VerticalCRS.getDatum()");
 
             // Datum identification.
             if (isDependencyIdentificationSupported) {
@@ -267,7 +260,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
                         datumCode, datum.getIdentifiers());
 
                 configurationTip = Configuration.Key.isStandardNameSupported;
-                assertEquals("VerticalCRS.getDatum().getName()", datumName, getVerifiableName(datum));
+                assertEquals(datumName, getVerifiableName(datum), "VerticalCRS.getDatum().getName()");
                 configurationTip = null;
             }
         }

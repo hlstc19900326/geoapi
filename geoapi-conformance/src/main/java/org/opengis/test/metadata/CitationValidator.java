@@ -37,7 +37,7 @@ import org.opengis.metadata.citation.*;
 import org.opengis.util.InternationalString;
 import org.opengis.test.ValidatorContainer;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

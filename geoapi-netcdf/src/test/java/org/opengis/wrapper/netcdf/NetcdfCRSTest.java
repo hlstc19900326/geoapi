@@ -49,10 +49,11 @@ import org.opengis.test.ValidatorContainer;
 import org.opengis.test.Validators;
 import org.opengis.test.dataset.TestData;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.opengis.test.Assert.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -93,9 +94,9 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
 
     /**
      * The validator to use for validating the {@link CoordinateReferenceSystem} instance.
-     * This validator is specified at construction time.
+     * A default validator is set at construction time, but subclasses can modify if desired.
      */
-    protected final CRSValidator validator;
+    protected CRSValidator validator;
 
     /**
      * The CRS object being tested. This field is set to the value returned by
@@ -138,18 +139,6 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
     }
 
     /**
-     * Creates a new test case using the given validator. This constructor is provided for
-     * subclasses wanting to use different validation methods. It is caller responsibility
-     * to configure the given validator (for example whether to
-     * {@linkplain CRSValidator#enforceStandardNames enforce standard names} or not).
-     *
-     * @param validator  the validator to use for validating the {@link CoordinateReferenceSystem} instance.
-     */
-    protected NetcdfCRSTest(final CRSValidator validator) {
-        this.validator = validator;
-    }
-
-    /**
      * Wraps the given netCDF file into a GeoAPI CRS object. The default implementation
      * creates a {@link NetcdfCRS} instance. Subclasses can override this method for
      * creating their own instance.
@@ -172,11 +161,11 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
      * @return the singleton element from the collection.
      */
     private static <E> E assertSingleton(final Iterable<? extends E> collection) {
-        assertNotNull("Null collection.", collection);
+        assertNotNull(collection, "Null collection.");
         final Iterator<? extends E> it = collection.iterator();
-        assertTrue("The collection is empty.", it.hasNext());
+        assertTrue(it.hasNext(), "The collection is empty.");
         final E element = it.next();
-        assertFalse("The collection has more than one element.", it.hasNext());
+        assertFalse(it.hasNext(), "The collection has more than one element.");
         return element;
     }
 
@@ -200,9 +189,9 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
      */
     protected void assertNameEquals(final String expected, final IdentifiedObject object) {
         final Identifier name = object.getName();
-        assertNotNull("IdentifiedObject.name", name);
-        assertEquals("Code space", "netCDF", name.getCodeSpace());
-        assertEquals("Code value", expected, name.getCode());
+        assertNotNull(name, "IdentifiedObject.name");
+        assertEquals("netCDF", name.getCodeSpace(), "Code space");
+        assertEquals(expected, name.getCode(), "Code value");
     }
 
     /**
@@ -216,7 +205,7 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
         assertNameEquals(name, axis);
         final Unit<?> axisUnit = axis.getUnit();
         if (axisUnit != null) try {
-            assertEquals(name, axisUnit.getConverterToAny(unit).convert(1), 1, 1E-15);
+            assertEquals(axisUnit.getConverterToAny(unit).convert(1), 1, 1E-15, name);
         } catch (IncommensurableException e) {
             throw new AssertionError(e);
         }
@@ -244,7 +233,7 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
                                : new AxisDirection[] {EAST, NORTH, FUTURE});
         final List<CoordinateReferenceSystem> components = ((CompoundCRS) crs).getComponents();
         int n = hasVerticalCRS ? 3 : 2;
-        assertEquals("CompoundCRS number of components:", n, components.size());
+        assertEquals(n, components.size(), "CompoundCRS number of components:");
         CoordinateReferenceSystem candidate = components.get(--n);
         assertInstanceOf("CompoundCRS.component[last] type:", TemporalCRS.class, candidate);
         temporalCRS = (TemporalCRS) candidate;
@@ -315,7 +304,7 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
     public void testProjected4D() throws IOException {
         try (NetcdfDataset file = new NetcdfDataset(open(TestData.NETCDF_4D_PROJECTED))) {
             final List<CoordinateSystem> crsList = file.getCoordinateSystems();
-            assertEquals("Unexpected number of netCDF coordinate systems.", 1, crsList.size());
+            assertEquals(1, crsList.size(), "Unexpected number of netCDF coordinate systems.");
             crs = wrap(crsList.get(0), file);
             final ProjectedCRS projected = separateComponents("Expected a (projected + vertical + time) CRS.", ProjectedCRS.class, true);
             final CartesianCS cart = projected  .getCoordinateSystem();
@@ -329,18 +318,18 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
             assertAxisEquals("z0",   Units.FOOT.multiply(100), vert.getAxis(0));
             assertAxisEquals("time", Units.SECOND,             time.getAxis(0));
             assertNameEquals("time z0 y0 x0", crs);
-            assertEquals("Time since 1992-1-1 UTC", new Date(0L), temporalCRS.getDatum().getOrigin());
+            assertEquals(new Date(0L), temporalCRS.getDatum().getOrigin(), "Time since 1992-1-1 UTC");
             /*
              * Following part is specific to ProjectedCRS.
              */
             final Projection  projection = projected.getConversionFromBase();
             final ParameterValueGroup  p = projection.getParameterValues();
-            assertEquals("Unexpected number of parameters.",            5,     p.values().size());
-            assertEquals("grid_mapping_name", "lambert_conformal_conic",       p.parameter("grid_mapping_name").stringValue());
-            assertEquals("latitude_of_projection_origin",              25.0,   p.parameter("latitude_of_projection_origin").doubleValue(), EPS);
-            assertEquals("longitude_of_central_meridian",             -95.0,   p.parameter("longitude_of_central_meridian").doubleValue(), EPS);
-            assertEquals("earth_radius",                          6371229.000, p.parameter("earth_radius").doubleValue(), EPS);
-            assertArrayEquals("standard_parallel", new double[] {25.0, 25.05}, p.parameter("standard_parallel").doubleValueList(), EPS);
+            assertEquals(5, p.values().size(), "Unexpected number of parameters.");
+            assertEquals("lambert_conformal_conic", p.parameter("grid_mapping_name").stringValue(), "grid_mapping_name");
+            assertEquals(25.0, p.parameter("latitude_of_projection_origin").doubleValue(), EPS, "latitude_of_projection_origin");
+            assertEquals(-95.0, p.parameter("longitude_of_central_meridian").doubleValue(), EPS, "longitude_of_central_meridian");
+            assertEquals(6371229.000, p.parameter("earth_radius").doubleValue(), EPS, "earth_radius");
+            assertArrayEquals(new double[] {25.0, 25.05}, p.parameter("standard_parallel").doubleValueList(), EPS, "standard_parallel");
         }
     }
 }

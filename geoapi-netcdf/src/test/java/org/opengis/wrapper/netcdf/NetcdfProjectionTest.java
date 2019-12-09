@@ -22,9 +22,10 @@ import org.opengis.referencing.operation.SingleOperation;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.test.referencing.TransformTestCase;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.opengis.test.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

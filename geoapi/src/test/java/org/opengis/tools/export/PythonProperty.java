@@ -44,7 +44,7 @@ import org.opengis.geoapi.SchemaInformation;
  * @since   4.0
  * @version 4.0
  */
-final class PythonProperty implements Comparable<PythonProperty> {
+final strictfp class PythonProperty implements Comparable<PythonProperty> {
     /**
      * The OGC/ISO name (can not be null).
      */

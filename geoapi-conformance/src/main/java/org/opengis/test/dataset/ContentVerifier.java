@@ -56,7 +56,7 @@ import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ControlledVocabulary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 
 /**
@@ -69,7 +69,7 @@ import org.junit.Assert;
  * @version 4.0
  * @since   3.1
  */
-public class ContentVerifier {
+public strictfp class ContentVerifier {
     /**
      * Path to a metadata elements. This is non-empty only while scanning a metadata object by the
      * {@link #addPropertyValue(Class, Object)} method. Values of this string builders are used as
@@ -531,7 +531,7 @@ public class ContentVerifier {
      */
     public void assertMetadataEquals(final String path, final Object expectedValue, final Object... others) {
         if (!compareMetadata(path, expectedValue, others)) {
-            Assert.fail(toString());
+            Assertions.fail(toString());
         }
     }
 

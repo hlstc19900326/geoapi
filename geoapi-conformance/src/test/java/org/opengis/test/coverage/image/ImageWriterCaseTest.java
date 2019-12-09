@@ -35,11 +35,11 @@ import java.util.Iterator;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
-import org.junit.Ignore;
-import org.junit.BeforeClass;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 
 /**
@@ -61,7 +61,7 @@ public strictfp class ImageWriterCaseTest extends ImageWriterTestCase {
      * Disables the creation of temporary caches on disk - use the memory instead.
      * We don't need disk cache since we test only small images.
      */
-    @BeforeClass
+    @BeforeAll
     public static void configureImageIO() {
         ImageIO.setUseCache(false);
     }
@@ -80,7 +80,7 @@ public strictfp class ImageWriterCaseTest extends ImageWriterTestCase {
                     break;                                          // Give precedence to standard writer.
                 }
             }
-            assertNotNull("No PNG image writer found.", writer);
+            assertNotNull(writer, "No PNG image writer found.");
         }
     }
 
@@ -88,7 +88,7 @@ public strictfp class ImageWriterCaseTest extends ImageWriterTestCase {
      * As of JDK7, the PNG writer does not detect that it can't write signed values.
      */
     @Override
-    @Ignore("ImageWriterSpi.canDecode(RenderedImage) doen't return 'false'")
+    @Disabled("ImageWriterSpi.canDecode(RenderedImage) doesn't return 'false'")
     public void testOneShortBand() throws IOException {
         assumeTrue(false);
     }

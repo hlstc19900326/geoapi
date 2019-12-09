@@ -32,7 +32,7 @@ import org.opengis.test.Validators;
 import org.opengis.test.dataset.TestData;
 import org.opengis.test.dataset.ContentVerifier;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -60,9 +60,9 @@ import org.junit.Test;
 public strictfp class NetcdfMetadataTest extends IOTestCase {
     /**
      * The validator to use for validating the {@link Metadata} instance.
-     * This validator is specified at construction time.
+     * A default validator is set at construction time, but subclasses can modify if desired.
      */
-    protected final MetadataBaseValidator validator;
+    protected MetadataBaseValidator validator;
 
     /**
      * The metadata object being tested. This field is set to the value returned
@@ -78,18 +78,6 @@ public strictfp class NetcdfMetadataTest extends IOTestCase {
     public NetcdfMetadataTest() {
         validator = new MetadataBaseValidator(Validators.DEFAULT);
         validator.requireMandatoryAttributes = false;
-    }
-
-    /**
-     * Creates a new test case using the given validator. This constructor is provided for
-     * subclasses wanting to use different validation methods. It is caller responsibility
-     * to configure the given validator (for example whether to
-     * {@link MetadataBaseValidator#requireMandatoryAttributes require mandatory attributes} or not).
-     *
-     * @param validator  the validator to use for validating the {@link Metadata} instance.
-     */
-    protected NetcdfMetadataTest(final MetadataBaseValidator validator) {
-        this.validator = validator;
     }
 
     /**

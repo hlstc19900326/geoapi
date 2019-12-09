@@ -7,8 +7,6 @@
  */
 package org.opengis.example.util;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.opengis.test.util.NameTest;
 
 
@@ -22,7 +20,6 @@ import org.opengis.test.util.NameTest;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(JUnit4.class)
 public strictfp class SimpleNameTest extends NameTest {
     /**
      * Initializes a new test case using the {@linkplain SimpleNameFactory#DEFAULT default factory}.

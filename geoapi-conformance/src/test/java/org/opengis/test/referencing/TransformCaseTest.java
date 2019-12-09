@@ -34,10 +34,11 @@ package org.opengis.test.referencing;
 import java.util.Random;
 import java.awt.geom.AffineTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.junit.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static java.lang.StrictMath.*;
-import static org.opengis.test.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -78,7 +79,7 @@ public strictfp class TransformCaseTest extends TransformTestCase {
      * A slightly different affine transform is created during
      * each initialization.
      */
-    @Before
+    @BeforeEach
     public void initTransform() {
         final BogusAffineTransform2D work = new BogusAffineTransform2D();
         work.rotate(rotation += toRadians(5));
@@ -90,7 +91,7 @@ public strictfp class TransformCaseTest extends TransformTestCase {
     /**
      * Initializes the {@linkplain #coordinates} array to random values.
      */
-    @Before
+    @BeforeEach
     public void initCoordinates() {
         for (int i=0; i<coordinates.length; i++) {
             coordinates[i] = random.nextFloat()*2000f - 1000f;
@@ -116,12 +117,12 @@ public strictfp class TransformCaseTest extends TransformTestCase {
         } catch (TransformFailure e) {
             // This is the expected exception.
             final String message = e.getMessage();
-            assertTrue("Wrong or missing dimension and index in the error message.",
-                    message.contains("DirectPosition2D[1]"));
-            assertTrue("Wrong or missing coordinate values in the error message.",
-                    message.contains("Expected POINT(20.0 300.125) but got POINT(20.0 300.0)"));
-            assertTrue("Wrong or missing delta value in the error message.",
-                    message.contains("The delta at ordinate 1 is 0.125"));
+            assertTrue(message.contains("DirectPosition2D[1]"),
+                    "Wrong or missing dimension and index in the error message.");
+            assertTrue(message.contains("Expected POINT(20.0 300.125) but got POINT(20.0 300.0)"),
+                    "Wrong or missing coordinate values in the error message.");
+            assertTrue(message.contains("The delta at ordinate 1 is 0.125"),
+                    "Wrong or missing delta value in the error message.");
         }
     }
 
@@ -143,12 +144,13 @@ public strictfp class TransformCaseTest extends TransformTestCase {
      *
      * @throws TransformException should never happen.
      */
-    @Test(expected=TransformFailure.class)
+    @Test
     public void testConsistencyUsingBogusTransform() throws TransformException {
         tolerance = 0;
         validators.validate(transform);
         ((BogusAffineTransform2D) transform).wrongFloatToFloat = true;
-        verifyConsistency(coordinates);
+        TransformFailure e = assertThrows(TransformFailure.class, () -> verifyConsistency(coordinates));
+        assertFalse(e.getMessage().isEmpty());
     }
 
     /**
@@ -169,12 +171,13 @@ public strictfp class TransformCaseTest extends TransformTestCase {
      *
      * @throws TransformException should never happen.
      */
-    @Test(expected=TransformFailure.class)
+    @Test
     public void testInversionUsingBogusTransform() throws TransformException {
         tolerance = 1E-10;
         validators.validate(transform);
         ((BogusAffineTransform2D) transform).wrongInverse = true;
-        verifyInverse(coordinates);
+        TransformFailure e = assertThrows(TransformFailure.class, () -> verifyInverse(coordinates));
+        assertFalse(e.getMessage().isEmpty());
     }
 
     /**
@@ -199,13 +202,14 @@ public strictfp class TransformCaseTest extends TransformTestCase {
      *
      * @since 3.1
      */
-    @Test(expected=DerivativeFailure.class)
+    @Test
     public void testDerivativeUsingBogusTransform() throws TransformException {
         tolerance = 1E-10;
         derivativeDeltas = new double[] {0.1};
         validators.validate(transform);
         ((BogusAffineTransform2D) transform).wrongDerivative = true;
-        verifyDerivative(0, 0);
+        DerivativeFailure e = assertThrows(DerivativeFailure.class, () -> verifyDerivative(0, 0));
+        assertFalse(e.getMessage().isEmpty());
     }
 
     /**
@@ -235,10 +239,10 @@ public strictfp class TransformCaseTest extends TransformTestCase {
         for (int s : num) {
             expectedLength *= s;
         }
-        final float[] coordinates = verifyInDomain(min, max, num, random);
-        assertEquals(expectedLength, coordinates.length);
-        for (int i=0; i<coordinates.length; i++) {
-            final float c = coordinates[i];
+        final float[] coords = verifyInDomain(min, max, num, random);
+        assertEquals(expectedLength, coords.length);
+        for (int i=0; i<coords.length; i++) {
+            final float c = coords[i];
             final int   j = i % num.length;
             assertTrue(c >= min[j] && c <= max[j]);
         }

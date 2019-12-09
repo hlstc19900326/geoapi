@@ -49,11 +49,10 @@ import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 
 
@@ -92,9 +91,7 @@ import static org.opengis.test.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2004;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2004;
  *
  *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2004 {
@@ -111,7 +108,6 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
     /**
      * The expected axis directions of two-dimensional geographic CRS with longitude first.
@@ -191,7 +187,6 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2004} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class, CRSAuthorityFactory.class);
@@ -248,7 +243,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
     @Override
     public GeodeticDatum getIdentifiedObject() throws FactoryException {
         if (datum == null) {
-            assumeNotNull(datumAuthorityFactory);
+            assumeTrue(datumAuthorityFactory != null);
             try {
                 datum = datumAuthorityFactory.createGeodeticDatum(String.valueOf(code));
             } catch (NoSuchAuthorityCodeException e) {
@@ -266,7 +261,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
         assumeTrue(datumAuthorityFactory != null || crsAuthorityFactory != null);
         if (datumAuthorityFactory != null) {
             final GeodeticDatum datum = getIdentifiedObject();
-            assertNotNull("GeodeticDatum", datum);
+            assertNotNull(datum, "GeodeticDatum");
             validators.validate(datum);
             verifyGeodeticDatum(datum);
         }
@@ -327,7 +322,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
      * @param expectedDirections  either {@link #GEOGRAPHIC_2D}, {@link #GEOGRAPHIC_3D} or {@link #GEOCENTRIC}.
      */
     private void verifyGeodeticCRS(final int crsCode, final GeodeticCRS crs, final AxisDirection[] expectedDirections) {
-        assertNotNull("GeodeticCRS", crs);
+        assertNotNull(crs, "GeodeticCRS");
 
         // Geodetic CRS identifier.
         assertContainsCode("GeodeticCRS.getIdentifiers()", "EPSG", crsCode, crs.getIdentifiers());
@@ -335,19 +330,19 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
         // Geodetic CRS name.
         if (isStandardNameSupported) {
             configurationTip = Configuration.Key.isStandardNameSupported;
-            assertEquals("GeodeticCRS.getName()", crsName, getVerifiableName(crs));
+            assertEquals(crsName, getVerifiableName(crs), "GeodeticCRS.getName()");
             configurationTip = null;
         }
 
         // Geodetic CRS datum.
         final GeodeticDatum crsDatum = crs.getDatum();
-        assertNotNull("GeodeticCRS.getDatum()", crsDatum);
+        assertNotNull(crsDatum, "GeodeticCRS.getDatum()");
         verifyGeodeticDatum(crsDatum);
 
         // Geodetic CRS coordinate system.
         final CoordinateSystem cs = crs.getCoordinateSystem();
-        assertNotNull("GeodeticCRS.getCoordinateSystem()", cs);
-        assertEquals("GeodeticCRS.getCoordinateSystem().getDimension()",  expectedDirections.length, cs.getDimension());
+        assertNotNull(cs, "GeodeticCRS.getCoordinateSystem()");
+        assertEquals(expectedDirections.length, cs.getDimension(), "GeodeticCRS.getCoordinateSystem().getDimension()");
         assertAxisDirectionsEqual("GeodeticCRS.getCoordinateSystem().getAxis(*)", cs, expectedDirections);
     }
 
@@ -366,30 +361,30 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
 
             if (isStandardNameSupported) {
                 configurationTip = Configuration.Key.isStandardNameSupported;
-                assertEquals("GeodeticDatum.getName()", name, getVerifiableName(toVerify));
+                assertEquals(name, getVerifiableName(toVerify), "GeodeticDatum.getName()");
             }
             configurationTip = null;
         }
 
         // Geodetic datum ellipsoid.
         final Ellipsoid e = toVerify.getEllipsoid();
-        assertNotNull("GeodeticDatum.getEllipsoid()", e);
+        assertNotNull(e, "GeodeticDatum.getEllipsoid()");
 
         // Ellipsoid name.
         if (isDependencyIdentificationSupported && isStandardNameSupported) {
             configurationTip = Configuration.Key.isDependencyIdentificationSupported;
-            assertEquals("GeodeticDatum.getEllipsoid().getName()", ellipsoidName, getVerifiableName(e));
+            assertEquals(ellipsoidName, getVerifiableName(e), "GeodeticDatum.getEllipsoid().getName()");
             configurationTip = null;
         }
 
         // Geodetic datum prime meridian.
         final PrimeMeridian pm = toVerify.getPrimeMeridian();
-        assertNotNull("GeodeticDatum.getPrimeMeridian()", pm);
+        assertNotNull(pm, "GeodeticDatum.getPrimeMeridian()");
 
         // Prime meridian name.
         if (isDependencyIdentificationSupported && isStandardNameSupported) {
             configurationTip = Configuration.Key.isDependencyIdentificationSupported;
-            assertEquals("GeodeticDatum.getPrimeMeridian().getName()", primeMeridianName, getVerifiableName(pm));
+            assertEquals(primeMeridianName, getVerifiableName(pm), "GeodeticDatum.getPrimeMeridian().getName()");
             configurationTip = null;
         }
     }
@@ -1887,7 +1882,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
         crsName           = "NAD27 Michigan";
         ellipsoidName     = "Clarke 1866 Michigan";
         primeMeridianName = "Greenwich";
-        assumeTrue("Creation of deprecated objects not supported.", isDeprecatedObjectCreationSupported);
+        assumeTrue(isDeprecatedObjectCreationSupported, "Creation of deprecated objects not supported.");
         verifyDatum();
         createAndVerifyGeographicCRS(4268, GEOGRAPHIC_2D);
     }
@@ -7504,7 +7499,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
         crsName           = "Popular Visualisation CRS";
         ellipsoidName     = "Popular Visualisation Sphere";
         primeMeridianName = "Greenwich";
-        assumeTrue("Creation of deprecated objects not supported.", isDeprecatedObjectCreationSupported);
+        assumeTrue(isDeprecatedObjectCreationSupported, "Creation of deprecated objects not supported.");
         verifyDatum();
         createAndVerifyGeographicCRS(4055, GEOGRAPHIC_2D);
     }

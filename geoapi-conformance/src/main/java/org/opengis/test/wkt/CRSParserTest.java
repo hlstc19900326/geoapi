@@ -48,12 +48,11 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.test.referencing.ReferencingTestCase;
 import org.opengis.test.Configuration;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.lang.Double.NaN;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
 
@@ -82,11 +81,8 @@ import static org.opengis.referencing.cs.AxisDirection.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.wkt.CRSParserTest;
+ * <blockquote><pre>import org.opengis.test.wkt.CRSParserTest;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends CRSParserTest {
  *    public MyTest() {
  *        super(new MyCRSFactory());
@@ -101,7 +97,6 @@ import static org.opengis.referencing.cs.AxisDirection.*;
  *
  * @see <a href="http://docs.opengeospatial.org/is/12-063r5/12-063r5.html">WKT 2 specification</a>
  */
-@RunWith(Parameterized.class)
 public strictfp class CRSParserTest extends ReferencingTestCase {
     /**
      * The factory to use for parsing WKT strings. The {@link CRSFactory#createFromWKT(String)} method
@@ -133,7 +128,6 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      *
      * @return the default set of arguments to be given to the {@code ObjectFactoryTest} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(CRSFactory.class);
@@ -183,8 +177,8 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      * @param name   the string representation of the expected name (ignoring code space).
      */
     private static void verifyDatum(final Datum datum, final String name) {
-        assertNotNull("SingleCRS.getDatum()", datum);
-        assertEquals("datum.getName().getCode()", name, datum.getName().getCode());
+        assertNotNull(datum, "SingleCRS.getDatum()");
+        assertEquals(name, datum.getName().getCode(), "datum.getName().getCode()");
     }
 
     /**
@@ -201,11 +195,11 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      * @param abbreviations  the expected abbreviations. Null elements are considered unrestricted.
      */
     private static void verifyAxisAbbreviations(final CoordinateSystem cs, final String... abbreviations) {
-        final int dimension = Math.min(abbreviations.length, cs.getDimension());
+        final int dimension = StrictMath.min(abbreviations.length, cs.getDimension());
         for (int i=0; i<dimension; i++) {
             final String expected = abbreviations[i];
             if (expected != null) {
-                assertEquals("CoordinateSystemAxis.getAbbreviation()", expected, cs.getAxis(i).getAbbreviation());
+                assertEquals(expected, cs.getAxis(i).getAbbreviation(), "CoordinateSystemAxis.getAbbreviation()");
             }
         }
     }
@@ -220,7 +214,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      */
     private static void assertNullOrEquals(final String property, final String expected, final CharSequence actual) {
         if (actual != null) {
-            assertEquals(property, expected, actual.toString());
+            assertEquals(expected, actual.toString(), property);
         }
     }
 
@@ -264,7 +258,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      * @throws FactoryException if an error occurred during the WKT parsing.
      */
     private <T extends CoordinateReferenceSystem> T parse(final Class<T> type, final String text) throws FactoryException {
-        assumeTrue("No CRSFactory.", crsFactory != null);
+        assumeTrue(crsFactory != null, "No CRSFactory.");
         object = crsFactory.createFromWKT(preprocessWKT(text));
         assertInstanceOf("CRSFactory.createFromWKT(String)", type, object);
         return type.cast(object);
@@ -890,7 +884,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification   (crs, "GPS Time", null);
         verifyDatum            (crs.getDatum(), "Time origin");
         verifyCoordinateSystem (crs.getCoordinateSystem(), TimeCS.class, new AxisDirection[] {FUTURE}, units.day());
-        assertEquals("TimeOrigin", new Date(315532800000L), crs.getDatum().getOrigin());
+        assertEquals(new Date(315532800000L), crs.getDatum().getOrigin(), "TimeOrigin");
     }
 
     /**
@@ -1370,7 +1364,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
 
         verifyIdentification(crs, "NAD83 + NAVD88", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
-        assertEquals("components.size()", 2, components.size());
+        assertEquals(2, components.size(), "components.size()");
         assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
         assertInstanceOf("components[1]", VerticalCRS.class, components.get(1));
         verifyNAD23((GeodeticCRS) components.get(0), false, degree, metre);
@@ -1426,7 +1420,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
 
         verifyIdentification(crs, "GPS position and time", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
-        assertEquals("components.size()", 2, components.size());
+        assertEquals(2, components.size(), "components.size()");
         assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
         assertInstanceOf("components[1]", TemporalCRS.class, components.get(1));
         verifyWGS84  ((GeodeticCRS) components.get(0), false, degree, metre);
@@ -1486,7 +1480,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
 
         verifyIdentification(crs, "ICAO layer 0", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
-        assertEquals("components.size()", 2, components.size());
+        assertEquals(2, components.size(), "components.size()");
         assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
         assertInstanceOf("components[1]", ParametricCRS.class, components.get(1));
         verifyWGS84((GeodeticCRS) components.get(0), false, degree, metre);

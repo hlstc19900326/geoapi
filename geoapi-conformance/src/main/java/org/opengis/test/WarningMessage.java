@@ -48,7 +48,7 @@ import java.util.logging.LogRecord;
  * @version 3.1
  * @since   3.1
  */
-final class WarningMessage {
+final strictfp class WarningMessage {
     /**
      * Every warning messages sent in this JVM.
      * Elements in this map will be added but never removed.
@@ -60,6 +60,7 @@ final class WarningMessage {
      * the effect is the same as if this field was static (i.e. the logger will never be garbage
      * collected) because all {@code WarningMessage} entries are added to the {@link #SENT} set.
      */
+    @SuppressWarnings("NonConstantLogger")
     private final Logger logger;
 
     /**

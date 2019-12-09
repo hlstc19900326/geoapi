@@ -43,7 +43,7 @@ import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -53,7 +53,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   2.2
  */
-final class Utilities {
+final strictfp class Utilities {
     /**
      * Do not allow instantiation of this class.
      */

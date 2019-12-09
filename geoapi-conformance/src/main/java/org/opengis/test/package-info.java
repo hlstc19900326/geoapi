@@ -58,8 +58,8 @@
  *       the above, but usually do not need to be considered unless the validation process needs to be customized.</p></li>
  *
  *   <li><p><b>Assertions</b><br>
- *       {@link org.opengis.test.Assert} extends {@link org.junit.Assert org.junit.Assert} class with additional
- *       assertion methods.</p></li>
+ *       {@link org.opengis.test.Assert} complete {@link org.junit.jupiter.api.Assertions org.junit.jupiter.api.Assertions}
+ *       with additional assertion methods.</p></li>
  *
  *   <li><p><b>Configuration</b><br>
  *       {@link org.opengis.test.Configuration}, {@link org.opengis.test.CalculationType},

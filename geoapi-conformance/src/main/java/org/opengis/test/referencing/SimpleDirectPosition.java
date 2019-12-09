@@ -37,7 +37,7 @@ import java.lang.reflect.Array;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   2.2
  */
-final class SimpleDirectPosition implements DirectPosition {
+final strictfp class SimpleDirectPosition implements DirectPosition {
     /**
      * The ordinates.
      */
@@ -81,7 +81,7 @@ final class SimpleDirectPosition implements DirectPosition {
      * @since 3.1
      */
     public SimpleDirectPosition(final double[] ordinates) {
-        assertNotNull("Array of ordinate values shall not be null.", ordinates);
+        assertNotNull(ordinates, "Array of ordinate values shall not be null.");
         this.ordinates = ordinates;
     }
 
@@ -123,12 +123,14 @@ final class SimpleDirectPosition implements DirectPosition {
     /**
      * Sets all ordinate values. The array length must be equal to the number of dimensions.
      *
+     * @param  values  the new coordinate values.
+     *
      * @since 3.1
      */
-    public void setCoordinate(final double... ordinates) {
-        assertFalse("This DirectPosition shall not be modified.", unmodifiable);
-        assertEquals("Unexpected dimension.", this.ordinates.length, ordinates.length);
-        System.arraycopy(ordinates, 0, this.ordinates, 0, ordinates.length);
+    public void setCoordinate(final double... values) {
+        assertFalse(unmodifiable, "This DirectPosition shall not be modified.");
+        assertEquals(ordinates.length, values.length, "Unexpected dimension.");
+        System.arraycopy(values, 0, ordinates, 0, values.length);
     }
 
     /**
@@ -140,7 +142,7 @@ final class SimpleDirectPosition implements DirectPosition {
      * @param useDouble  if {@code false}, cast the values to floats.
      */
     final void setCoordinate(final Object ordinates, int offset, final boolean useDouble) {
-        assertFalse("This DirectPosition shall not be modified.", unmodifiable);
+        assertFalse(unmodifiable, "This DirectPosition shall not be modified.");
         final int dimension = this.ordinates.length;
         for (int i=0; i<dimension; i++) {
             double ordinate = Array.getDouble(ordinates, offset++);
@@ -164,7 +166,7 @@ final class SimpleDirectPosition implements DirectPosition {
      */
     @Override
     public void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
-        assertFalse("This DirectPosition shall not be modified.", unmodifiable);
+        assertFalse(unmodifiable, "This DirectPosition shall not be modified.");
         ordinates[dimension] = value;
     }
 

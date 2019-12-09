@@ -45,8 +45,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 
 /**
@@ -57,7 +57,7 @@ import static org.junit.Assume.*;
  * @version 3.1
  * @since   3.1
  */
-final class Release implements Closeable {
+final strictfp class Release implements Closeable {
     /**
      * Filename extension of class files.
      */
@@ -97,12 +97,12 @@ final class Release implements Closeable {
     Release(final File mavenRepository, final String version, final ClassLoader parent) throws MalformedURLException {
         isUsingLegacyUnits = version.startsWith("2.") || version.startsWith("3.0.0");
         file = new File(mavenRepository, "org/opengis/geoapi/" + version + "/geoapi-" + version + ".jar");
-        assumeTrue("GeoAPI " + version + " not in Maven repository.", file.isFile());
+        assumeTrue(file.isFile(), () -> "GeoAPI " + version + " not in Maven repository.");
         final File depFile = new File(mavenRepository, isUsingLegacyUnits
                 ? "javax/measure/jsr-275/0.9.3/jsr-275-0.9.3.jar"
                 : "javax/measure/unit-api/1.0/unit-api-1.0.jar");
 
-        assertTrue("Required dependency not found: " + depFile, depFile.isFile());
+        assertTrue(depFile.isFile(), () -> "Required dependency not found: " + depFile);
         final URL dependency = depFile.toURI().toURL();
         loader = new URLClassLoader(new URL[] {file.toURI().toURL(), dependency}, parent);
     }

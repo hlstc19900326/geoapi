@@ -28,7 +28,7 @@ import ucar.ma2.DataType;
 import ucar.ma2.Array;
 import ucar.ma2.Index;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -43,7 +43,7 @@ import static org.junit.Assert.*;
  * @version 4.0
  * @since   3.1
  */
-final class TestDataUpdater {
+final strictfp class TestDataUpdater {
     /**
      * Entry point to be updated for each purpose. Intentionally empty for the version in the source code repository;
      * must be updated by the developers according their purpose.
@@ -127,8 +127,8 @@ final class TestDataUpdater {
                         case "time": break;
                         default: continue;      // Skip all dimensions not in above list.
                     }
-                    assertNull(name, dimensions.put(name, writer.addDimension(null, name, length)));
-                    assertNull(name, origins.put(name, origin));
+                    assertNull(dimensions.put(name, writer.addDimension(null, name, length)), name);
+                    assertNull(origins.put(name, origin), name);
                 }
                 /*
                  * Copy only the variables for which we have all dimensions. Then copy variable attributes except empty strings
@@ -161,7 +161,7 @@ nextVar:        for (final Variable var : file.getVariables()) {
                         type = DataType.SHORT;
                     }
                     final Variable target = writer.addVariable(null, name, type, varDims);
-                    assertNull(name, variables.put(name, target));
+                    assertNull(variables.put(name, target), name);
                     for (Attribute attr : var.getAttributes()) {
                         attr = filter(attr, var.getDimensions().isEmpty());
                         if (attr != null) {
@@ -222,7 +222,7 @@ nextVar:        for (final Variable var : file.getVariables()) {
                          */
                         if (source.getShortName().equals(pack)) {
                             final int[] shape = data.getShape();
-                            final int size = Math.toIntExact(Index.computeSize(shape));
+                            final int size = StrictMath.toIntExact(Index.computeSize(shape));
                             final Array packed = Array.factory(target.getDataType(), shape);
                             final Index index = packed.getIndex();
                             for (int i=0; i<size; i++) {
@@ -233,7 +233,7 @@ nextVar:        for (final Variable var : file.getVariables()) {
                                 }
                                 double value = data.getDouble(index);
                                 value = (value - offset) / scale;
-                                packed.setShort(index, (short) Math.max(0, Math.min(0x7FFF, Math.round(value))));
+                                packed.setShort(index, (short) StrictMath.max(0, StrictMath.min(0x7FFF, StrictMath.round(value))));
                             }
                             data = packed;
                         }

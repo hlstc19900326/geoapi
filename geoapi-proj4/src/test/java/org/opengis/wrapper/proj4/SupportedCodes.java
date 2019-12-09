@@ -45,7 +45,7 @@ import java.sql.ResultSet;
  * @version 3.1
  * @since   3.1
  */
-public class SupportedCodes {
+public strictfp class SupportedCodes {
     /**
      * The output file, to be written in the current directory.
      */
@@ -114,9 +114,7 @@ public class SupportedCodes {
      * @throws SQLException       if an error occurred while preparing the statements.
      */
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
-    private SupportedCodes(final File projDataDirectory, final Connection epsgConnection)
-            throws SQLException
-    {
+    private SupportedCodes(final File projDataDirectory, final Connection epsgConnection) throws SQLException {
         this.projDataDirectory = projDataDirectory;
         this.epsgConnection    = epsgConnection;
         coordSysStmt = epsgConnection.prepareStatement(

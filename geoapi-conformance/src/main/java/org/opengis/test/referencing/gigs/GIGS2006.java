@@ -43,11 +43,10 @@ import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 
 
@@ -78,11 +77,8 @@ import static org.opengis.test.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2006;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2006;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2006 {
  *    public MyTest() {
  *        super(new MyCRSAuthorityFactory());
@@ -96,7 +92,6 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
     /**
      * The EPSG code of the expected datum.
@@ -150,7 +145,6 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2006} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, CRSAuthorityFactory.class);
@@ -203,7 +197,7 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
     @Override
     public ProjectedCRS getIdentifiedObject() throws FactoryException {
         if (crs == null) {
-            assumeNotNull(crsAuthorityFactory);
+            assumeTrue(crsAuthorityFactory != null);
             try {
                 crs = crsAuthorityFactory.createProjectedCRS(String.valueOf(code));
             } catch (NoSuchIdentifierException e) {
@@ -227,7 +221,7 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         crs = null;                 // For forcing the fetch of a new projected CRS.
 
         final ProjectedCRS crs = getIdentifiedObject();
-        assertNotNull("ProjectedCRS", crs);
+        assertNotNull(crs, "ProjectedCRS");
         validators.validate(crs);
 
         // Projected CRS identifier.
@@ -244,15 +238,15 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
             // Base geographic CRS name.
             if (isStandardNameSupported) {
                 configurationTip = Configuration.Key.isStandardNameSupported;
-                assertEquals("ProjectedCRS.getBaseCRS().getName()", name, getVerifiableName(crs.getBaseCRS()));
+                assertEquals(name, getVerifiableName(crs.getBaseCRS()), "ProjectedCRS.getBaseCRS().getName()");
             }
             configurationTip = null;
         }
 
         // Projected CRS coordinate system.
         final CartesianCS cs = crs.getCoordinateSystem();
-        assertNotNull("ProjectedCRS.getCoordinateSystem()", crs);
-        assertEquals("ProjectedCRS.getCoordinateSystem().getDimension()", 2, cs.getDimension());
+        assertNotNull(crs, "ProjectedCRS.getCoordinateSystem()");
+        assertEquals(2, cs.getDimension(), "ProjectedCRS.getCoordinateSystem().getDimension()");
 
         // Coordinate sytem axis directions.
         final AxisDirection[] directions = new AxisDirection[2];

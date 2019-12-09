@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-public enum TestData {
+public strictfp enum TestData {
     /**
      * A two-dimensional netCDF file using a geographic CRS for global data over the world.
      * The file contains temperature data from model analysis, without missing values.
@@ -172,7 +172,7 @@ public enum TestData {
      */
     public URL location() {
         final URL location = TestData.class.getResource(filename);
-        assertNotNull(filename, location);
+        assertNotNull(location, filename);
         return location;
     }
 
@@ -218,7 +218,7 @@ public enum TestData {
      */
     public InputStream open() {
         final InputStream stream = TestData.class.getResourceAsStream(filename);
-        assertNotNull(filename, stream);
+        assertNotNull(stream, filename);
         return stream;
     }
 

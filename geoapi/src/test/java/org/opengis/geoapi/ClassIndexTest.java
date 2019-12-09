@@ -49,9 +49,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.opengis.annotation.UML;
 import org.opengis.annotation.Specification;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.annotation.Specification.*;
 
 
@@ -112,8 +112,8 @@ public final strictfp class ClassIndexTest extends SourceGenerator {
         final InputStream in = UML.class.getResourceAsStream(INDEX_FILENAME);
         if (in != null) {
             final String actual = load(in);
-            assertEquals("The content of the \"" + INDEX_FILENAME + "\" file is different from " +
-                         "the content found by scanning the compiled classes.", index, actual);
+            assertEquals(index, actual, "The content of the \"" + INDEX_FILENAME + "\" file " +
+                         "is different from the content found by scanning the compiled classes.");
         } else {
             final String reason = save(index);
             if (reason != null) {
@@ -187,7 +187,7 @@ public final strictfp class ClassIndexTest extends SourceGenerator {
                 } while ((identifier = merged.remove(identifier)) != null);
             }
         }
-        assertTrue(merged.toString(), merged.isEmpty());
+        assertTrue(merged.isEmpty(), merged.toString());
         Collections.sort(lines);
         for (final String line : lines) {
             buffer.append(line).append('\n');

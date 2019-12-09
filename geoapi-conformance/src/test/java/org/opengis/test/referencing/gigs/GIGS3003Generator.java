@@ -38,7 +38,7 @@ import java.util.Collections;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -123,7 +123,7 @@ public strictfp class GIGS3003Generator extends TestMethodGenerator {
                 longitude = longitudeInDegrees;
             } else {
                 unit = parseAngularUnit(unitName);
-                assertNotNull(unitName, unit);      // Failure here would be a geoapi-conformance bug.
+                assertNotNull(unit, unitName);      // Failure here would be a geoapi-conformance bug.
                 longitude = Double.parseDouble(data.getString(2));
             }
             /*

@@ -47,7 +47,7 @@ import org.opengis.test.referencing.PseudoEpsgFactory;
  * @version 3.1
  * @since   3.1
  */
-final class EPSGMock extends PseudoEpsgFactory {
+final strictfp class EPSGMock extends PseudoEpsgFactory {
     /**
      * Creates a new EPSG pseudo-factory which will use the given factories for creating coordinate system instances.
      */

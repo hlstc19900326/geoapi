@@ -42,7 +42,7 @@ import org.opengis.util.InternationalString;
  * @version 3.1
  * @since   3.1
  */
-final class SimpleInternationalString implements InternationalString {
+final strictfp class SimpleInternationalString implements InternationalString {
     /**
      * The string returned by {@link #toString()} and others methods
      * from the {@link CharSequence} interface.

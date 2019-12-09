@@ -7,18 +7,15 @@
  */
 package org.opengis.example.referencing;
 
-import org.junit.Test;
-import org.junit.After;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.test.referencing.AffineTransformTest;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -30,21 +27,12 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(JUnit4.class)
 public strictfp class ProjectiveTransformTest extends AffineTransformTest {
-    /**
-     * The expected class of the {@link #transform} instance.
-     * The default value is {@code ProjectiveTransform.class}.
-     * Subclasses can change this value if they expect an other
-     * kind of transform to be created by the factory.
-     */
-    protected Class<? extends MathTransform> expectedTransformClass;
-
     /**
      * Creates a new test case.
      */
     public ProjectiveTransformTest() {
-        this(new SimpleTransformFactory() {
+        super(new SimpleTransformFactory() {
             @Override // Prevent SimpleTransformFactory from creating AffineTransform2D instances.
             public MathTransform createAffineTransform(final Matrix matrix) {
                 return new ProjectiveTransform(getVendor(), "Projective transform", null, null,
@@ -54,17 +42,7 @@ public strictfp class ProjectiveTransformTest extends AffineTransformTest {
     }
 
     /**
-     * Creates a new test case using the given factory.
-     *
-     * @param factory  the factory to use for testing affine transforms.
-     */
-    protected ProjectiveTransformTest(final SimpleTransformFactory factory) {
-        super(factory);
-        expectedTransformClass = ProjectiveTransform.class;
-    }
-
-    /**
-     * Declares that our implementation can not invert such transform before to delegate to the parent class.
+     * Declares that our implementation can not invert such transform, then runs the test.
      */
     @Test
     @Override
@@ -76,10 +54,10 @@ public strictfp class ProjectiveTransformTest extends AffineTransformTest {
     /**
      * Invoked after every tests in order to ensure that the transform created by the factory
      * is of the expected type. This method requires that the transform class is exactly the
-     * {@link #expectedTransformClass} - not a subclass.
+     * {@code ProjectiveTransform} class - not a subclass.
      */
-    @After
+    @AfterEach
     public void ensureExpectedTransformClass() {
-        assertEquals("Unexpected transform instance.", expectedTransformClass, transform.getClass());
+        assertEquals(ProjectiveTransform.class, transform.getClass(), "Unexpected transform instance.");
     }
 }

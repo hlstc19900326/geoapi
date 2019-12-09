@@ -304,11 +304,15 @@ final class MainFrame extends JFrame implements Runnable, ActionListener, ListSe
      */
     @Override
     public void actionPerformed(final ActionEvent event) {
-        if (currentReport != null) try {
-            desktop.browse(currentReport.getJavadocURL());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(MainFrame.this, e.toString(),
-                    "Can not open the browser", JOptionPane.ERROR_MESSAGE);
+        if (currentReport != null) {
+            currentReport.getJavadocURL().ifPresent((uri) -> {
+                try {
+                    desktop.browse(uri);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(MainFrame.this, e.toString(),
+                            "Can not open the browser", JOptionPane.ERROR_MESSAGE);
+                }
+            });
         }
     }
 

@@ -36,11 +36,11 @@ import java.util.Locale;
 import org.opengis.util.*;
 import org.opengis.referencing.ObjectFactory;
 import org.opengis.metadata.citation.Citation;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-import org.junit.After;
-import org.junit.Before;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -55,17 +55,17 @@ public strictfp class TestSuiteTest {
      * Before to run any test, ensures that their is no factories explicitely
      * registered in the {@link TestSuite}.
      */
-    @Before
+    @BeforeEach
     public void ensureClean() {
         synchronized (TestCase.FACTORIES) {
-            assertTrue("No factories should be specified before this test is run.", TestCase.FACTORIES.isEmpty());
+            assertTrue(TestCase.FACTORIES.isEmpty(), "No factories should be specified before this test is run.");
         }
     }
 
     /**
      * After any test has been run, removes all factories registered in {@link TestSuite}.
      */
-    @After
+    @AfterEach
     public void clear() {
         TestSuite.clear();
     }
@@ -90,14 +90,13 @@ public strictfp class TestSuiteTest {
         //
         // Ask for the factories.
         //
-        assertArrayEquals("Expected a singleton containing only the NameFactory that we declared.",
-                new NameFactory[][] {nameFactories}, TestCase.factories(NameFactory.class).toArray());
-        assertArrayEquals("Expected a singleton containing only the ObjectFactory that we declared.",
-                new ObjectFactory[][] {objectFactories}, TestCase.factories(ObjectFactory.class).toArray());
-        assertArrayEquals("Expected a singleton containing only the (NameFactory, ObjectFactory) pair.",
-                new Factory[][] {new Factory[] {nameFactories[0], objectFactories[0]}},
-                TestCase.factories(NameFactory.class, ObjectFactory.class).toArray());
-
+        assertArrayEquals(new NameFactory[][] {nameFactories}, TestCase.factories(NameFactory.class).toArray(),
+                          "Expected a singleton containing only the NameFactory that we declared.");
+        assertArrayEquals(new ObjectFactory[][] {objectFactories}, TestCase.factories(ObjectFactory.class).toArray(),
+                          "Expected a singleton containing only the ObjectFactory that we declared.");
+        assertArrayEquals(new Factory[][] {new Factory[] {nameFactories[0], objectFactories[0]}},
+                          TestCase.factories(NameFactory.class, ObjectFactory.class).toArray(),
+                          "Expected a singleton containing only the (NameFactory, ObjectFactory) pair.");
     }
 
     /**
@@ -119,23 +118,25 @@ public strictfp class TestSuiteTest {
         //
         // Ask for the factories.
         //
-        assertArrayEquals("Expected the two NameFactory that we declared.",
-                new NameFactory[][] {
-                    new NameFactory[] {nameFactories[0]},
-                    new NameFactory[] {nameFactories[1]}
-                }, TestCase.factories(NameFactory.class).toArray());
-        assertArrayEquals("Expected the two ObjectFactory that we declared.",
-                new ObjectFactory[][] {
-                    new ObjectFactory[] {objectFactories[0]},
-                    new ObjectFactory[] {objectFactories[1]}
-                }, TestCase.factories(ObjectFactory.class).toArray());
-        assertArrayEquals("Expected all (NameFactory, ObjectFactory) pairs.",
-                new Factory[][] {
-                    new Factory[] {nameFactories[0], objectFactories[0]},
-                    new Factory[] {nameFactories[1], objectFactories[0]},
-                    new Factory[] {nameFactories[0], objectFactories[1]},
-                    new Factory[] {nameFactories[1], objectFactories[1]}
-                }, TestCase.factories(NameFactory.class, ObjectFactory.class).toArray());
+        assertArrayEquals(new NameFactory[][] {
+                              new NameFactory[] {nameFactories[0]},
+                              new NameFactory[] {nameFactories[1]}
+                          }, TestCase.factories(NameFactory.class).toArray(),
+                          "Expected the two NameFactory that we declared.");
+
+        assertArrayEquals(new ObjectFactory[][] {
+                              new ObjectFactory[] {objectFactories[0]},
+                              new ObjectFactory[] {objectFactories[1]}
+                          }, TestCase.factories(ObjectFactory.class).toArray(),
+                          "Expected the two ObjectFactory that we declared.");
+
+        assertArrayEquals(new Factory[][] {
+                              new Factory[] {nameFactories[0], objectFactories[0]},
+                              new Factory[] {nameFactories[1], objectFactories[0]},
+                              new Factory[] {nameFactories[0], objectFactories[1]},
+                              new Factory[] {nameFactories[1], objectFactories[1]}
+                          }, TestCase.factories(NameFactory.class, ObjectFactory.class).toArray(),
+                          "Expected all (NameFactory, ObjectFactory) pairs.");
     }
 
     /** A dummy factory for testing purpose. */

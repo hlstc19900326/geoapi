@@ -82,7 +82,7 @@ import org.opengis.test.coverage.image.*;
  * @version 3.1
  * @since   2.2
  */
-public class ValidatorContainer implements Cloneable {
+public strictfp class ValidatorContainer implements Cloneable {
     /**
      * The validator for {@link GenericName} and related objects.
      * Vendors can change this field to a different validator, or change the setting

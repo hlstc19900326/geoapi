@@ -45,7 +45,7 @@ import org.opengis.metadata.citation.Citation;
  * @version 3.1
  * @since   3.1
  */
-public class PseudoFactory implements Factory {
+public strictfp class PseudoFactory implements Factory {
     /**
      * The implementer of this factory.
      */

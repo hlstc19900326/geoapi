@@ -41,12 +41,10 @@ import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.DatumFactory;
 import org.opengis.test.Configuration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -75,11 +73,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS3002;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS3002;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS3002 {
  *    public MyTest() {
  *        super(new MyDatumFactory());
@@ -93,7 +88,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
     /**
      * The ellipsoid semi-major axis length, in unit of {@link #axisUnit}.
@@ -151,7 +145,6 @@ public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
      *
      * @return the default set of arguments to be given to the {@code GIGS3002} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(DatumFactory.class);
@@ -210,7 +203,7 @@ public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
     @Override
     public Ellipsoid getIdentifiedObject() throws FactoryException {
         if (ellipsoid == null) {
-            assumeNotNull(datumFactory);
+            assumeTrue(datumFactory != null);
             if (isIvfDefinitive) {
                 ellipsoid = datumFactory.createFlattenedSphere(properties, semiMajorAxis, inverseFlattening, axisUnit);
             } else {
@@ -230,19 +223,19 @@ public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
         final String name = getName();
         final String code = getCode();
         final Ellipsoid ellipsoid = getIdentifiedObject();
-        assertNotNull("Ellipsoid", ellipsoid);
+        assertNotNull(ellipsoid, "Ellipsoid");
         validators.validate(ellipsoid);
 
         verifyFlattenedSphere(ellipsoid, name, semiMajorAxis, inverseFlattening, axisUnit);
         verifyIdentification(ellipsoid, name, code);
         if (isFactoryPreservingUserValues) {
             configurationTip = Configuration.Key.isFactoryPreservingUserValues;
-            assertEquals("Ellipsoid.getAxisUnit()",          axisUnit,          ellipsoid.getAxisUnit());
-            assertEquals("Ellipsoid.getSemiMajorAxis()",     semiMajorAxis,     ellipsoid.getSemiMajorAxis(),     TOLERANCE*semiMajorAxis);
-            assertEquals("Ellipsoid.getSemiMinorAxis()",     semiMinorAxis,     ellipsoid.getSemiMinorAxis(),     TOLERANCE*semiMinorAxis);
-            assertEquals("Ellipsoid.getInverseFlattening()", inverseFlattening, ellipsoid.getInverseFlattening(), TOLERANCE*inverseFlattening);
-            assertEquals("Ellipsoid.isIvfDefinitive()",      isIvfDefinitive,   ellipsoid.isIvfDefinitive());
-            assertEquals("Ellipsoid.isSphere()",             isSphere,          ellipsoid.isSphere());
+            assertEquals(axisUnit,          ellipsoid.getAxisUnit(),                                       "Ellipsoid.getAxisUnit()");
+            assertEquals(semiMajorAxis,     ellipsoid.getSemiMajorAxis(),     TOLERANCE*semiMajorAxis,     "Ellipsoid.getSemiMajorAxis()");
+            assertEquals(semiMinorAxis,     ellipsoid.getSemiMinorAxis(),     TOLERANCE*semiMinorAxis,     "Ellipsoid.getSemiMinorAxis()");
+            assertEquals(inverseFlattening, ellipsoid.getInverseFlattening(), TOLERANCE*inverseFlattening, "Ellipsoid.getInverseFlattening()");
+            assertEquals(isIvfDefinitive,   ellipsoid.isIvfDefinitive(),                                   "Ellipsoid.isIvfDefinitive()");
+            assertEquals(isSphere,          ellipsoid.isSphere(),                                          "Ellipsoid.isSphere()");
             configurationTip = null;
         }
     }

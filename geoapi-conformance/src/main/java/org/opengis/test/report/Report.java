@@ -42,6 +42,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
@@ -260,7 +261,7 @@ search:     for (final Responsibility responsibility : vendor.getCitedResponsibl
             writeProperty(buffer, key);
         } catch (IOException e) {
             // Should never happen, since we are appending to a StringBuilder.
-            throw new AssertionError(e);
+            throw new UncheckedIOException(e);
         }
         return buffer.toString();
     }

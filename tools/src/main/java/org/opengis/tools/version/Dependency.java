@@ -57,8 +57,12 @@ enum Dependency {
         @Override
         public String[] pathInMavenRepository(final Version geoapiVersion) {
             return new String[] {
-                "junit/junit/4.12/junit-4.12.jar",
-                "org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"
+                "org/junit/jupiter/junit-jupiter-api/5.5.2/junit-jupiter-api-5.5.2.jar",
+                "org/junit/jupiter/junit-jupiter-params/5.5.2/junit-jupiter-params-5.5.2.jar",
+                "org/junit/jupiter/junit-jupiter-engine/5.5.2/junit-jupiter-engine-5.5.2.jar",
+                "org/junit/platform/junit-platform-commons/1.5.2/junit-platform-commons-1.5.2.jar",
+                "org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar",
+                "org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar"
             };
         }
     };

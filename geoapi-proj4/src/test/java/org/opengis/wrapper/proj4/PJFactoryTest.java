@@ -16,8 +16,8 @@ package org.opengis.wrapper.proj4;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.crs.GeographicCRS;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-public class PJFactoryTest {
+public strictfp class PJFactoryTest {
     /**
      * Tests the creation of the EPSG:4326 geographic CRS. The interesting part of this test
      * is the check for axis order. The result will depend on whether the axis orientations

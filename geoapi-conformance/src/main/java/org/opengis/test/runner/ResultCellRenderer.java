@@ -82,18 +82,18 @@ final class ResultCellRenderer extends DefaultTableCellRenderer {
      * Specifies the text color for valid coordinates.
      */
     @Override
-    public void setForeground(final Color c) {
-        this.foreground = c;
-        super.setForeground(c);
+    public void setForeground(final Color fg) {
+        this.foreground = fg;
+        super.setForeground(fg);
     }
 
     /**
      * Specifies the background color for valid coordinates.
      */
     @Override
-    public void setBackground(final Color c) {
-        this.background = c;
-        super.setBackground(c);
+    public void setBackground(final Color bg) {
+        this.background = bg;
+        super.setBackground(bg);
     }
 
     /**
@@ -105,19 +105,19 @@ final class ResultCellRenderer extends DefaultTableCellRenderer {
     {
         final ResultTableModel model = (ResultTableModel) table.getModel();
         final ResultEntry entry = model.getValueAt(row);
-        Color foreground = this.foreground;
-        Color background = this.background;
+        Color fg = foreground;
+        Color bg = background;
         boolean isIgnore = false;
         if (!isSelected) {
             switch (entry.status) {
                 case IGNORED:
                 case ASSUMPTION_NOT_MET: {
-                    foreground = ignoreColor;
+                    fg = ignoreColor;
                     isIgnore = true;
                     break;
                 }
                 case FAILURE: {
-                    foreground = failureColor;
+                    fg = failureColor;
                     break;
                 }
             }
@@ -126,8 +126,8 @@ final class ResultCellRenderer extends DefaultTableCellRenderer {
             coverage.report = entry;
             return coverage;
         }
-        super.setBackground(background);
-        super.setForeground(foreground);
+        super.setBackground(bg);
+        super.setForeground(fg);
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }
 

@@ -12,8 +12,8 @@ import org.opengis.metadata.citation.Citation;
 import org.opengis.example.metadata.SimpleCitation;
 import tec.units.ri.unit.Units;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -24,12 +24,6 @@ import static org.junit.Assert.*;
  * @since   3.1
  */
 public strictfp class SimpleParameterGroupTest {
-    /**
-     * Tolerance factor for comparison of floating point numbers
-     * that are expected to be strictly equal.
-     */
-    private static final double STRICT = 0.0;
-
     /**
      * Creates a parameter group for a Mercator projection.
      */
@@ -45,14 +39,14 @@ public strictfp class SimpleParameterGroupTest {
 
         assertEquals(SimpleParameter.DEGREE, group.parameter("Longitude of natural origin").getUnit());
         assertEquals(Units.METRE,            group.parameter("False easting")              .getUnit());
-        assertEquals(0.0,                    group.parameter("Latitude of natural origin") .doubleValue(), STRICT);
+        assertEquals(0.0,                    group.parameter("Latitude of natural origin") .doubleValue());
 
         final ParameterValueGroup clone = group.clone();
         assertNotSame(clone, group);
         assertEquals (clone, group);
 
         group.parameter("Latitude of natural origin").setValue(30.0);
-        assertEquals(30.0, group.parameter("Latitude of natural origin") .doubleValue(), STRICT);
-        assertNotEquals("Group should not anymore be equal to the clone.", group, clone);
+        assertEquals(30.0, group.parameter("Latitude of natural origin") .doubleValue());
+        assertNotEquals(group, clone, "Group should not anymore be equal to the clone.");
     }
 }

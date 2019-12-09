@@ -23,8 +23,14 @@ cd tmp
 # Unzip dependencies to be included in the single JAR files.
 unzip -q -n ../../geoapi-conformance/target/geoapi-conformance-$GEOAPI_VERSION.jar
 unzip -q -n ../../geoapi-pending/target/geoapi-pending-$GEOAPI_VERSION.jar
-unzip -q -n $MAVEN_REPOSITORY/junit/junit/$JUNIT_VERSION/junit-$JUNIT_VERSION.jar
-unzip -q -n $MAVEN_REPOSITORY/org/hamcrest/hamcrest-core/$HAMCREST_VERSION/hamcrest-core-$HAMCREST_VERSION.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/jupiter/junit-jupiter-api/$JUNIT_VERSION/junit-jupiter-api-$JUNIT_VERSION.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/jupiter/junit-jupiter-params/$JUNIT_VERSION/junit-jupiter-params-$JUNIT_VERSION.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/jupiter/junit-jupiter-engine/$JUNIT_VERSION/junit-jupiter-engine-$JUNIT_VERSION.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/platform/junit-platform-commons/1.5.2/junit-platform-commons-1.5.2.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/platform/junit-platform-engine/1.5.2/junit-platform-engine-1.5.2.jar
+unzip -q -n $MAVEN_REPOSITORY/org/junit/platform/junit-platform-launcher/1.5.2/junit-platform-launcher-1.5.2.jar
+unzip -q -n $MAVEN_REPOSITORY/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar
+unzip -q -n $MAVEN_REPOSITORY/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar
 unzip -q -n $MAVEN_REPOSITORY/javax/measure/unit-api/$UOM_VERSION/unit-api-$UOM_VERSION.jar
 rm -r META-INF/maven
 

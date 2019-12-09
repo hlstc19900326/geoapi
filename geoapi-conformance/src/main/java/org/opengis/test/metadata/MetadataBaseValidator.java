@@ -52,7 +52,7 @@ import org.opengis.test.ValidatorContainer;
  * @version 3.1
  * @since   3.1
  */
-public class MetadataBaseValidator extends MetadataValidator {
+public strictfp class MetadataBaseValidator extends MetadataValidator {
     /**
      * Creates a new validator instance.
      *

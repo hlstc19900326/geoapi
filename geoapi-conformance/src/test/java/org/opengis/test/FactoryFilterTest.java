@@ -33,14 +33,13 @@ package org.opengis.test;
 
 import java.util.Locale;
 import java.util.Set;
-
 import org.opengis.util.InternationalString;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.IdentifiedObject;
+import org.junit.jupiter.api.Test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.FactoryFilter.ByAuthority.EPSG;
 
 

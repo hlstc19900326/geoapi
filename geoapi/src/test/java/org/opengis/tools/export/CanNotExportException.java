@@ -40,7 +40,7 @@ package org.opengis.tools.export;
  * @since   3.1
  */
 @SuppressWarnings("serial")
-public class CanNotExportException extends RuntimeException {
+public strictfp class CanNotExportException extends RuntimeException {
     /**
      * Constructs an exception with the specified detail message.
      *

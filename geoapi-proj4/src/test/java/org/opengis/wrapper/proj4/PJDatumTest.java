@@ -13,8 +13,8 @@
  */
 package org.opengis.wrapper.proj4;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-public class PJDatumTest {
+public strictfp class PJDatumTest {
     /**
      * Ensures that the given object is the WGS84 definition.
      */

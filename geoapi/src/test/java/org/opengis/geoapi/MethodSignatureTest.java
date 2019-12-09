@@ -42,9 +42,9 @@ import java.lang.reflect.WildcardType;
 import java.lang.reflect.Modifier;
 import org.opengis.annotation.UML;
 import org.opengis.util.CodeList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -130,7 +130,7 @@ public final strictfp class MethodSignatureTest extends SourceGenerator {
     public void verifyCodeLists() {
         for (final Class<?> c : Content.ALL.types()) {
             if (CodeList.class.isAssignableFrom(c) && c != CodeList.class) {
-                assertTrue(c.getName(), Modifier.isFinal(c.getModifiers()));
+                assertTrue(Modifier.isFinal(c.getModifiers()), c.getName());
             }
         }
     }
@@ -155,9 +155,9 @@ public final strictfp class MethodSignatureTest extends SourceGenerator {
                     /*
                      * Require all collections to be parameterized with exactly one parameter.
                      */
-                    assertTrue(description, type instanceof ParameterizedType);
+                    assertTrue(type instanceof ParameterizedType, description);
                     Type[] p = ((ParameterizedType) type).getActualTypeArguments();
-                    assertEquals(description, 1, p.length);
+                    assertEquals(1, p.length, description);
                     type = p[0];
                     /*
                      * Whether we allow covariant element type, i.e. <? extends T> instead of <T>.
@@ -167,7 +167,7 @@ public final strictfp class MethodSignatureTest extends SourceGenerator {
                     final boolean isCovariant = (type instanceof WildcardType);
                     if (isCovariant) {
                         p = ((WildcardType) type).getUpperBounds();
-                        assertEquals(description, 1, p.length);
+                        assertEquals(1, p.length, description);
                         type = p[0];
                     }
                     if (type instanceof Class<?>) {

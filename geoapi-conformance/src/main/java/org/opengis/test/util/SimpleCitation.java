@@ -43,7 +43,7 @@ import org.opengis.util.InternationalString;
  * @version 3.1
  * @since   3.1
  */
-final class SimpleCitation implements Citation {
+final strictfp class SimpleCitation implements Citation {
     /**
      * The citation title to be returned by {@link #getTitle()}.
      */

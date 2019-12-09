@@ -65,7 +65,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version 3.1
  * @since   3.1
  */
-public interface ToleranceModifier {
+public strictfp interface ToleranceModifier {
     /**
      * Converts λ and φ tolerance values from metres to degrees before comparing
      * geographic coordinates. The tolerance for the longitude (λ) and latitude (φ)
@@ -81,6 +81,8 @@ public interface ToleranceModifier {
      * parameterized transform contructor}.</p>
      *
      * @see ToleranceModifiers#geographic(int, int)
+     *
+     * @todo Default geographic order should be in (latitude, longitude).
      */
     ToleranceModifier GEOGRAPHIC = new ToleranceModifiers.Geographic(0, 1);
 

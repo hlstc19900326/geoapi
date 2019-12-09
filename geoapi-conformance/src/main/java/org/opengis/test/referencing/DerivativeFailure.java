@@ -44,7 +44,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version 3.1
  * @since   3.1
  */
-public class DerivativeFailure extends ComputationFailure {
+public strictfp class DerivativeFailure extends ComputationFailure {
     /**
      * For cross-version compatibility.
      */

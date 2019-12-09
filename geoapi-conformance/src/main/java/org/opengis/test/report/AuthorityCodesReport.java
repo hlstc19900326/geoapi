@@ -91,7 +91,7 @@ import org.opengis.referencing.crs.CRSAuthorityFactory;
  *
  * @since 3.1
  */
-public class AuthorityCodesReport extends Report {
+public strictfp class AuthorityCodesReport extends Report {
     /**
      * A single row in the table produced by {@link AuthorityCodesReport}. Instances of this class are created by the
      * {@link AuthorityCodesReport#createRow(String, IdentifiedObject) AuthorityCodesReport.createRow(…)} methods.
@@ -231,7 +231,7 @@ public class AuthorityCodesReport extends Report {
             try {
                 write(buffer, false);
             } catch (IOException e) {
-                throw new AssertionError(e);        // Should never happen.
+                throw new UncheckedIOException(e);        // Should never happen.
             }
             return buffer.toString();
         }
@@ -434,8 +434,8 @@ public class AuthorityCodesReport extends Report {
         }
         defaultProperties.setProperty("COUNT.OBJECTS",      Integer.toString(numRows));
         defaultProperties.setProperty("PERCENT.VALIDS",     Integer.toString(100 * numValids / numRows) + '%');     // Really want rounding toward 0.
-        defaultProperties.setProperty("PERCENT.ANNOTATED",  Integer.toString(Math.round(100f * numAnnotations / numRows)) + '%');
-        defaultProperties.setProperty("PERCENT.DEPRECATED", Integer.toString(Math.round(100f * numDeprecated  / numRows)) + '%');
+        defaultProperties.setProperty("PERCENT.ANNOTATED",  Integer.toString(StrictMath.round(100f * numAnnotations / numRows)) + '%');
+        defaultProperties.setProperty("PERCENT.DEPRECATED", Integer.toString(StrictMath.round(100f * numDeprecated  / numRows)) + '%');
         sortRows();
         /*
          * The above initialization needs to be done before to start

@@ -40,7 +40,7 @@ import javax.measure.quantity.Length;
 import javax.measure.quantity.Dimensionless;
 import org.opengis.test.Units;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -178,7 +178,7 @@ public strictfp abstract class TestMethodGenerator {
      * @param pairs  key-value pairs.
      */
     final void printJavadocKeyValues(final Object... pairs) {
-        assertTrue("Array length shall be even", (pairs.length & 1) == 0);
+        assertTrue((pairs.length & 1) == 0, "Array length shall be even");
         indent(1); out.println(" * <ul>");
         for (int i=0; i<pairs.length; i += 2) {
             final Object value = pairs[i+1];
@@ -417,7 +417,7 @@ public strictfp abstract class TestMethodGenerator {
      * @param pairs  key-value pairs.
      */
     final void printFieldAssignments(final Object... pairs) {
-        assertTrue("Array length shall be even", (pairs.length & 1) == 0);
+        assertTrue((pairs.length & 1) == 0, "Array length shall be even");
         int length = 0;
         for (int i=0; i<pairs.length; i += 2) {
             length = StrictMath.max(length, ((String) pairs[i]).length());
@@ -470,7 +470,7 @@ public strictfp abstract class TestMethodGenerator {
      */
     final void printProgrammaticName(final Unit<?> unit) {
         final String name = UNIT_NAMES.get(unit);
-        assertNotNull(unit.toString(), name);
+        assertNotNull(name, unit.toString());
         out.print(name);
     }
 

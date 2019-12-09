@@ -42,11 +42,10 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 
 
@@ -78,11 +77,8 @@ import static org.opengis.test.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2005;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2005;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2005 {
  *    public MyTest() {
  *        super(new MyCoordinateOperationAuthorityFactory());
@@ -96,7 +92,6 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
     /**
      * The name of the expected operation method.
@@ -126,7 +121,6 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2005} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, CoordinateOperationAuthorityFactory.class);
@@ -179,7 +173,7 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
     @Override
     public Conversion getIdentifiedObject() throws FactoryException {
         if (conversion == null) {
-            assumeNotNull(copAuthorityFactory);
+            assumeTrue(copAuthorityFactory != null);
             final String codeAsString = String.valueOf(code);
             final CoordinateOperation operation;
             try {
@@ -209,7 +203,7 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         conversion = null;              // For forcing the fetch of a new operation.
 
         final Conversion conversion = getIdentifiedObject();
-        assertNotNull("Conversion", conversion);
+        assertNotNull(conversion, "Conversion");
         validators.validate(conversion);
 
         // Map projection identifier.
@@ -218,7 +212,7 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         // Map projection name.
         if (isStandardNameSupported) {
             configurationTip = Configuration.Key.isStandardNameSupported;
-            assertEquals("Conversion.getMethod().getName()", methodName, getVerifiableName(conversion.getMethod()));
+            assertEquals(methodName, getVerifiableName(conversion.getMethod()), "Conversion.getMethod().getName()");
             configurationTip = null;
         }
     }

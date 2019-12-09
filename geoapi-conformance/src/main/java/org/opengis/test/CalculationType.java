@@ -56,7 +56,7 @@ import org.opengis.test.referencing.TransformTestCase;
  * @version 3.1
  * @since   3.1
  */
-public enum CalculationType {
+public strictfp enum CalculationType {
     /**
      * The ordinate values to compare are the result of an identity operation (a plain copy).
      * Ordinate values are checked for strict equality.

@@ -52,10 +52,11 @@ import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 
 /**
@@ -105,7 +106,7 @@ public abstract strictfp class ImageWriterTestCase extends ImageIOTestCase imple
     /**
      * The reader to use for verifying the writer output. By default, this field is {@code null}
      * until a reader is first needed, in which case the field is assigned to a reader instance
-     * created by {@link ImageIO#getImageReader(ImageWriter)}. Subclasses can set explicitely a
+     * created by {@link ImageIO#getImageReader(ImageWriter)}. Subclasses can set explicitly a
      * value to this field if they need the tests to use an other reader instead.
      *
      * <p>{@code ImageWriterTestCase} will use only the {@link ImageReader#read(int)} method.
@@ -139,7 +140,7 @@ public abstract strictfp class ImageWriterTestCase extends ImageIOTestCase imple
      *
      * <p>If the {@code optionallySetOutput} argument is {@code true}, then subclasses can optionally
      * {@linkplain ImageWriter#setOutput(Object) set the output} to a temporary file or other object
-     * suitable to the writer. This operation is optional: if no output has been explicitely set,
+     * suitable to the writer. This operation is optional: if no output has been explicitly set,
      * {@code ImageWriterTestCase} will automatically set the output to an in-memory stream or to
      * a temporary file.</p>
      *
@@ -261,7 +262,7 @@ public abstract strictfp class ImageWriterTestCase extends ImageIOTestCase imple
      * @throws IOException In an error occurred while setting the output.
      */
     private ByteArrayOutputStream open(final int capacity) throws IOException {
-        assertNotNull("The 'writer' field shall be set at construction time or in a method annotated by @Before.", writer);
+        assertNotNull(writer, "The `writer` field shall be set at construction time or in a method annotated by @Before.");
         if (writer.getOutput() != null) {
             return null;                                // The output has been set by the user himself.
         }
@@ -309,7 +310,7 @@ public abstract strictfp class ImageWriterTestCase extends ImageIOTestCase imple
         writer.setOutput(null);
         if (reader == null) {
             reader = ImageIO.getImageReader(writer);
-            assertNotNull("The ImageWriter does not declare a compatible reader.", reader);
+            assertNotNull(reader, "The ImageWriter does not declare a compatible reader.");
         }
         if (buffer != null) {
             input = ImageIO.createImageInputStream(new ByteArrayInputStream(buffer.toByteArray()));
@@ -548,8 +549,8 @@ public abstract strictfp class ImageWriterTestCase extends ImageIOTestCase imple
      * @see ImageWriter#reset()
      * @see ImageWriter#dispose()
      */
-    @After
     @Override
+    @AfterEach
     public void close() throws IOException {
         if (writer != null) {
             close(writer.getOutput());

@@ -13,10 +13,10 @@
  */
 package org.proj4;
 
+import org.junit.jupiter.api.Test;
 import org.opengis.referencing.operation.TransformException;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-public class PJTest {
+public strictfp class PJTest {
     /**
      * Ensures that the given object is the WGS84 definition.
      */
@@ -58,7 +58,7 @@ public class PJTest {
         final PJ pj = new PJ("+init=epsg:3395");
         assertEquals(PJ.Type.PROJECTED, pj.getType());
         assertArrayEquals(new char[] {'e', 'n', 'u'}, pj.getAxisDirections());
-        assertEquals(1.0, pj.getLinearUnitToMetre(true), 0.0);
+        assertEquals(1.0, pj.getLinearUnitToMetre(true));
         assertIsWGS84(new PJ(pj, PJ.Type.GEOGRAPHIC));
     }
 
@@ -68,10 +68,10 @@ public class PJTest {
      *
      * @throws TransformException should never happen.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullPointerException() throws TransformException {
         final PJ pj = new PJ("+proj=latlong +datum=WGS84");
-        pj.transform(null, 2, null, 0, 1);
+        assertThrows(NullPointerException.class, () -> pj.transform(null, 2, null, 0, 1));
     }
 
     /**
@@ -80,10 +80,10 @@ public class PJTest {
      *
      * @throws TransformException should never happen.
      */
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testIndexOutOfBoundsException() throws TransformException {
         final PJ pj = new PJ("+proj=latlong +datum=WGS84");
-        pj.transform(pj, 2, new double[5], 2, 2);
+        assertThrows(IndexOutOfBoundsException.class, () -> pj.transform(pj, 2, new double[5], 2, 2));
     }
 
     /**

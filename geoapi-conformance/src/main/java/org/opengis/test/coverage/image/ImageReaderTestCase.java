@@ -49,9 +49,11 @@ import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.identification.Identification;
 import org.opengis.metadata.identification.DataIdentification;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 
 /**
@@ -154,8 +156,8 @@ public abstract strictfp class ImageReaderTestCase extends ImageIOTestCase imple
      * Asserts that the {@linkplain ImageReader#getInput() reader input} is set to a non-null value.
      */
     private static void assertInputSet(final ImageReader reader) {
-        assertNotNull("The 'reader' field shall be set in the 'prepareImageReader' method.", reader);
-        assertNotNull("reader.setInput(Object) shall be invoked before any test is run.", reader.getInput());
+        assertNotNull(reader, "The `reader` field shall be set in the `prepareImageReader` method.");
+        assertNotNull(reader.getInput(), "reader.setInput(Object) shall be invoked before any test is run.");
     }
 
     /**
@@ -574,8 +576,8 @@ public abstract strictfp class ImageReaderTestCase extends ImageIOTestCase imple
      * @see ImageReader#reset()
      * @see ImageReader#dispose()
      */
-    @After
     @Override
+    @AfterEach
     public void close() throws IOException {
         if (reader != null) {
             close(reader.getInput());

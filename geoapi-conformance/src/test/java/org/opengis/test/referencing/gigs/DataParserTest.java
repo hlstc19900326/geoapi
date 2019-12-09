@@ -32,9 +32,9 @@
 package org.opengis.test.referencing.gigs;
 
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -56,13 +56,13 @@ public strictfp class DataParserTest {
         final Object[] values = DataParser.parseRow("8901,true,Greenwich,,\"0°\",sexagesimal degree,0",
             Integer.class, Boolean.class, String.class, String.class, String.class, String.class, Double.class);
 
-        assertEquals("EPSG Prime Meridian Code",                Integer.valueOf(8901), values[0]);
-        assertEquals("Particularly important to E&P industry?", Boolean.TRUE,          values[1]);
-        assertEquals("EPSG Prime Meridian Name",                "Greenwich",           values[2]);
-        assertEquals("EPSG Alias",                              null,                  values[3]);
-        assertEquals("Longitude from Greenwich (sexagesimal)",  "0°",                  values[4]);
-        assertEquals("Unit Name",                               "sexagesimal degree",  values[5]);
-        assertEquals("Longitude from Greenwich (degrees)",      Double.valueOf(0.0),   values[6]);
+        assertEquals(Integer.valueOf(8901), values[0], "EPSG Prime Meridian Code");
+        assertEquals(Boolean.TRUE,          values[1], "Particularly important to E&P industry?");
+        assertEquals("Greenwich",           values[2], "EPSG Prime Meridian Name");
+        assertEquals(null,                  values[3], "EPSG Alias");
+        assertEquals("0°",                  values[4], "Longitude from Greenwich (sexagesimal)");
+        assertEquals("sexagesimal degree",  values[5], "Unit Name");
+        assertEquals(Double.valueOf(0.0),   values[6], "Longitude from Greenwich (degrees)");
     }
 
     /**
@@ -99,28 +99,28 @@ public strictfp class DataParserTest {
             final String[] aliases     = data.getStrings(3);
             final double   semiMajor   = data.getDouble (4);
             final String   message     = "EPSG:" + code;
-            assertEquals (message, expectedCodes[index], code);
-            assertNotNull(message, name);
-            assertFalse  (message, name.isEmpty());
-            assertNotNull(message, aliases);
-            assertTrue   (message, semiMajor > 0);
+            assertEquals (expectedCodes[index], code, message);
+            assertNotNull(name, message);
+            assertFalse  (name.isEmpty(), message);
+            assertNotNull(aliases, message);
+            assertTrue   (semiMajor > 0, message);
             switch (code) {
                 case 7043: {
-                    assertEquals(message, "WGS 72", name);
-                    assertEquals(message, 6378135,  semiMajor, 0);
-                    assertArrayEquals(message, new String[] {"NWL 10D"}, aliases);
+                    assertEquals("WGS 72", name, message);
+                    assertEquals(6378135,  semiMajor, 0, message);
+                    assertArrayEquals(new String[] {"NWL 10D"}, aliases, message);
                     break;
                 }
                 case 7030: {
-                    assertEquals(message, "WGS 84", name);
-                    assertEquals(message, 6378137,  semiMajor, 0);
-                    assertArrayEquals(message, new String[] {"WGS84"}, aliases);
+                    assertEquals("WGS 84", name, message);
+                    assertEquals(6378137,  semiMajor, 0, message);
+                    assertArrayEquals(new String[] {"WGS84"}, aliases, message);
                     break;
                 }
                 case 7013: {
-                    assertEquals(message, "Clarke 1880 (Arc)", name);
-                    assertEquals(message, 6378249.145, semiMajor, 1E-4);
-                    assertArrayEquals(message, new String[] {"Modified Clarke 1880 (South Africa)", "Clarke 1880 (Cape)"}, aliases);
+                    assertEquals("Clarke 1880 (Arc)", name, message);
+                    assertEquals(6378249.145, semiMajor, 1E-4, message);
+                    assertArrayEquals(new String[] {"Modified Clarke 1880 (South Africa)", "Clarke 1880 (Cape)"}, aliases, message);
                     break;
                 }
                 case 7041: {
@@ -128,10 +128,10 @@ public strictfp class DataParserTest {
                     break;
                 }
             }
-            assertEquals(message, expectedImportant, isImportant);
+            assertEquals(expectedImportant, isImportant, message);
             index++;
         }
-        assertEquals("Missing records.", expectedCodes.length, index);
+        assertEquals(expectedCodes.length, index, "Missing records.");
     }
 
     /**
@@ -146,7 +146,7 @@ public strictfp class DataParserTest {
         final DataParser data = new DataParser("GIGS_2005_libProjection.csv", String.class);
         assertTrue(data.next());
         assertEquals("16001-16060; 16101-16160", data.getString(0));
-        assertArrayEquals("16001-16060; 16101-16160", new int[] {
+        assertArrayEquals(new int[] {
             16001, 16002, 16003, 16004, 16005, 16006, 16007, 16008, 16009, 16010,
             16011, 16012, 16013, 16014, 16015, 16016, 16017, 16018, 16019, 16020,
             16021, 16022, 16023, 16024, 16025, 16026, 16027, 16028, 16029, 16030,
@@ -159,7 +159,8 @@ public strictfp class DataParserTest {
             16131, 16132, 16133, 16134, 16135, 16136, 16137, 16138, 16139, 16140,
             16141, 16142, 16143, 16144, 16145, 16146, 16147, 16148, 16149, 16150,
             16151, 16152, 16153, 16154, 16155, 16156, 16157, 16158, 16159, 16160
-        }, data.getInts(0));
+        }, data.getInts(0),
+        "16001-16060; 16101-16160");
 
         assertTrue(data.next());
         assertEquals("16201-16260", data.getString(0));
@@ -169,7 +170,7 @@ public strictfp class DataParserTest {
 
         assertTrue(data.next());
         assertEquals("16261-16299; 16070-16089; 16099; 16091-16094", data.getString(0));
-        assertArrayEquals("16261-16299; 16070-16089; 16099; 16091-16094", new int[] {
+        assertArrayEquals(new int[] {
             16261, 16262, 16263, 16264, 16265, 16266, 16267, 16268, 16269, 16270,
             16271, 16272, 16273, 16274, 16275, 16276, 16277, 16278, 16279, 16280,
             16281, 16282, 16283, 16284, 16285, 16286, 16287, 16288, 16289, 16290,
@@ -177,15 +178,17 @@ public strictfp class DataParserTest {
             16071, 16072, 16073, 16074, 16075, 16076, 16077, 16078, 16079, 16080,
             16081, 16082, 16083, 16084, 16085, 16086, 16087, 16088, 16089, 16099,
             16091, 16092, 16093, 16094
-        }, data.getInts(0));
+        }, data.getInts(0),
+        "16261-16299; 16070-16089; 16099; 16091-16094");
 
         assertTrue(data.next());
         assertEquals("16362-16398 +2; 16170-16194 +2", data.getString(0));
-        assertArrayEquals("16362-16398 +2; 16170-16194 +2", new int[] {
+        assertArrayEquals(new int[] {
             16362, 16364, 16366, 16368, 16370, 16372, 16374, 16376, 16378, 16380,
             16382, 16384, 16386, 16388, 16390, 16392, 16394, 16396, 16398, 16170,
             16172, 16174, 16176, 16178, 16180, 16182, 16184, 16186, 16188, 16190,
             16192, 16194
-        }, data.getInts(0));
+        }, data.getInts(0),
+        "16362-16398 +2; 16170-16194 +2");
     }
 }

@@ -57,7 +57,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version 3.1
  * @since   3.1
  */
-public interface ImplementationDetails {
+public strictfp interface ImplementationDetails {
     /**
      * Returns the set of tests that should be disabled, or {@code null} if none.
      * If non-null, then the returned map can contain some {@link org.opengis.test.Configuration.Key}

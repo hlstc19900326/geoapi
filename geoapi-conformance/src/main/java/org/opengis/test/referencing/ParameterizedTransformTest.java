@@ -58,13 +58,11 @@ import org.opengis.test.ToleranceModifier;
 import org.opengis.test.CalculationType;
 import org.opengis.test.Configuration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
 import static java.lang.StrictMath.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 import static org.opengis.test.ToleranceModifiers.NAUTICAL_MILE;
 
 
@@ -106,13 +104,9 @@ import static org.opengis.test.ToleranceModifiers.NAUTICAL_MILE;
  * and add more checks to be executed after every tests (here ensuring that the {@linkplain #transform transform}
  * implements the {@link MathTransform2D} interface):
  *
- * <blockquote><pre>import org.junit.*;
- *import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.ParameterizedTransformTest;
- *import static org.junit.Assert.*;
+ * <blockquote><pre>import org.opengis.test.referencing.ParameterizedTransformTest;
+ *import static org.junit.jupiter.api.Assertions.*;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends ParameterizedTransformTest {
  *    public MyTest() {
  *        super(new MyMathTransformFactory());
@@ -132,7 +126,7 @@ import static org.opengis.test.ToleranceModifiers.NAUTICAL_MILE;
  *        super.testLambertAzimuthalEqualArea();
  *    }
  *
- *    &#64;After
+ *    &#64;AftereEach
  *    public void ensureAllTransformAreMath2D() {
  *        assertTrue(transform instanceof MathTransform2D);
  *    }
@@ -147,7 +141,6 @@ import static org.opengis.test.ToleranceModifiers.NAUTICAL_MILE;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class ParameterizedTransformTest extends TransformTestCase {
     /**
      * The default tolerance threshold for comparing the results of direct transforms.
@@ -219,7 +212,6 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
      *
      * @return the default set of arguments to be given to the {@code ParameterizedTransformTest} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(MathTransformFactory.class);
@@ -294,11 +286,11 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
      * be skipped.
      */
     private void createParameters(final String method) {
-        assumeNotNull(mtFactory);
+        assumeTrue(mtFactory != null);
         try {
             parameters = mtFactory.getDefaultParameters(method);
         } catch (NoSuchIdentifierException e) {
-            assumeNoException(unsupportedMethod(method), e);        // Will mark the test as "ignored".
+            assumeFalse(true, unsupportedMethod(method));           // Will mark the test as "ignored".
         }
     }
 
@@ -333,14 +325,14 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
     {
         try {
             if (parameters == null) {
-                assumeNotNull(mtFactory);
+                assumeTrue(mtFactory != null);
                 parameters = PseudoEpsgFactory.createParameters(mtFactory, sample.operation);
                 validators.validate(parameters);
             }
             if (transform == null) {
-                assumeNotNull(mtFactory);
+                assumeTrue(mtFactory != null);
                 transform = mtFactory.createParameterizedTransform(parameters);
-                assertNotNull(description, transform);
+                assumeTrue(transform != null, description);
                 validators.validate(transform);
             }
         } catch (NoSuchIdentifierException e) {
@@ -361,7 +353,7 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
                 message = "The “EPSG:" + sample.operation + "” coordinate operation uses the “" + e.getIdentifierCode()
                         + "” method, which is not supported by the tested implementation.";
             }
-            assumeNoException(message, e);              // Will mark the test as "ignored".
+            assumeFalse(true, message);                 // Will mark the test as "ignored".
         }
         /*
          * Set the tolerance after we have set the transform,

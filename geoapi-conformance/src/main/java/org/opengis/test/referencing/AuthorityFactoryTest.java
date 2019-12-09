@@ -53,11 +53,10 @@ import org.opengis.test.CalculationType;
 import org.opengis.test.ToleranceModifier;
 import org.opengis.test.Configuration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 import static org.opengis.test.Validator.DEFAULT_TOLERANCE;
 
@@ -76,11 +75,8 @@ import static org.opengis.test.Validator.DEFAULT_TOLERANCE;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.AuthorityFactoryTest;
+ * <blockquote><pre>import org.opengis.test.referencing.AuthorityFactoryTest;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends AuthorityFactoryTest {
  *    public MyTest() {
  *        super(new MyCRSAuthorityFactory(), new MyCSAuthorityFactory(), new MyDatumAuthorityFactory());
@@ -97,7 +93,6 @@ import static org.opengis.test.Validator.DEFAULT_TOLERANCE;
  * @version 3.1
  * @since   2.3
  */
-@RunWith(Parameterized.class)
 public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
     /**
      * Factory to use for building {@link CoordinateReferenceSystem} instances, or {@code null} if none.
@@ -231,7 +226,6 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
      *
      * @since 3.1
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(CRSAuthorityFactory.class, CSAuthorityFactory.class, DatumAuthorityFactory.class);
@@ -310,9 +304,9 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
      */
     @Test
     public void testWGS84() throws NoSuchAuthorityCodeException, FactoryException {
-        assumeNotNull(crsAuthorityFactory);
+        assumeTrue(crsAuthorityFactory != null);
         final GeographicCRS crs = crsAuthorityFactory.createGeographicCRS("EPSG:4326");
-        assertNotNull("CRSAuthorityFactory.createGeographicCRS()", crs);
+        assertNotNull(crs, "CRSAuthorityFactory.createGeographicCRS()");
         object = crs;
         validators.validate(crs);
         verifyIdentification(crs, "WGS 84", null);
@@ -384,7 +378,7 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
         if (!isAxisSwappingSupported) {
             swapλφ = swapxy = flipxy = false;
         }
-        assumeNotNull(crsAuthorityFactory);
+        assumeTrue(crsAuthorityFactory != null);
         final ProjectedCRS crs;
         try {
             crs = crsAuthorityFactory.createProjectedCRS("EPSG:" + code);
@@ -393,11 +387,11 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
             // a supported code. If the code was unsupported, then the test will be ignored.
             final Set<String> authorityCodes = crsAuthorityFactory.getAuthorityCodes(ProjectedCRS.class);
             if (authorityCodes == null || !authorityCodes.contains(String.valueOf(code))) {
-                assumeNoException(e);               // Will mark the test as "ignored".
+                assumeFalse(true);                  // Will mark the test as "ignored".
             }
             throw e;                                // Will mark the test as "failed".
         }
-        assertNotNull("CRSAuthorityFactory.createProjectedCRS()", crs);
+        assertNotNull(crs, "CRSAuthorityFactory.createProjectedCRS()");
         object = crs;
         validators.validate(crs);
         /*
@@ -411,8 +405,8 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
             verifyAxisDirection("BaseCRS", baseCRS.getCoordinateSystem(), swapλφ, false);
             final GeodeticDatum datum = baseCRS.getDatum();
             if (datum != null) {
-                assertEquals("PrimeMeridian.greenwichLongitude", primeMeridian,
-                        getGreenwichLongitude(datum.getPrimeMeridian()), DEFAULT_TOLERANCE);
+                assertEquals(primeMeridian, getGreenwichLongitude(datum.getPrimeMeridian()), DEFAULT_TOLERANCE,
+                        "PrimeMeridian.greenwichLongitude");
             }
         }
         /*
@@ -468,7 +462,7 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
                             φmin = bbox.getSouthBoundLatitude();
                             φmax = bbox.getNorthBoundLatitude();
                             setRect(areaOfValidity, λmin, φmin, λmax, φmax, swapλφ, toAngularUnit);
-                            assertFalse("Empty geographic bounding box.", areaOfValidity.isEmpty());
+                            assertFalse(areaOfValidity.isEmpty(), "Empty geographic bounding box.");
                             test.verifyInDomainOfValidity(areaOfValidity);
                             tested = true;
                         }

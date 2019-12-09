@@ -51,7 +51,7 @@ package org.opengis.test.referencing.gigs;
  * @version 3.1
  * @since   3.1
  */
-public enum Classification {
+public strictfp enum Classification {
     /**
      * Intended for software without the capability of performing coordinate operations.
      * The software does handle spatial data but has no "geodetic engine" that performs

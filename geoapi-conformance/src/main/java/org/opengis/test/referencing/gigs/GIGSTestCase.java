@@ -35,7 +35,8 @@ import org.opengis.util.Factory;
 import org.opengis.metadata.Identifier;
 import org.opengis.referencing.*;
 import org.opengis.test.referencing.ReferencingTestCase;
-import org.junit.AssumptionViolatedException;
+
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
 /**
@@ -79,7 +80,7 @@ strictfp abstract class GIGSTestCase extends ReferencingTestCase {
      *
      * <ul>
      *   <li>If the test should be ignored, then this method should invoke {@code assumeTrue(false)} or any
-     *       other {@link org.junit.Assume} method which will case the test to terminate with the "ignored"
+     *       other {@link org.junit.jupiter.api.Assumptions} method which will case the test to terminate with the "ignored"
      *       status.</li>
      *   <li>Otherwise this method can return normally, in which case the caller test method will consider
      *       that we have a test failure.</li>
@@ -95,7 +96,7 @@ strictfp abstract class GIGSTestCase extends ReferencingTestCase {
         buffer.append(code);
         if (quote) buffer.append('"');
         buffer.append("] not supported.");
-        throw new AssumptionViolatedException(buffer.toString());
+        assumeFalse(true, buffer.toString());
     }
 
     /**

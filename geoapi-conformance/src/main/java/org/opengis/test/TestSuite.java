@@ -37,8 +37,7 @@ import java.util.Iterator;
 import java.util.Collection;
 import java.util.ServiceLoader;
 import java.lang.reflect.Array;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.platform.suite.api.SelectClasses;
 import org.opengis.util.Factory;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -128,8 +127,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
+@SelectClasses({
   org.opengis.test.util.NameTest.class,
   org.opengis.test.referencing.ObjectFactoryTest.class,
   org.opengis.test.referencing.AffineTransformTest.class,
@@ -185,7 +183,7 @@ public strictfp class TestSuite {
     }
 
     /**
-     * Returns the factory implementations explicitely given by the last call to
+     * Returns the factory implementations explicitly given by the last call to
      * {@link #setFactories(Class, Factory[])} for the given interface.
      * This method does not scan the {@code META-INF/services/<T>} entries.
      *
@@ -205,34 +203,6 @@ public strictfp class TestSuite {
             return collection.toArray((T[]) Array.newInstance(type, collection.size()));
         }
         return null;
-    }
-
-    /**
-     * Adds a listener to be informed every time a test begin or finish, either on success
-     * or failure. This method does not check if the given listener was already registered
-     * (i.e. the same listener may be added more than once).
-     *
-     * @param listener The listener to add. {@code null} values are silently ignored.
-     *
-     * @deprecated To be replaced by JUnit 5 listener mechanism.
-     */
-    @Deprecated
-    public static void addTestListener(final TestListener listener) {
-        TestCase.addTestListener(listener);
-    }
-
-    /**
-     * Removes a previously {@linkplain #addTestListener(TestListener) added} listener. If the
-     * given listener has been added more than once, then only the last occurrence is removed.
-     * If the given listener is not found, then this method does nothing.
-     *
-     * @param listener  the listener to remove. {@code null} values are silently ignored.
-     *
-     * @deprecated To be replaced by JUnit 5 listener mechanism.
-     */
-    @Deprecated
-    public static void removeTestListener(final TestListener listener) {
-        TestCase.removeTestListener(listener);
     }
 
     /**

@@ -45,7 +45,8 @@ import org.opengis.util.GenericName;
 import org.opengis.test.Units;
 import org.opengis.test.Validator;
 import org.opengis.test.ValidatorContainer;
-import static org.opengis.test.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -60,7 +61,7 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   2.2
  */
-public abstract class ReferencingValidator extends Validator {
+public abstract strictfp class ReferencingValidator extends Validator {
     /**
      * Provider of units of measurement (degree, metre, second, <i>etc</i>).
      * This field is set to the {@linkplain Units#getDefault() default provider} for now
@@ -142,7 +143,7 @@ public abstract class ReferencingValidator extends Validator {
         if (identifiers != null) {
             validate(identifiers);
             for (final Identifier id : identifiers) {
-                assertNotNull("IdentifiedObject: getIdentifiers() can not contain null element.", id);
+                assertNotNull(id, "IdentifiedObject: getIdentifiers() can not contain null element.");
                 validate(id);
             }
         }
@@ -150,7 +151,7 @@ public abstract class ReferencingValidator extends Validator {
         if (alias != null) {
             validate(alias);
             for (final GenericName name : alias) {
-                assertNotNull("IdentifiedObject: getAlias() can not contain null element.", alias);
+                assertNotNull(alias, "IdentifiedObject: getAlias() can not contain null element.");
                 container.validate(name);
             }
         }

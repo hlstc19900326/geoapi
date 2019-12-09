@@ -118,7 +118,7 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * @version 3.1
  * @since   3.1
  */
-public class Configuration implements Serializable {
+public strictfp class Configuration implements Serializable {
     /**
      * For cross-version compatibility.
      */
@@ -630,7 +630,7 @@ public class Configuration implements Serializable {
             final Key<?> key = valueOf(Key.class, (code) -> name.equals(code.name()), null);
             if (key != null) {
                 if (!type.isAssignableFrom(key.type)) {
-                    throw new ClassCastException(key.type.getName());
+                    throw new ClassCastException(key.type.getCanonicalName());
                 }
                 return (Key) key;
             }

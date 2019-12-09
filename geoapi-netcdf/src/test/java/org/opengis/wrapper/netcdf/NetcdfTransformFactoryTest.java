@@ -31,9 +31,10 @@ import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.test.TestCase;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.opengis.test.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -79,19 +80,10 @@ public strictfp class NetcdfTransformFactoryTest extends TestCase {
     /**
      * Creates a new test case for {@link NetcdfTransformFactory}.
      */
-    public NetcdfTransformFactoryTest() {
-        this(getDefaultFactory());
-    }
-
-    /**
-     * Creates a new test case for the given factory.
-     *
-     * @param factory  the factory to test.
-     */
     @SuppressWarnings({"unchecked","rawtypes"})
-    protected NetcdfTransformFactoryTest(final MathTransformFactory factory) {
-        super(factory);
-        this.factory = factory;
+    public NetcdfTransformFactoryTest() {
+        super(getDefaultFactory());
+        this.factory = defaultFactory;
         projections = new Class[] {
             AlbersEqualArea.class,
             FlatEarth.class,
@@ -197,7 +189,7 @@ public strictfp class NetcdfTransformFactoryTest extends TestCase {
              * Any remaining parameters in the set are parameter that should have been
              * declared in the GeoAPI wrappers but are not.
              */
-            assertTrue("Missing parameter in \"" + projectionName + "\" projection: " + names, names.isEmpty());
+            assertTrue(names.isEmpty(), () -> "Missing parameter in \"" + projectionName + "\" projection: " + names);
         }
     }
 

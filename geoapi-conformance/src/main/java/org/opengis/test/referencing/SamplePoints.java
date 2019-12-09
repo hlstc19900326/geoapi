@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.awt.geom.Rectangle2D;
 import org.opengis.referencing.operation.CoordinateOperation;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.referencing.PseudoEpsgFactory.R_US_FEET;
 import static org.opengis.test.referencing.PseudoEpsgFactory.LINKS;
 
@@ -50,7 +50,7 @@ import static org.opengis.test.referencing.PseudoEpsgFactory.LINKS;
  * @version 3.1
  * @since   3.1
  */
-final class SamplePoints {
+final strictfp class SamplePoints {
     /**
      * The EPSG code for the Coordinate Reference System using the sample points.
      * Whether it is the source or the target CRS is test-dependent. This field

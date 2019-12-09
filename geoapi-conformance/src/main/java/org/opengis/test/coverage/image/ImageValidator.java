@@ -43,6 +43,7 @@ import org.opengis.test.Validator;
 import org.opengis.test.ValidatorContainer;
 
 import static org.opengis.test.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -52,7 +53,7 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-public class ImageValidator extends Validator {
+public strictfp class ImageValidator extends Validator {
     /**
      * Creates a new validator instance.
      *
@@ -85,7 +86,7 @@ public class ImageValidator extends Validator {
                 for (int i=0; i<imageWriterSpiNames.length; i++) {
                     final String field = "imageWriterSpiNames[" + i + ']';
                     final String className = imageWriterSpiNames[i];
-                    assertNotNull(field + " can not be null.", className);
+                    assertNotNull(className, field + " can not be null.");
                     validateClass(field, ImageWriterSpi.class, loader, className);
                 }
             }
@@ -114,7 +115,7 @@ public class ImageValidator extends Validator {
                 for (int i=0; i<imageReaderSpiNames.length; i++) {
                     final String field = "imageReaderSpiNames[" + i + ']';
                     final String className = imageReaderSpiNames[i];
-                    assertNotNull(field + " can not be null.", className);
+                    assertNotNull(className, field + " can not be null.");
                     validateClass(field, ImageReaderSpi.class, loader, className);
                 }
             }
@@ -143,14 +144,14 @@ public class ImageValidator extends Validator {
          * allowed to be null according Image I/O specification.
          */
         if (spi.isStandardStreamMetadataFormatSupported()) {
-            assertSame("Expected the standard metadata format instance.",
-                    IIOMetadataFormatImpl.getStandardFormatInstance(),
-                    spi.getStreamMetadataFormat(IIOMetadataFormatImpl.standardMetadataFormatName));
+            assertSame(IIOMetadataFormatImpl.getStandardFormatInstance(),
+                    spi.getStreamMetadataFormat(IIOMetadataFormatImpl.standardMetadataFormatName),
+                    "Expected the standard metadata format instance.");
         }
         if (spi.isStandardImageMetadataFormatSupported()) {
-            assertSame("Expected the standard metadata format instance.",
-                    IIOMetadataFormatImpl.getStandardFormatInstance(),
-                    spi.getImageMetadataFormat(IIOMetadataFormatImpl.standardMetadataFormatName));
+            assertSame(IIOMetadataFormatImpl.getStandardFormatInstance(),
+                    spi.getImageMetadataFormat(IIOMetadataFormatImpl.standardMetadataFormatName),
+                    "Expected the standard metadata format instance.");
         }
         String formatName = spi.getNativeStreamMetadataFormatName();
         if (formatName != null) {
@@ -183,22 +184,22 @@ public class ImageValidator extends Validator {
     {
         if (nativeMetadataFormatName != null) {
             nativeMetadataFormatName = nativeMetadataFormatName.trim();
-            assertFalse("The native" + type + "MetadataFormatName value can not be equal to \"" +
-                    IIOMetadataFormatImpl.standardMetadataFormatName + "\".",
-                    IIOMetadataFormatImpl.standardMetadataFormatName.equalsIgnoreCase(nativeMetadataFormatName));
+            assertFalse(IIOMetadataFormatImpl.standardMetadataFormatName.equalsIgnoreCase(nativeMetadataFormatName),
+                    () -> "The native" + type + "MetadataFormatName value can not be equal to \"" +
+                    IIOMetadataFormatImpl.standardMetadataFormatName + "\".");
         }
         if (extraMetadataFormatNames != null) {
             final String field = "extra" + type + "MetadataFormatNames";
             validateArray(field, extraMetadataFormatNames);
             for (int i=0; i<extraMetadataFormatNames.length; i++) {
                 final String formatName = extraMetadataFormatNames[i].trim();
-                assertFalse("The " + field + '[' + i + "] value can not be equal to \"" +
-                        IIOMetadataFormatImpl.standardMetadataFormatName + "\".",
-                        IIOMetadataFormatImpl.standardMetadataFormatName.equalsIgnoreCase(formatName));
+                assertFalse(IIOMetadataFormatImpl.standardMetadataFormatName.equalsIgnoreCase(formatName),
+                        "The " + field + '[' + i + "] value can not be equal to \"" +
+                        IIOMetadataFormatImpl.standardMetadataFormatName + "\".");
                 if (nativeMetadataFormatName != null) {
-                    assertFalse("The " + field + '[' + i + "] value can not be equal to \"" +
-                            nativeMetadataFormatName + "\" since it is already declared as the native format name.",
-                            nativeMetadataFormatName.equalsIgnoreCase(formatName));
+                    assertFalse(nativeMetadataFormatName.equalsIgnoreCase(formatName),
+                            "The " + field + '[' + i + "] value can not be equal to \"" +
+                            nativeMetadataFormatName + "\" since it is already declared as the native format name.");
                 }
             }
         }
@@ -217,7 +218,7 @@ public class ImageValidator extends Validator {
             assertStrictlyPositive("The " + field + " array shall be either null or non-empty.", array.length);
             for (int i=0; i<array.length; i++) {
                 final Object element = array[i];
-                assertNotNull(field + '[' + i + ']', element);
+                assertNotNull(element, field + '[' + i + ']');
                 for (int j=i; ++i<array.length;) {
                     if (element.equals(array[i])) {
                         fail(field + '[' + i + "] and [" + j + "] duplicate the \"" + element + "\" value.");
@@ -241,10 +242,10 @@ public class ImageValidator extends Validator {
         mandatory("ImageReaderWriterSpi: shall have a " + field + " string.", classname);
         if (classname != null) try {
             final Class<?> actual = Class.forName(classname, false, loader);
-            assertTrue(actual.getCanonicalName() + " is not an instance of " +
-                    expectedType.getSimpleName() + '.', expectedType.isAssignableFrom(actual));
+            assertTrue(expectedType.isAssignableFrom(actual),
+                    () -> actual.getCanonicalName() + " is not an instance of " + expectedType.getSimpleName() + '.');
         } catch (ClassNotFoundException e) {
-            throw new AssertionError("Class \"" + classname + "\" declared in " + field + " was not found.", e);
+            fail("Class \"" + classname + "\" declared in " + field + " was not found.", e);
         }
     }
 

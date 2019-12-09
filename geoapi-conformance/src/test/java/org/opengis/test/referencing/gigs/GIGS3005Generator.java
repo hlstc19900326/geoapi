@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.Collections;
 import javax.measure.Unit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -103,8 +103,8 @@ public strictfp class GIGS3005Generator extends TestMethodGenerator {
      * and unit of measurement.
      */
     private static int getFirstParameterColumn(final int paramNum) {
-        return 3 + Math.min(paramNum,   4) * 4   // Parameter 1 to 4 use 4 columns.
-                 + Math.max(paramNum-4, 0) * 3;  // Parameter 5 to 7 use 3 columns.
+        return 3 + StrictMath.min(paramNum,   4) * 4   // Parameter 1 to 4 use 4 columns.
+                 + StrictMath.max(paramNum-4, 0) * 3;  // Parameter 5 to 7 use 3 columns.
     }
 
     /**
@@ -199,7 +199,7 @@ public strictfp class GIGS3005Generator extends TestMethodGenerator {
                         unit = units.degree();
                     } else {
                         unit = parseUnit(unitName);
-                        assertNotNull(unitName, unit);          // Failure here would be a geoapi-conformance bug.
+                        assertNotNull(unit, unitName);          // Failure here would be a geoapi-conformance bug.
                         value = Double.valueOf(data.getString(columnOffset + 1));
                     }
                     indent(2);

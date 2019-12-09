@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -141,9 +141,10 @@ public strictfp class GIGS3004Generator extends TestMethodGenerator {
                 anchorPoint   = data.getString(4);
                 datumName = replaceAsciiPrimeByUnicode(datumName);
             }
-            assertEquals("GIGS code in column 8 shall be equal to the code in column 0"
+            assertEquals(data.getInt(8), datumCode,
+                    "GIGS code in column 8 shall be equal to the code in column 0"
                     + " of either the same row if this row contains such value,"
-                    + " or of the previous row otherwise.", data.getInt(8), datumCode);     // See the comment before the loop.
+                    + " or of the previous row otherwise.");     // See the comment before the loop.
 
             final int      crsCode  = data.getInt    ( 5);
             final String   crsName  = replaceAsciiPrimeByUnicode(data.getString(6));

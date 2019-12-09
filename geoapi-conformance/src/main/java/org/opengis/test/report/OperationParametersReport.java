@@ -34,6 +34,7 @@ package org.opengis.test.report;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
+import java.io.UncheckedIOException;
 import java.util.Set;
 import java.util.Map;
 import java.util.List;
@@ -246,7 +247,7 @@ public class OperationParametersReport extends Report {
             try {
                 write(buffer, names.keySet().toArray(new String[names.size()]), false, false, false);
             } catch (IOException e) {
-                throw new AssertionError(e);                                // Should never happen.
+                throw new UncheckedIOException(e);                          // Should never happen.
             }
             return buffer.toString();
         }

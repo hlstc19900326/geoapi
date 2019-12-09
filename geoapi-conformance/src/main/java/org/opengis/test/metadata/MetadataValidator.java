@@ -34,10 +34,11 @@ package org.opengis.test.metadata;
 import java.util.Collection;
 import java.lang.reflect.Array;
 import org.opengis.util.InternationalString;
-
 import org.opengis.test.Validator;
 import org.opengis.test.ValidatorContainer;
+
 import static org.opengis.test.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -51,7 +52,7 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   2.2
  */
-public abstract class MetadataValidator extends Validator {
+public abstract strictfp class MetadataValidator extends Validator {
     /**
      * Creates a new validator instance.
      *
@@ -73,17 +74,17 @@ public abstract class MetadataValidator extends Validator {
      * @param objects      the collection to validate (never {@code null}).
      */
     final <T> T[] toArray(final Class<T> elementType, final Collection<? extends T> objects) {
-        assertNotNull("Null collection. Should be an empty one if there is no elements.", objects);
+        assertNotNull(objects, "Null collection. Should be an empty one if there is no elements.");
         validate(objects);
         @SuppressWarnings("unchecked")
         final T[] array = (T[]) Array.newInstance(elementType, objects.size());
         int count = 0;
         for (final T element : objects) {
-            assertNotNull("Collection should not contain null element.", element);
+            assertNotNull(element, "Collection should not contain null element.");
             assertInstanceOf("Wrong element type in the collection.", elementType, element);
             array[count++] = element;
         }
-        assertEquals("Unexpected end of iteration", array.length, count);
+        assertEquals(array.length, count, "Unexpected end of iteration");
         return array;
     }
 

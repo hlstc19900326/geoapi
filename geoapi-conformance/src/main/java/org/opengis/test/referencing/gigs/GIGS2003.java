@@ -43,12 +43,10 @@ import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -79,11 +77,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2003;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2003;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2003 {
  *    public MyTest() {
  *        super(new MyDatumAuthorityFactory());
@@ -97,7 +92,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
     /**
      * The expected Greenwich longitude in decimal degrees.
@@ -127,7 +121,6 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2003} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class);
@@ -180,7 +173,7 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
     @Override
     public PrimeMeridian getIdentifiedObject() throws FactoryException {
         if (primeMeridian == null) {
-            assumeNotNull(datumAuthorityFactory);
+            assumeTrue(datumAuthorityFactory != null);
             try {
                 primeMeridian = datumAuthorityFactory.createPrimeMeridian(String.valueOf(code));
             } catch (NoSuchAuthorityCodeException e) {
@@ -196,7 +189,7 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
      */
     private void verifyPrimeMeridian() throws FactoryException {
         final PrimeMeridian pm = getIdentifiedObject();
-        assertNotNull("PrimeMeridian", pm);
+        assertNotNull(pm, "PrimeMeridian");
         validators.validate(pm);
 
         // Prime meridian identifiers.
@@ -205,7 +198,7 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
         // Prime meridian name.
         if (isStandardNameSupported) {
             configurationTip = Configuration.Key.isStandardNameSupported;
-            assertEquals("PrimeMeridian.getName()", name, getVerifiableName(pm));
+            assertEquals(name, getVerifiableName(pm), "PrimeMeridian.getName()");
             configurationTip = null;
         }
 
@@ -226,8 +219,8 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
         if (unit != null && !unit.equals(degree)) {
             longitude = degree.getConverterTo(unit).convert(longitude);
         }
-        assertEquals("PrimeMeridian.getGreenwichLongitude()", longitude,
-                pm.getGreenwichLongitude(), ANGULAR_TOLERANCE);
+        assertEquals(longitude, pm.getGreenwichLongitude(), ANGULAR_TOLERANCE,
+                "PrimeMeridian.getGreenwichLongitude()");
     }
 
     /**

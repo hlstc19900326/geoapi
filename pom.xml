@@ -106,6 +106,8 @@
     <maven.compiler.release>8</maven.compiler.release>
     <future.source>module-info.java</future.source>             <!-- To exclude when JDK9 profile is not enabled. -->
     <unit.api.version>1.0</unit.api.version>                    <!-- To be removed after JDK9 profile is default. -->
+    <junit.version>5.5.2</junit.version>
+    <junit.platform.version>1.5.2</junit.platform.version>
   </properties>
   <profiles>
     <!--
@@ -235,17 +237,20 @@
         <groupId>tec.units</groupId>
         <artifactId>unit-ri</artifactId>
         <version>1.0.3</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <!-- The JUnit version number appears also in the Javadoc plugin configuration,
              in shell scripts, in Java code generating reports, and in NetBeans project
              configuration. If JUnit is updated, please search for the version number in
              the whole project. Search also for version number of the Hamcrest dependency. -->
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-suite-api</artifactId>
+        <version>${junit.platform.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.vecmath</groupId>
@@ -262,8 +267,8 @@
       <artifactId>unit-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -281,7 +286,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M2</version>
+          <version>3.0.0-M3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -296,7 +301,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
+          <version>3.0.0-M4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -414,7 +419,6 @@
           <systemPropertyVariables>
             <maven.source.directory>${project.build.sourceDirectory}</maven.source.directory>
           </systemPropertyVariables>
-          <printSummary>false</printSummary>
         </configuration>
       </plugin>
 
@@ -566,13 +570,13 @@
                documentation of external referenced classes. -->
           <detectJavaApiLink>false</detectJavaApiLink>
           <links>
-            <link>http://docs.oracle.com/javase/8/docs/api/</link>
-            <link>http://docs.oracle.com/javaee/7/api/</link>                                       <!-- For InternationalString link. -->
-            <link>http://download.java.net/media/java3d/javadoc/1.5.2/</link>
-            <link>http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/</link>
-            <link>http://junit.org/junit4/javadoc/latest/</link>
-            <link>http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/javadoc/</link>  <!-- Used by example code. -->
-            <link>http://www.geoapi.org/snapshot/javadoc/</link>                                    <!-- For modules that depend on GeoAPI. -->
+            <link>https://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://docs.oracle.com/javaee/7/api/</link>                                      <!-- For InternationalString link. -->
+            <link>https://download.java.net/media/java3d/javadoc/1.5.2/</link>
+            <link>https://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs/</link>
+            <link>https://junit.org/junit5/docs/current/api/</link>
+            <link>https://www.unidata.ucar.edu/software/netcdf-java/current/javadoc/</link>         <!-- Used by example code. -->
+            <link>https://www.geoapi.org/snapshot/javadoc/</link>                                   <!-- For modules that depend on GeoAPI. -->
           </links>
         </configuration>
       </plugin>

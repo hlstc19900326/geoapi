@@ -34,7 +34,7 @@ package org.opengis.geoapi;
 import java.util.Set;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -44,7 +44,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-final class IncompatibleChange {
+final strictfp class IncompatibleChange {
     /**
      * The fully qualified class name and method where the incompatible changes happen.
      */
@@ -92,7 +92,7 @@ final class IncompatibleChange {
         final Set<IncompatibleChange> changes = new HashSet<>();
         for (int i=0; i<types.length;) {
             final IncompatibleChange c = new IncompatibleChange(types[i++], types[i++], types[i++]);
-            assertTrue(c.method, changes.add(c));
+            assertTrue(changes.add(c), c.method);
         }
         return changes;
     }

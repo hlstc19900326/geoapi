@@ -7,12 +7,12 @@
  */
 package org.opengis.example.referencing;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-
+import org.junit.jupiter.api.Test;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.operation.TransformException;
+import org.opengis.test.referencing.AffineTransformTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -24,8 +24,7 @@ import org.opengis.referencing.operation.TransformException;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(JUnit4.class)
-public strictfp class AffineTransform2DTest extends ProjectiveTransformTest {
+public strictfp class AffineTransform2DTest extends AffineTransformTest {
     /**
      * Creates a new test case.
      */
@@ -34,90 +33,101 @@ public strictfp class AffineTransform2DTest extends ProjectiveTransformTest {
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Invoked after every tests in order to ensure that the transform created by the factory
+     * is of the expected type. This method requires that the transform class is exactly the
+     * {@code AffineTransform2D} class - not a subclass.
+     */
+    private void ensureExpectedTransformClass() {
+        assertEquals(AffineTransform2D.class, transform.getClass(), "Unexpected transform instance.");
+    }
+
+    /**
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testIdentity2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testIdentity2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testAxisSwapping2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testAxisSwapping2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testSouthOrientated2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testSouthOrientated2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testTranslatation2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testTranslatation2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testUniformScale2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testUniformScale2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testGenericScale2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testGenericScale2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testRotation2D() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testRotation2D();
+        ensureExpectedTransformClass();
     }
 
     /**
-     * Declares that this particular test expects an {@link AffineTransform2D} instance,
-     * then runs the test.
+     * Runs the test, then verify that the result is an {@link AffineTransform2D} instance.
      */
     @Test
     @Override
     public void testGeneral() throws FactoryException, TransformException {
-        expectedTransformClass = AffineTransform2D.class;
         super.testGeneral();
+        ensureExpectedTransformClass();
+    }
+
+    /**
+     * Declares that our implementation can not invert such transform, then runs the test.
+     */
+    @Test
+    @Override
+    public void testDimensionReduction() throws FactoryException, TransformException {
+        isInverseTransformSupported = false;
+        super.testDimensionReduction();
     }
 }

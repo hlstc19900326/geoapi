@@ -33,10 +33,10 @@ package org.opengis.test.referencing;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
 import org.opengis.referencing.cs.AxisDirection;
-import org.junit.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
 
 
@@ -67,17 +67,17 @@ public strictfp class ValidatorTest {
         int    step  = 1;
         for (final AxisDirection direction : directions) {
             final CSValidator.Orientation orientation = CSValidator.ORIENTATIONS[direction.ordinal()];
-            assertNotNull(direction.toString(), orientation);
+            assertNotNull(orientation, direction.toString());
             if (!orientation.category.equals(type)) {
-                assertEquals("Expected orientations in the [0…360]° range.", 16, value);
+                assertEquals(16, value, "Expected orientations in the [0…360]° range.");
                 type  = orientation.category;
                 value = 0;
                 step  = 4;
             }
-            assertEquals(direction.toString(), value, orientation.orientation);
+            assertEquals(value, orientation.orientation, direction.toString());
             value += step;
         }
-        assertEquals("Expected orientations in the [0…360]° range.", 16, value);
+        assertEquals(16, value, "Expected orientations in the [0…360]° range.");
     }
 
     /**
@@ -88,7 +88,7 @@ public strictfp class ValidatorTest {
         final ArrayList<AxisDirection> directions = new ArrayList<>(Arrays.asList(
                 NORTH, DISPLAY_DOWN, OTHER, WEST, DISPLAY_RIGHT, FUTURE));
         CSValidator.assertPerpendicularAxes(directions);
-        assertTrue("Collection is cleaned as a side effect of internal working.", directions.isEmpty());
+        assertTrue(directions.isEmpty(), "Collection is cleaned as a side effect of internal working.");
         directions.addAll(Arrays.asList(NORTH, DISPLAY_DOWN, OTHER, SOUTH_EAST, DISPLAY_RIGHT, FUTURE));
         try {
             CSValidator.assertPerpendicularAxes(directions);

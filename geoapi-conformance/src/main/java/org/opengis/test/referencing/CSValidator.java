@@ -38,6 +38,7 @@ import org.opengis.test.ValidatorContainer;
 
 import static org.opengis.test.Assert.*;
 import static org.opengis.test.referencing.Utilities.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -56,7 +57,7 @@ import static org.opengis.test.referencing.Utilities.*;
  *       For example {@link EllipsoidalCS} expects two angular values and one linear
  *       value (if 3D).
  */
-public class CSValidator extends ReferencingValidator {
+public strictfp class CSValidator extends ReferencingValidator {
     /**
      * Orientation of an {@link AxisDirection}, used to detect if axes are perpendicular.
      */
@@ -208,7 +209,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("SphericalCS: wrong number of dimensions.", 3, dimension);
+        assertEquals(3, dimension, "SphericalCS: wrong number of dimensions.");
     }
 
     /**
@@ -223,7 +224,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("CylindricalCS: wrong number of dimensions.", 3, dimension);
+        assertEquals(3, dimension, "CylindricalCS: wrong number of dimensions.");
     }
 
     /**
@@ -238,7 +239,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("PolarCS: wrong number of dimensions.", 2, dimension);
+        assertEquals(2, dimension, "PolarCS: wrong number of dimensions.");
     }
 
     /**
@@ -253,7 +254,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("LinearCS: wrong number of dimensions.", 1, dimension);
+        assertEquals(1, dimension, "LinearCS: wrong number of dimensions.");
     }
 
     /**
@@ -268,7 +269,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("VerticalCS: wrong number of dimensions.", 1, dimension);
+        assertEquals(1, dimension, "VerticalCS: wrong number of dimensions.");
     }
 
     /**
@@ -283,7 +284,7 @@ public class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertEquals("TimeCS: wrong number of dimensions.", 1, dimension);
+        assertEquals(1, dimension, "TimeCS: wrong number of dimensions.");
     }
 
     /**

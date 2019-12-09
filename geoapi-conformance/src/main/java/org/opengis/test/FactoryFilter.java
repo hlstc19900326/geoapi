@@ -50,8 +50,13 @@ import org.opengis.referencing.AuthorityFactory;
  * @author  Martin Desruisseaux (Geomatys)
  * @version 3.1
  * @since   3.1
+ *
+ * @deprecated Target for removal (not yet decided). This is a somewhat complicated mechanism.
+ *             It may be easier to let users set explicitly the desired factories, for example
+ *             using JUnit 5 parameterized tests.
  */
-public interface FactoryFilter {
+@Deprecated
+public strictfp interface FactoryFilter {
     /**
      * Returns {@code true} if the given factory can be tested. Implementers shall return
      * {@code false} only when they really want to exclude a particular factory. For every
@@ -117,6 +122,7 @@ public interface FactoryFilter {
          * Returns {@code true} if the given {@link InternationalString} is equals to the
          * {@link #name}. Only the US locale and the default locale string are compared.
          */
+        @SuppressWarnings("StringEquality")
         private boolean isValid(final InternationalString i18n) {
             if (i18n == null) {
                 return false;

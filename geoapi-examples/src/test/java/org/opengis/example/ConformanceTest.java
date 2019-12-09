@@ -26,7 +26,7 @@ import org.opengis.example.util.SimpleNameFactory;
  * @version 3.1
  * @since   3.1
  */
-public class ConformanceTest extends TestSuite implements ImplementationDetails {
+public strictfp class ConformanceTest extends TestSuite implements ImplementationDetails {
     /**
      * The configuration of our tests.
      * Will be created when first needed.

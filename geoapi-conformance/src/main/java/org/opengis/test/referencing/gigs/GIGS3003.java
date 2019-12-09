@@ -41,12 +41,10 @@ import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.referencing.datum.DatumFactory;
 import org.opengis.test.Configuration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -74,11 +72,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS3003;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS3003;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS3003 {
  *    public MyTest() {
  *        super(new MyDatumFactory());
@@ -92,7 +87,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS3003 extends UserObjectFactoryTestCase<PrimeMeridian> {
     /**
      * The prime meridian Greenwich longitude, in unit of {@link #angularUnit}.
@@ -127,7 +121,6 @@ public strictfp class GIGS3003 extends UserObjectFactoryTestCase<PrimeMeridian> 
      *
      * @return the default set of arguments to be given to the {@code GIGS3003} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(DatumFactory.class);
@@ -187,7 +180,7 @@ public strictfp class GIGS3003 extends UserObjectFactoryTestCase<PrimeMeridian> 
     @Override
     public PrimeMeridian getIdentifiedObject() throws FactoryException {
         if (primeMeridian == null) {
-            assumeNotNull(datumFactory);
+            assumeTrue(datumFactory != null);
             primeMeridian = datumFactory.createPrimeMeridian(properties, greenwichLongitude, angularUnit);
         }
         return primeMeridian;
@@ -203,15 +196,15 @@ public strictfp class GIGS3003 extends UserObjectFactoryTestCase<PrimeMeridian> 
         final String name = getName();
         final String code = getCode();
         final PrimeMeridian primeMeridian = getIdentifiedObject();
-        assertNotNull("PrimeMeridian", primeMeridian);
+        assertNotNull(primeMeridian, "PrimeMeridian");
         validators.validate(primeMeridian);
 
         verifyPrimeMeridian(primeMeridian, name, greenwichLongitude, angularUnit);
         verifyIdentification(primeMeridian, name, code);
         if (isFactoryPreservingUserValues) {
             configurationTip = Configuration.Key.isFactoryPreservingUserValues;
-            assertEquals("PrimeMeridian.getAngularUnit()",        angularUnit,        primeMeridian.getAngularUnit());
-            assertEquals("PrimeMeridian.getGreenwichLongitude()", greenwichLongitude, primeMeridian.getGreenwichLongitude(), ANGULAR_TOLERANCE);
+            assertEquals(angularUnit,        primeMeridian.getAngularUnit(), "PrimeMeridian.getAngularUnit()");
+            assertEquals(greenwichLongitude, primeMeridian.getGreenwichLongitude(), ANGULAR_TOLERANCE, "PrimeMeridian.getGreenwichLongitude()");
             configurationTip = null;
         }
     }

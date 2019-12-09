@@ -52,7 +52,7 @@ import static java.lang.Character.toChars;
  *       We need to restructure the project for avoiding such duplications
  *       (<a href="https://github.com/opengeospatial/geoapi/issues/30">#30</a>).
  */
-final class CharSequences {
+final strictfp class CharSequences {
     /**
      * Do not allow instantiation of this class.
      */

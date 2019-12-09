@@ -40,10 +40,10 @@ import org.opengis.referencing.operation.MathTransform;
  * the expected value.
  *
  * @author  Martin Desruisseaux (Geomatys)
- * @version 3.0
+ * @version 3.1
  * @since   2.2
  */
-public class TransformFailure extends ComputationFailure {
+public strictfp class TransformFailure extends ComputationFailure {
     /**
      * For cross-version compatibility.
      */

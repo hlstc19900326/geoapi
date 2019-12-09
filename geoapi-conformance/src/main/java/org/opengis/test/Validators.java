@@ -78,7 +78,7 @@ import org.opengis.test.coverage.image.*;
  * @version 3.1
  * @since   2.2
  */
-public class Validators {
+public strictfp class Validators {
     /**
      * The default container to be used by all static {@code validate} methods.
      * Vendors can change the validators referenced by this container, or change

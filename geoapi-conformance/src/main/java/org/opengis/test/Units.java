@@ -43,14 +43,14 @@ import org.opengis.test.util.PseudoFactory;
 
 
 /**
- * Pre-defined constants for the units of measurement used by the conformance tests.
+ * Predefined constants for the units of measurement used by the conformance tests.
  * This pseudo-factory provides separated methods for all units needed by {@code geoapi-conformance}.
  *
  * @author  Martin Desruisseaux (Geomatys)
  * @version 3.1
  * @since   3.0.1
  */
-public class Units extends PseudoFactory {
+public strictfp class Units extends PseudoFactory {
     /**
      * The default instance, created when first needed.
      *
@@ -97,9 +97,9 @@ public class Units extends PseudoFactory {
         kilometre    = metre .multiply(1000);
         foot         = metre .multiply(0.3048);
         footSurveyUS = metre .multiply(12 / 39.37);
-        degree       = radian.multiply(Math.PI / 180);
-        grad         = radian.multiply(Math.PI / 200);
-        arcSecond    = radian.multiply(Math.PI / (180*60*60));
+        degree       = radian.multiply(StrictMath.PI / 180);
+        grad         = radian.multiply(StrictMath.PI / 200);
+        arcSecond    = radian.multiply(StrictMath.PI / (180*60*60));
         microradian  = radian.divide(1E6);
         day          = second.multiply(24*60*60);
         hectopascal  = pascal.multiply(100);

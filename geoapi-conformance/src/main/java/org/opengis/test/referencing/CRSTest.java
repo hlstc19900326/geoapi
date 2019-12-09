@@ -38,9 +38,7 @@ import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -52,11 +50,8 @@ import org.junit.runners.Parameterized;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.CRSTest;
+ * <blockquote><pre>import org.opengis.test.referencing.CRSTest;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends CRSTest {
  *    public MyTest() {
  *        super(new MyCRSAuthorityFactory());
@@ -72,7 +67,6 @@ import org.junit.runners.Parameterized;
  * @deprecated Renamed as {@link AuthorityFactoryTest}.
  */
 @Deprecated
-@RunWith(Parameterized.class)
 public strictfp class CRSTest extends ReferencingTestCase {
     /**
      * The authority factory for creating a {@link CoordinateReferenceSystem} from a code,
@@ -91,7 +85,6 @@ public strictfp class CRSTest extends ReferencingTestCase {
      *
      * @since 3.1
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(CRSAuthorityFactory.class);

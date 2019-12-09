@@ -44,12 +44,12 @@ import org.opengis.metadata.spatial.Dimension;
 import org.jpy.PyLib;
 import org.jpy.PyModule;
 import org.jpy.PyObject;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -71,7 +71,7 @@ public final strictfp class GDALTest {
     /**
      * Starts the Python interpreter before any test is run.
      */
-    @BeforeClass
+    @BeforeAll
     public static void startPython() {
         String config = System.getProperty("jpy.config");
         if (config != null && !config.trim().isEmpty()) {
@@ -96,7 +96,7 @@ public final strictfp class GDALTest {
     /**
      * Stops the Python interpreter after all tests have been run, successfully or not.
      */
-    @AfterClass
+    @AfterAll
     public static void stopPython() {
         if (rootDirectory != null) {
             rootDirectory = null;
@@ -109,7 +109,8 @@ public final strictfp class GDALTest {
      * Once we have this root, all remaining method calls use GeoAPI only.
      */
     private static Metadata load(final String datafile) {
-        assumeNotNull("The \"jpy.config\" system property must be set to the path of a \"jpyconfig.properties\" file.", rootDirectory);
+        assumeTrue(rootDirectory != null,
+                "The \"jpy.config\" system property must be set to the path of a \"jpyconfig.properties\" file.");
         final PyModule pm = PyModule.importModule("opengis.wrapper.gdal");
         final PyObject dataset = pm.call("DataSet", new File(rootDirectory, datafile).toString());
         final Environment env = new Environment();
@@ -123,12 +124,12 @@ public final strictfp class GDALTest {
     public void testGeographic() {
         final Metadata metadata = load("geoapi-conformance/src/main/resources/org/opengis/test/dataset/Cube2D_geographic_packed.nc");
         final MetadataScope scope = first(metadata.getMetadataScopes());
-        assertEquals("metadataScope.resourceScope", ScopeCode.DATASET, scope.getResourceScope());
+        assertEquals(ScopeCode.DATASET, scope.getResourceScope(), "metadataScope.resourceScope");
 
         final GridSpatialRepresentation representation = (GridSpatialRepresentation) first(metadata.getSpatialRepresentationInfo());
         final List<? extends Dimension> axes = representation.getAxisDimensionProperties();
-        assertEquals("axisDimensionProperties[0].dimensionName", DimensionNameType.COLUMN, axes.get(0).getDimensionName());
-        assertEquals("axisDimensionProperties[0].dimensionName", DimensionNameType.ROW,    axes.get(1).getDimensionName());
+        assertEquals(DimensionNameType.COLUMN, axes.get(0).getDimensionName(), "axisDimensionProperties[0].dimensionName");
+        assertEquals(DimensionNameType.ROW,    axes.get(1).getDimensionName(), "axisDimensionProperties[0].dimensionName");
     }
 
     /**

@@ -45,12 +45,10 @@ import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 import org.opengis.test.Units;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -83,11 +81,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2001;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2001;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2001 {
  *    public MyTest() {
  *        super(new MyCSAuthorityFactory());
@@ -101,7 +96,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
     /**
      * Amount of {@linkplain #baseUnit base units} in one {@linkplain #getIdentifiedObject() tested unit}.
@@ -146,7 +140,6 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2001} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, CSAuthorityFactory.class);
@@ -198,7 +191,7 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
     @Override
     public Unit<?> getIdentifiedObject() throws FactoryException {
         if (unit == null) {
-            assumeNotNull(csAuthorityFactory);
+            assumeTrue(csAuthorityFactory != null);
             try {
                 unit = csAuthorityFactory.createUnit(String.valueOf(code));
             } catch (NoSuchAuthorityCodeException e) {
@@ -217,7 +210,7 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
      */
     private UnitConverter createConverter() throws FactoryException {
         final Unit<?> unit = getIdentifiedObject();
-        assertNotNull("Unit", unit);
+        assertNotNull(unit, "Unit");
         final UnitConverter converter;
         try {
             converter = unit.getConverterToAny(baseUnit);
@@ -236,12 +229,12 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
     private void verifyLinearConversions(final UnitConverter converter) {
         final Random random = new Random();
         final double tolerance = TOLERANCE * unitToBase;
-        assertEquals(name, 0, converter.convert(0), tolerance);
-        assertEquals(name,  unitToBase, converter.convert( 1), tolerance);
-        assertEquals(name, -unitToBase, converter.convert(-1), tolerance);
+        assertEquals(0, converter.convert(0), tolerance, name);
+        assertEquals( unitToBase, converter.convert( 1), tolerance, name);
+        assertEquals(-unitToBase, converter.convert(-1), tolerance, name);
         for (double sample = -90; sample <= 90; sample += 4*random.nextDouble()) {
             final double expected = sample * unitToBase;
-            assertEquals(name, expected, converter.convert(sample), tolerance);
+            assertEquals(expected, converter.convert(sample), tolerance, name);
         }
     }
 
@@ -744,14 +737,14 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
         baseUnit   = units.degree();
         final UnitConverter converter = createConverter();
         final double tolerance = 10*TOLERANCE;
-        assertEquals(name,  10.00, converter.convert( 10.0000), tolerance);
-        assertEquals(name, -10.00, converter.convert(-10.0000), tolerance);
-        assertEquals(name,  20.01, converter.convert( 20.0036), tolerance);
-        assertEquals(name, -20.01, converter.convert(-20.0036), tolerance);
-        assertEquals(name,  30.50, converter.convert( 30.3000), tolerance);
-        assertEquals(name, -30.50, converter.convert(-30.3000), tolerance);
-        assertEquals(name,  40.99, converter.convert( 40.5924), tolerance);
-        assertEquals(name, -40.99, converter.convert(-40.5924), tolerance);
+        assertEquals( 10.00, converter.convert( 10.0000), tolerance, name);
+        assertEquals(-10.00, converter.convert(-10.0000), tolerance, name);
+        assertEquals( 20.01, converter.convert( 20.0036), tolerance, name);
+        assertEquals(-20.01, converter.convert(-20.0036), tolerance, name);
+        assertEquals( 30.50, converter.convert( 30.3000), tolerance, name);
+        assertEquals(-30.50, converter.convert(-30.3000), tolerance, name);
+        assertEquals( 40.99, converter.convert( 40.5924), tolerance, name);
+        assertEquals(-40.99, converter.convert(-40.5924), tolerance, name);
     }
 
     /**

@@ -15,8 +15,8 @@ package org.opengis.wrapper.gdal;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 
 /**
@@ -28,7 +28,7 @@ import org.junit.Test;
  */
 public final strictfp class DataSetTest {
     @Test
-    @Ignore("Not yet ready")
+    @Disabled("Not yet ready")
     public void testOpen() throws IOException {
         try (DataSet ds = new DataSet(Paths.get("TODO"))) {
             System.out.println(ds.getMetadata());

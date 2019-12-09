@@ -38,7 +38,7 @@ import java.util.Collections;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**

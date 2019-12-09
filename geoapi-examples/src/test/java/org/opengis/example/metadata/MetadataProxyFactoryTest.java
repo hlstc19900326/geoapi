@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.opengis.metadata.Metadata;
 import org.opengis.metadata.citation.Party;
 import org.opengis.metadata.citation.Responsibility;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -51,8 +51,8 @@ public strictfp class MetadataProxyFactoryTest {
         final Metadata md = factory.create(Metadata.class, attributes);
         assertEquals("Aristotle", getSingleton(getSingleton(md.getContacts()).getParties()).getName().toString());
 
-        assertTrue("Null value should have been replaced by empty collection.",
-                md.getSpatialRepresentationInfo().isEmpty());
+        assertTrue(md.getSpatialRepresentationInfo().isEmpty(),
+                "Null value should have been replaced by empty collection.");
 
         assertEquals("MD_Metadata{contact=[CI_Responsibility{party=[CI_Party{name=Aristotle}]}]}", md.toString());
     }
@@ -62,9 +62,9 @@ public strictfp class MetadataProxyFactoryTest {
      */
     private static <T> T getSingleton(final Collection<? extends T> collection) {
         final Iterator<? extends T> it = collection.iterator();
-        assertTrue("hasNext", it.hasNext());
+        assertTrue(it.hasNext(), "hasNext");
         final T element = it.next();
-        assertFalse("hasNext", it.hasNext());
+        assertFalse(it.hasNext(), "hasNext");
         return element;
     }
 }

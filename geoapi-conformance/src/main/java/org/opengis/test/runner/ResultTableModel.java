@@ -132,8 +132,8 @@ final class ResultTableModel extends AbstractTableModel implements ChangeListene
     public String getValueAt(final int row, final int column) {
         final ResultEntry entry = entries[row];
         switch (column) {
-            case CLASS_COLUMN:  return entry.simpleClassName;
-            case METHOD_COLUMN: return entry.simpleMethodName;
+            case CLASS_COLUMN:  return entry.classDisplayName;
+            case METHOD_COLUMN: return entry.methodDisplayName;
             case RESULT_COLUMN: switch (entry.status) {
                 case SUCCESS: return "success";
                 case FAILURE: return "failure";

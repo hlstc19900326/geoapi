@@ -48,11 +48,10 @@ import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.test.Configuration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Assert.*;
 
 
@@ -82,11 +81,8 @@ import static org.opengis.test.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS300(;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS300
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS3005 {
  *    public MyTest() {
  *        super(new MyCoordinateOperationFactory());
@@ -100,7 +96,6 @@ import static org.opengis.test.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
     /**
      * The name of the operation method to use.
@@ -140,7 +135,6 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
      *
      * @return the default set of arguments to be given to the {@code GIGS3004} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(CoordinateOperationFactory.class);
@@ -187,7 +181,7 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
      */
     @SuppressWarnings("null")
     private void createDefaultParameters() throws FactoryException {
-        assumeNotNull(copFactory);
+        assumeTrue(copFactory != null);
         /*
          * Get the OperationMethod defined by the library. Libraries are not required
          * to implement every possible operation methods, in which case unimplemented
@@ -211,8 +205,8 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
             fail("CoordinateOperationFactory.getOperationMethod(\"" + methodName + "\") shall not return null.");
         }
         validators.validate(method);
-        assertEquals("OperationMethod.getSourceDimensions()", Integer.valueOf(2), method.getSourceDimensions());
-        assertEquals("OperationMethod.getTargetDimensions()", Integer.valueOf(2), method.getTargetDimensions());
+        assertEquals(2, method.getSourceDimensions(), "OperationMethod.getSourceDimensions()");
+        assertEquals(2, method.getTargetDimensions(), "OperationMethod.getTargetDimensions()");
         definition = method.getParameters().createValue();
     }
 
@@ -249,7 +243,7 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
         final String name = getName();
         final String code = getCode();
         final Conversion conversion = getIdentifiedObject();
-        assertNotNull("Conversion", conversion);
+        assertNotNull(conversion, "Conversion");
         validators.validate(conversion);
         verifyIdentification(conversion, name, code);
         /*
@@ -258,7 +252,7 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
          * additional parameters, then those extra parameters will be ignored.
          */
         final ParameterValueGroup projectionParameters = conversion.getParameterValues();
-        assertNotNull("Conversion.getParameterValues()", projectionParameters);
+        assertNotNull(projectionParameters, "Conversion.getParameterValues()");
         if (isFactoryPreservingUserValues) {
             for (final GeneralParameterValue info : definition.values()) {
                 final String paramName = getName(info.getDescriptor());
@@ -275,9 +269,9 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
                 if (info instanceof ParameterValue<?>) {
                     final ParameterValue<?> expected = (ParameterValue<?>) info;
                     final ParameterValue<?> param = projectionParameters.parameter(paramName);
-                    assertNotNull(paramName, param);
+                    assertNotNull(param, paramName);
                     final double value = expected.doubleValue();
-                    assertEquals(paramName, value, param.doubleValue(expected.getUnit()), StrictMath.abs(TOLERANCE * value));
+                    assertEquals(value, param.doubleValue(expected.getUnit()), StrictMath.abs(TOLERANCE * value), paramName);
                 }
             }
         }

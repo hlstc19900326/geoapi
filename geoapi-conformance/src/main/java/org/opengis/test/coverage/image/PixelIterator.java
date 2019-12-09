@@ -40,7 +40,7 @@ import java.awt.image.SampleModel;
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.Float.floatToIntBits;
 import static java.lang.StrictMath.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -210,7 +210,7 @@ public strictfp class PixelIterator {
      * of the {@code ceil} argument. This method works for negative numerator too.
      */
     private static int divide(final int numerator, final int denominator, final boolean ceil) {
-        assertTrue("Require a non-negative denominator.", denominator > 0);
+        assertTrue(denominator > 0, "Require a non-negative denominator.");
         int div = numerator / denominator;
         if (ceil) {
             if (numerator > 0 && (numerator % denominator) != 0) {
@@ -392,9 +392,9 @@ public strictfp class PixelIterator {
      *         tolerance threshold.
      */
     public void assertSampleValuesEqual(final PixelIterator actual, final double tolerance) throws AssertionError {
-        final int dataType = Math.max(getDataType(), actual.getDataType());
+        final int dataType = StrictMath.max(getDataType(), actual.getDataType());
         while (next()) {
-            assertTrue("Unexpected end of pixel iteration.", actual.next());
+            assertTrue(actual.next(), "Unexpected end of pixel iteration.");
             switch (dataType) {
                 case DataBuffer.TYPE_DOUBLE: {
                     final double a = actual.getSampleDouble();
@@ -440,7 +440,7 @@ public strictfp class PixelIterator {
             actual.completeComparisonFailureMessage(buffer, lineSeparator);
             fail(buffer.toString());
         }
-        assertFalse("Expected end of pixel iteration, but found more values.", actual.next());
+        assertFalse(actual.next(), "Expected end of pixel iteration, but found more values.");
     }
 
     /**

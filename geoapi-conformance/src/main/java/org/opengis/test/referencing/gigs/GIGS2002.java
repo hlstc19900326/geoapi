@@ -43,12 +43,10 @@ import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.test.Configuration;
 import org.opengis.test.FactoryFilter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -89,11 +87,8 @@ import static org.junit.Assert.*;
  * in order to specify their factories and run the tests in a JUnit framework, implementers can
  * define a subclass in their own test suite as in the example below:
  *
- * <blockquote><pre>import org.junit.runner.RunWith;
- *import org.junit.runners.JUnit4;
- *import org.opengis.test.referencing.gigs.GIGS2002;
+ * <blockquote><pre>import org.opengis.test.referencing.gigs.GIGS2002;
  *
- *&#64;RunWith(JUnit4.class)
  *public class MyTest extends GIGS2002 {
  *    public MyTest() {
  *        super(new MyDatumAuthorityFactory());
@@ -107,7 +102,6 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-@RunWith(Parameterized.class)
 public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
     /**
      * The conversion factor from the unit of {@link #semiMajorAxis} to metres.
@@ -170,7 +164,6 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
      *
      * @return the default set of arguments to be given to the {@code GIGS2002} constructor.
      */
-    @Parameterized.Parameters
     @SuppressWarnings("unchecked")
     public static List<Factory[]> factories() {
         return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class);
@@ -223,7 +216,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
     @Override
     public Ellipsoid getIdentifiedObject() throws FactoryException {
         if (ellipsoid == null) {
-            assumeNotNull(datumAuthorityFactory);
+            assumeTrue(datumAuthorityFactory != null);
             try {
                 ellipsoid = datumAuthorityFactory.createEllipsoid(String.valueOf(code));
             } catch (NoSuchAuthorityCodeException e) {
@@ -243,7 +236,8 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
      * @see #semiMajorAxis
      */
     public double getSemiMajorAxis(final boolean inMetres) {
-        assertEquals("Inconsistent semi-major axis length in metres.", semiMajorInMetres, semiMajorAxis*toMetres, 0.01);
+        assertEquals(semiMajorInMetres, semiMajorAxis*toMetres, 0.01,
+                "Inconsistent semi-major axis length in metres.");
         return inMetres ? semiMajorInMetres : semiMajorAxis;
     }
 
@@ -258,7 +252,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
      */
     public double getSemiMinorAxis(final boolean inMetres) {
         double value = semiMinorAxis;
-        assertFalse("Semi-minor axis length is not the second defining parameter.", Double.isNaN(value));
+        assertFalse(Double.isNaN(value), "Semi-minor axis length is not the second defining parameter.");
         if (inMetres) {
             semiMinorAxis *= toMetres;
         }
@@ -270,7 +264,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
      */
     private void verifyEllipsoid() throws FactoryException {
         final Ellipsoid ellipsoid = getIdentifiedObject();
-        assertNotNull("Ellipsoid", ellipsoid);
+        assertNotNull(ellipsoid, "Ellipsoid");
         validators.validate(ellipsoid);
 
         // Ellipsoid identifier.
@@ -279,7 +273,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         // Ellipsoid name.
         if (isStandardNameSupported) {
             configurationTip = Configuration.Key.isStandardNameSupported;
-            assertEquals("Ellipsoid.getName()", name, getVerifiableName(ellipsoid));
+            assertEquals(name, getVerifiableName(ellipsoid), "Ellipsoid.getName()");
             configurationTip = null;
         }
 
@@ -298,19 +292,19 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         final Unit<Length> unit = ellipsoid.getAxisUnit();
         final boolean inMetres = toMetres != 1 && (unit == null || unit.equals(units.metre()));
         double expectedAxisLength = getSemiMajorAxis(inMetres);
-        assertEquals("Ellipsoid.getSemiMajorAxis()",
-                expectedAxisLength, ellipsoid.getSemiMajorAxis(), TOLERANCE*expectedAxisLength);
+        assertEquals(expectedAxisLength, ellipsoid.getSemiMajorAxis(), TOLERANCE*expectedAxisLength,
+                "Ellipsoid.getSemiMajorAxis()");
 
         if (!Double.isNaN(semiMinorAxis)) {
             expectedAxisLength = getSemiMinorAxis(inMetres);
-            assertEquals("Ellipsoid.getSemiMinorAxis()", expectedAxisLength,
-                    ellipsoid.getSemiMinorAxis(), TOLERANCE*expectedAxisLength);
+            assertEquals(expectedAxisLength, ellipsoid.getSemiMinorAxis(), TOLERANCE*expectedAxisLength,
+                    "Ellipsoid.getSemiMinorAxis()");
         }
         if (!Double.isNaN(inverseFlattening)) {
-            assertEquals("Ellipsoid.getInverseFlattening()", inverseFlattening,
-                    ellipsoid.getInverseFlattening(), TOLERANCE*inverseFlattening);
+            assertEquals(inverseFlattening, ellipsoid.getInverseFlattening(), TOLERANCE*inverseFlattening,
+                    "Ellipsoid.getInverseFlattening()");
         }
-        assertEquals("Ellipsoid.isSphere()", isSphere, ellipsoid.isSphere());
+        assertEquals(isSphere, ellipsoid.isSphere(), "Ellipsoid.isSphere()");
     }
 
     /**
@@ -536,7 +530,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         semiMajorAxis     = 20926631.531;
         semiMinorAxis     = 20855688.674;
         inverseFlattening = Double.NaN;
-        assumeTrue("Creation of deprecated objects not supported.", isDeprecatedObjectCreationSupported);
+        assumeTrue(isDeprecatedObjectCreationSupported, "Creation of deprecated objects not supported.");
         verifyEllipsoid();
     }
 
@@ -1579,7 +1573,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         semiMinorAxis     = 6378137.0;
         inverseFlattening = Double.NaN;
         isSphere          = true;
-        assumeTrue("Creation of deprecated objects not supported.", isDeprecatedObjectCreationSupported);
+        assumeTrue(isDeprecatedObjectCreationSupported, "Creation of deprecated objects not supported.");
         verifyEllipsoid();
     }
 

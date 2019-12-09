@@ -33,9 +33,9 @@ package org.opengis.test.metadata;
 
 import org.opengis.metadata.citation.CitationDate;
 import org.opengis.metadata.citation.DateType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.opengis.test.Validators.validate;
 
 
@@ -65,8 +65,8 @@ public strictfp class CitationValidatorTest {
             fail("Shall not accept a date before the creation time.");
         } catch (AssertionError e) {
             final String msg = e.getMessage();
-            assertTrue(msg, msg.contains("creation"));
-            assertTrue(msg, msg.contains("validityBegins"));
+            assertTrue(msg.contains("creation"), msg);
+            assertTrue(msg.contains("validityBegins"), msg);
         }
         try {
             validate(creation, released, lastUpdate,
@@ -75,8 +75,8 @@ public strictfp class CitationValidatorTest {
             fail("Shall not accept a 'nextUpdate' date before the 'lastUpdate' one.");
         } catch (AssertionError e) {
             final String msg = e.getMessage();
-            assertTrue(msg, msg.contains("lastUpdate"));
-            assertTrue(msg, msg.contains("nextUpdate"));
+            assertTrue(msg.contains("lastUpdate"), msg);
+            assertTrue(msg.contains("nextUpdate"), msg);
         }
         try {
             validate(creation, released, lastUpdate, nextUpdate, validityBegins,
@@ -84,8 +84,8 @@ public strictfp class CitationValidatorTest {
             fail("Shall not accept a 'validityExpires' date before the 'validityBegins' one.");
         } catch (AssertionError e) {
             final String msg = e.getMessage();
-            assertTrue(msg, msg.contains("validityBegins"));
-            assertTrue(msg, msg.contains("validityExpires"));
+            assertTrue(msg.contains("validityBegins"), msg);
+            assertTrue(msg.contains("validityExpires"), msg);
         }
     }
 }

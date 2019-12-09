@@ -31,8 +31,9 @@
  */
 package org.opengis.test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -42,7 +43,7 @@ import static org.junit.Assert.*;
  * @version 3.0.1
  * @since   3.0.1
  */
-public class UnitsTest {
+public strictfp class UnitsTest {
     /**
      * Verifies the symbol of base units.
      * We do not verify derived units like kilometres.
@@ -51,8 +52,8 @@ public class UnitsTest {
     @Test
     public void verifyBaseUnitSymbol() {
         final Units units = Units.getDefault();
-        assertEquals("metre",  "m", units.metre().getSymbol());
-        assertEquals("second", "s", units.second().getSymbol());
+        assertEquals("m", units.metre().getSymbol(),  "metre");
+        assertEquals("s", units.second().getSymbol(), "second");
     }
 
     /**
@@ -61,10 +62,10 @@ public class UnitsTest {
     @Test
     public void testUnitConversions() {
         final Units units = Units.getDefault();
-        assertEquals("0.5 km",       500, units.kilometre().getConverterTo(units.metre()) .convert(0.5),     0);
-        assertEquals("0.25 day", 6*60*60, units.day()      .getConverterTo(units.second()).convert(0.25),    0);
-        assertEquals("300 ppm",   300E-6, units.ppm()      .getConverterTo(units.one())   .convert(300), 1E-12);
-        assertEquals("100 grad",      90, units.grad()     .getConverterTo(units.degree()).convert(100), 1E-12);
-        assertEquals(Math.toRadians(30),  units.degree()   .getConverterTo(units.radian()).convert(30),  1E-12);
+        assertEquals(    500, units.kilometre().getConverterTo(units.metre()) .convert(0.5),     0, "0.5 km");
+        assertEquals(6*60*60, units.day()      .getConverterTo(units.second()).convert(0.25),    0, "0.25 day");
+        assertEquals( 300E-6, units.ppm()      .getConverterTo(units.one())   .convert(300), 1E-12, "300 ppm");
+        assertEquals(     90, units.grad()     .getConverterTo(units.degree()).convert(100), 1E-12, "100 grad");
+        assertEquals(StrictMath.toRadians(30), units.degree().getConverterTo(units.radian()).convert(30), 1E-12);
     }
 }

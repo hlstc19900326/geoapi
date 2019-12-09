@@ -42,8 +42,8 @@ import org.xml.sax.SAXException;
 import org.opengis.geoapi.SchemaException;
 import org.opengis.geoapi.SchemaInformation;
 
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -90,7 +90,8 @@ public final strictfp class PythonTest extends JavaToPython {
         if (dir != null) {
             return Paths.get(dir);
         }
-        assumeTrue("\n" +
+        assumeTrue(Boolean.getBoolean("org.opengis.extensiveTesting"),
+                   "\n" +
                    "Can not execute the test because XML schemas are not available.\n" +
                    "To enable this test, apply one of the following configurations:\n" +
                    "\n" +
@@ -99,8 +100,7 @@ public final strictfp class PythonTest extends JavaToPython {
                    "    files (only the 19115 sub-directory is needed)." +
                    "\n" +
                    "  • Or execute the test with org.opengis.extensiveTesting property\n" +
-                   "    set to true (may be slow, depending on network connection).\n",
-                   Boolean.getBoolean("org.opengis.extensiveTesting"));
+                   "    set to true (may be slow, depending on network connection).\n");
         return null;
     }
 

@@ -39,18 +39,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.AbstractMap;
+import java.util.Optional;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
-import org.junit.runner.Description;
+import java.lang.reflect.Field;
 
 import org.opengis.util.Factory;
-import org.opengis.test.TestEvent;
+import org.opengis.test.TestCase;
 import org.opengis.test.Configuration;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
+
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.platform.engine.TestExecutionResult;
+import org.junit.platform.launcher.TestIdentifier;
 
 
 /**
@@ -61,12 +65,25 @@ import org.opengis.metadata.citation.Citation;
  * @version 3.1
  * @since   3.1
  */
-final class ResultEntry {
+final strictfp class ResultEntry {
     /**
      * The status (success, failure) of the test.
+     * Same as Jupiter {@link TestExecutionResult.Status} with addition of {@link #IGNORED}.
      */
     static enum Status {
-        SUCCESS, FAILURE, ASSUMPTION_NOT_MET, IGNORED
+        SUCCESS, FAILURE, ASSUMPTION_NOT_MET, IGNORED;
+
+        /**
+         * Converts a Jupiter status to a {@link Status}.
+         */
+        static Status fromJupiter(final TestExecutionResult.Status status) {
+            switch (status) {
+                case SUCCESSFUL: return SUCCESS;
+                case FAILED:     return FAILURE;
+                case ABORTED:    return ASSUMPTION_NOT_MET;
+                default:         throw new AssertionError(status);
+            }
+        }
     };
 
     /**
@@ -79,7 +96,7 @@ final class ResultEntry {
     /**
      * The base URL of {@code geoapi-conformance} javadoc. The trailing slash is mandatory.
      */
-    private static final String JAVADOC_BASEURL = "http://www.geoapi.org/conformance/java/";
+    private static final String JAVADOC_BASEURL = "https://www.geoapi.org/conformance/java/";
 
     /**
      * Typical suffix of test class name. This suffix is not mandatory. But if the suffix
@@ -96,16 +113,37 @@ final class ResultEntry {
     private static final String METHODNAME_PREFIX = "test";
 
     /**
-     * The fully qualified name {@code className} or the simplified name {@code simpleClassName}
-     * of the class containing the tests to be run.
+     * An accessor to the protected {@link TestCase#configurationTip} field value.
      */
-    final String className, simpleClassName;
+    private static final Field CONFIGURATION_TIP_FIELD;
+    static {
+        try {
+            CONFIGURATION_TIP_FIELD = TestCase.class.getDeclaredField("configurationTip");
+        } catch (NoSuchFieldException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+        CONFIGURATION_TIP_FIELD.setAccessible(true);
+    }
 
     /**
-     * The fully name {@code methodName} or the simplified name {@code simpleMethodName}
-     * of the test method being run.
+     * The fully qualified name of the class containing the tests to be run, or {@code null} if unknown.
      */
-    final String methodName, simpleMethodName;
+    final String className;
+
+    /**
+     * The the simplified name of the class containing the tests to be run.
+     */
+    final String classDisplayName;
+
+    /**
+     * The full name of the test method being run, or {@code null} if unknown.
+     */
+    final String methodName;
+
+    /**
+     * The simplified name of the test method being run.
+     */
+    final String methodDisplayName;
 
     /**
      * The factories declared in the configuration. Each row in this list is an array of length 4.
@@ -148,26 +186,45 @@ final class ResultEntry {
     private boolean isToleranceRelaxed;
 
     /**
-     * Creates a new entry for the given event.
+     * Creates a new entry for the given information provided to
+     * {@link org.junit.platform.launcher.TestExecutionListener}.
      */
-    ResultEntry(final TestEvent event, final Status status, final Throwable exception) {
-        this.className        = event.getClassName();
-        this.methodName       = event.getMethodName();
-        this.simpleClassName  = createSimpleClassName(className);
-        this.simpleMethodName = createSimpleMethodName(methodName);
-        this.status           = status;
-        this.exception        = exception;
+    ResultEntry(final TestIdentifier id, final Status status, final Throwable exception) {
+        id.getSource();
+        this.className         = null;
+        this.methodName        = null;
+        this.classDisplayName  = id.getParentId().orElse("<unknown>");
+        this.methodDisplayName = id.getDisplayName();
+        this.status            = status;
+        this.exception         = exception;
+        this.factories         = Collections.emptyList();
+        this.configuration     = Collections.emptyList();
+        this.coverage          = 1;
+    }
+
+    /**
+     * Creates a new entry for the given information provided
+     * to {@link org.junit.jupiter.api.extension.TestWatcher}.
+     */
+    ResultEntry(final ExtensionContext event, final Status status, final Throwable exception) {
+        this.className         = event.getRequiredTestClass().getCanonicalName();
+        this.methodName        = event.getRequiredTestMethod().getName();
+        this.classDisplayName  = createSimpleClassName(className);
+        this.methodDisplayName = createSimpleMethodName(methodName);
+        this.status            = status;
+        this.exception         = exception;
         trimStackTrace(exception);
         /*
          * Extract information from the configuration:
          *  - Computes an estimation of test coverage as a number between 0 and 1.
          *  - Get the list of factories.
          */
+        final TestCase source = (TestCase) event.getRequiredTestInstance();
         int numTests=1, numSupported=1;
-        final Configuration.Key<Boolean> configurationTip = event.getConfigurationTip();
+        final Configuration.Key<Boolean> configurationTip = getConfigurationTip(source);
         final List<String[]> factories = new ArrayList<>();
         final List<Map.Entry<Configuration.Key<?>, StatusOptional>> configuration = new ArrayList<>();
-        for (Map.Entry<Configuration.Key<?>,Object> entry : event.getSource().configuration().map().entrySet()) {
+        for (Map.Entry<Configuration.Key<?>,Object> entry : source.configuration().map().entrySet()) {
             final Configuration.Key<?> key = entry.getKey();
             final String   name  = key.name();
             final Class<?> type  = key.valueType();
@@ -220,19 +277,15 @@ final class ResultEntry {
     }
 
     /**
-     * Creates a new entry for the given description.
-     * This constructor is used only for ignored tests.
+     * Returns the {@link TestCase#configurationTip} field value for the given test case.
      */
-    ResultEntry(final Description description, final Status status, final Throwable exception) {
-        this.className        = description.getClassName();
-        this.methodName       = description.getMethodName();
-        this.simpleClassName  = createSimpleClassName(className);
-        this.simpleMethodName = createSimpleMethodName(methodName);
-        this.status           = status;
-        this.exception        = exception;
-        this.factories        = Collections.emptyList();
-        this.configuration    = Collections.emptyList();
-        trimStackTrace(exception);
+    @SuppressWarnings("unchecked")
+    private static Configuration.Key<Boolean> getConfigurationTip(final TestCase source) {
+        try {
+            return (Configuration.Key<Boolean>) CONFIGURATION_TIP_FIELD.get(source);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);                    // Should never happen.
+        }
     }
 
     /**
@@ -349,15 +402,18 @@ final class ResultEntry {
      * Returns the URL to the javadoc of the test method. Users can follow this URL in
      * order to have more details about the test data or procedure.
      *
-     * @return the URI to the javadoc of the test method (never {@code null}).
+     * @return the URI to the javadoc of the test method.
      */
-    public URI getJavadocURL() {
+    public Optional<URI> getJavadocURL() {
+        if (className == null) {
+            return Optional.empty();
+        }
         String method = methodName;
         final int s = method.indexOf('[');
         if (s >= 0) {
             method = method.substring(0, s);
         }
-        return URI.create(JAVADOC_BASEURL + className.replace('.', '/') + ".html#" + method + "()");
+        return Optional.of(URI.create(JAVADOC_BASEURL + className.replace('.', '/') + ".html#" + method + "()"));
     }
 
     /**
@@ -385,7 +441,7 @@ final class ResultEntry {
         }
         graphics.setColor(color.darker());
         graphics.draw(bounds);
-        bounds.width = Math.round(bounds.width * coverage);
+        bounds.width = StrictMath.round(bounds.width * coverage);
         graphics.setColor(color);
         graphics.fill(bounds);
     }
@@ -395,6 +451,6 @@ final class ResultEntry {
      */
     @Override
     public String toString() {
-        return className + '.' + methodName + ": " + status;
+        return classDisplayName + '.' + methodDisplayName + ": " + status;
     }
 }

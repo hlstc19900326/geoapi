@@ -35,7 +35,7 @@ import java.util.Arrays;
 import org.opengis.referencing.operation.Matrix;
 
 import static java.lang.StrictMath.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -46,7 +46,7 @@ import static org.junit.Assert.*;
  * @version 3.1
  * @since   3.1
  */
-final class SimpleMatrix implements Matrix, Cloneable {
+final strictfp class SimpleMatrix implements Matrix, Cloneable {
     /**
      * Number of columns.
      */
@@ -66,7 +66,8 @@ final class SimpleMatrix implements Matrix, Cloneable {
      * @param elements  the elements, where columns index varies fastest. This array is <strong>not</strong> cloned.
      */
     public SimpleMatrix(final int numRow, final int numCol, final double... elements) {
-        assertEquals("Number of elements is inconsistent with the matrix size.", numRow*numCol, elements.length);
+        assertEquals(numRow*numCol, elements.length,
+                "Number of elements is inconsistent with the matrix size.");
         this.numCol   = numCol;
         this.elements = elements;
     }

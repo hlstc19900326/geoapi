@@ -31,8 +31,8 @@
  */
 package org.opengis.test.util;
 
+import org.junit.jupiter.api.Test;
 import org.opengis.test.Validators;
-import org.junit.*;
 
 
 /**

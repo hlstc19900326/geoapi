@@ -47,9 +47,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import org.opengis.util.CodeList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -319,7 +319,7 @@ public final strictfp class ContentTest implements FileVisitor<Path> {
                             return FileVisitResult.TERMINATE;
                         }
                         final Set<Class<?>> members = types[category.ordinal()];
-                        assertTrue(classname, members.add(c));                      // Fails if a class is declared twice.
+                        assertTrue(members.add(c), classname);                      // Fails if a class is declared twice.
                     }
                     buffer.setLength(length);
                 }

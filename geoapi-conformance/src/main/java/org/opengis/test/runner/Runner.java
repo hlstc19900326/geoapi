@@ -34,39 +34,40 @@ package org.opengis.test.runner;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.Optional;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.MalformedURLException;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.junit.runner.Result;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Description;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.notification.RunListener;
-
 import org.opengis.test.TestSuite;
-import org.opengis.test.TestEvent;
-import org.opengis.test.TestListener;
+
+import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.platform.launcher.Launcher;
+import org.junit.platform.launcher.LauncherDiscoveryRequest;
+import org.junit.platform.launcher.TestExecutionListener;
+import org.junit.platform.launcher.TestIdentifier;
+import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.engine.TestExecutionResult;
 
 import static org.opengis.test.runner.ResultEntry.Status.*;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
 
 /**
- * Provides methods for running the tests. This class does not depend on Swing widgets
- * or on console program.
+ * Provides methods for running the tests.
+ * This class does not depend on Swing widgets or on console program.
+ * This class is <strong>not</strong> thread-safe.
  *
  * @author  Martin Desruisseaux (Geomatys)
  * @version 3.1
  * @since   3.1
  */
-final class Runner extends RunListener implements TestListener {
+final class Runner implements TestExecutionListener, TestWatcher {
     /**
      * The logger for this package.
      */
@@ -95,6 +96,13 @@ final class Runner extends RunListener implements TestListener {
     private final ChangeEvent event;
 
     /**
+     * Result of the last test executed. This field is set to {@code null} before each test.
+     * Its value will be constructed by {@link TestWatcher} if possible because we can get
+     * more information that way, or by {@link TestExecutionListener} as a fallback.
+     */
+    private transient ResultEntry result;
+
+    /**
      * Creates a new, initially empty, runner.
      */
     Runner() {
@@ -116,26 +124,22 @@ final class Runner extends RunListener implements TestListener {
         TestSuite.setClassLoader(new URLClassLoader(urls, TestSuite.class.getClassLoader()));
     }
 
-    /**
+   /**
      * Runs the JUnit tests.
+     *
+     * @todo We register {@link TestExecutionListener}, but it does not provide enough information
+     *       (we need class and method name for creating a link to Javadoc, and we need the test
+     *       instance for configuration tip). We can register {@link TestWatcher} for more information,
+     *       but I have not yet found another way to register such watcher than enabling
+     *       {@link java.util.ServiceLoader} (provider not implemented yet).
      */
     void run() {
-        final JUnitCore junit = new JUnitCore();
-        junit.addListener(this);
-        final Result result;
-        try {
-            TestSuite.addTestListener(this);
-            result = junit.run(TestSuite.class);
-        } finally {
-            TestSuite.removeTestListener(this);
-        }
-        if (result.getRunCount() == 1 && result.getFailureCount() == 1) {
-            final Throwable exception = result.getFailures().get(0).getException();
-            LOGGER.log(Level.WARNING, exception.toString(), exception);
-            // Should never happen, unless a problem occurred very soon in
-            // the initialization process (typically a NoClassDefFoundError).
-            // Without this hack, JUnit just silently do nothing...
-        }
+        System.setProperty("junit.jupiter.extensions.autodetection.enabled", "true");
+        final LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
+                .selectors(selectClass(TestSuite.class)).build();
+        Launcher launcher = LauncherFactory.create();
+        launcher.registerTestExecutionListeners(this);
+        launcher.execute(request);
     }
 
     /**
@@ -149,16 +153,14 @@ final class Runner extends RunListener implements TestListener {
     }
 
     /**
-     * Adds a new test result. If we already have an entry for the same test method,
-     * silently discards the new entry. We do that because test failure cause two
-     * entries to be emitted: first an entry for the test failure, then another
-     * entry because the test finished.
+     * Adds the result stored in the {@link #result} field.
      */
-    private void addEntry(final ResultEntry entry) {
+    private void storeResult() {
         final ChangeListener[] list;
         synchronized (entries) {
-            entries.add(entry);
+            entries.add(result);
             list = listeners;
+            result = null;
         }
         for (final ChangeListener listener : list) {
             listener.stateChanged(event);
@@ -166,57 +168,72 @@ final class Runner extends RunListener implements TestListener {
     }
 
     /**
-     * Called when a test is about to start.
-     * Current implementation does nothing.
+     * Invoked when a test is about to start. This method clears the {@link #result} field
+     * for avoiding the risk to confuse the result of new test with result of previous test.
      */
     @Override
-    public void starting(final TestEvent event) {
+    public void executionStarted​(final TestIdentifier id) {
+        result = null;
     }
 
     /**
-     * Called when an atomic test has finished, whether the test succeeds or fails.
-     * Current implementation does nothing - we will rely instead on the more specific
-     * methods below.
+     * Called when a test succeed. This method prepares a result with the {@code SUCCESS} status.
      */
     @Override
-    public void finished(final TestEvent event) {
+    public void testSuccessful​(final ExtensionContext event) {
+        result = new ResultEntry(event, SUCCESS, null);
     }
 
     /**
-     * Called when a test succeed. This method adds a new entry in the {@linkplain #entries} list
-     * with the {@code SUCCESS} status.
+     * Called when a test failed. This method prepares a result with the {@code FAILURE} status
+     * and the stack trace.
      */
     @Override
-    public void succeeded(final TestEvent event) {
-        addEntry(new ResultEntry(event, SUCCESS, null));
+    public void testFailed​(final ExtensionContext event, final Throwable cause) {
+        result = new ResultEntry(event, FAILURE, cause);
     }
 
     /**
-     * Called when a test failed. This method adds a new entry in the {@linkplain #entries} list
-     * with the {@code FAILURE} status and the stack trace.
+     * Called when a test has been skipped. This method prepares a result with the
+     * {@code ASSUMPTION_NOT_MET} status and the stack trace.
      */
     @Override
-    public void failed(final TestEvent event, final Throwable exception) {
-        addEntry(new ResultEntry(event, FAILURE, exception));
-    }
-
-    /**
-     * Called when an atomic test flags that it assumes a condition that is false.
-     */
-    @Override
-    public void testAssumptionFailure(final Failure failure) {
-        addEntry(new ResultEntry(failure.getDescription(), ASSUMPTION_NOT_MET, failure.getException()));
-        super.testAssumptionFailure(failure);
+    public void testAborted​(final ExtensionContext event, final Throwable cause) {
+        result = new ResultEntry(event, ASSUMPTION_NOT_MET, cause);
     }
 
     /**
      * Called when a test will not be run, generally because a test method is annotated with
-     * {@link org.junit.Ignore}.
+     * {@link org.junit.Ignore}. This method prepares a result with the {@code IGNORED} status.
      */
     @Override
-    public void testIgnored(final Description description) throws Exception {
-        addEntry(new ResultEntry(description, IGNORED, null));
-        super.testIgnored(description);
+    public void testDisabled​(final ExtensionContext event, final Optional<String> reason) {
+        result = new ResultEntry(event, IGNORED, null);
+    }
+
+    /**
+     * Called when a test will not be run, generally because a test method is annotated
+     * with {@link org.junit.jupiter.api.Disabled}. If the result has not been created
+     * by {@link #testAborted(ExtensionContext, Throwable)}, creates it now.
+     */
+    @Override
+    public void executionSkipped​(final TestIdentifier id, final String reason) {
+        if (result == null) {
+            result = new ResultEntry(id, ResultEntry.Status.IGNORED, null);
+        }
+        storeResult();
+    }
+
+    /**
+     * Called when a test completed. If the result has not been created by
+     * {@link #testSuccessful(ExtensionContext)} or similar methods, creates it now.
+     */
+    @Override
+    public void executionFinished(final TestIdentifier id, final TestExecutionResult r) {
+        if (result == null) {
+            result = new ResultEntry(id, ResultEntry.Status.fromJupiter(r.getStatus()), r.getThrowable().orElse(null));
+        }
+        storeResult();
     }
 
     /**

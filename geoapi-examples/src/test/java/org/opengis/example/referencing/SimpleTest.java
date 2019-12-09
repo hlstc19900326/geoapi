@@ -7,14 +7,14 @@
  */
 package org.opengis.example.referencing;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.opengis.referencing.cs.RangeMeaning;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.EllipsoidalCS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.GeodeticDatum;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -33,7 +33,7 @@ public strictfp class SimpleTest {
         final GeodeticDatum datum = SimpleDatum.WGS84;
         assertEquals(0, datum.getPrimeMeridian().getGreenwichLongitude(), 0);
         assertEquals("EPSG:World Geodetic System 1984", datum.toString());
-        assertEquals("Object shall be equal to itself.", datum, datum);
+        assertEquals(datum, datum, "Object shall be equal to itself.");
     }
 
     /**
@@ -50,6 +50,6 @@ public strictfp class SimpleTest {
         assertSame  (RangeMeaning.EXACT,      cs.getAxis(0).getRangeMeaning());
         assertSame  (RangeMeaning.WRAPAROUND, cs.getAxis(1).getRangeMeaning());
         assertEquals("EPSG:WGS 84", crs.toString());
-        assertEquals("Object shall be equal to itself.", crs, crs);
+        assertEquals(crs, crs, "Object shall be equal to itself.");
     }
 }

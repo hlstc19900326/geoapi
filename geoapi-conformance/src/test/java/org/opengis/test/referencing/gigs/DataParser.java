@@ -45,7 +45,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -131,7 +131,7 @@ final class DataParser {
         } while (!new File(path, "geoapi-conformance").exists());
         for (final String name : PATH_TO_DATA) {
             path = new File(path, name);
-            assertTrue(name, path.isDirectory());
+            assertTrue(path.isDirectory(), name);
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path, file)), "UTF-8"))) {
             data = new ArrayList<>();
@@ -321,7 +321,7 @@ final class DataParser {
             // First, we must ensure that the array as a suffisient capacity.
             final int length = count + (upper - lower) / step + 1;
             if (length > values.length) {
-                values = Arrays.copyOf(values, Math.max(values.length*2, length));
+                values = Arrays.copyOf(values, StrictMath.max(values.length*2, length));
             }
             for (int value=lower; value<=upper; value+=step) {
                 values[count++] = value;

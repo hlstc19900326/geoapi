@@ -7,8 +7,8 @@
  */
 package org.opengis.example.parameter;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -20,12 +20,6 @@ import static org.junit.Assert.*;
  */
 public strictfp class SimpleParameterTest {
     /**
-     * Tolerance factor for comparison of floating point numbers
-     * that are expected to be strictly equal.
-     */
-    private static final double STRICT = 0.0;
-
-    /**
      * Small tolerance factor for comparison of floating point numbers.
      */
     private static final double EPS = 1E-12;
@@ -36,22 +30,22 @@ public strictfp class SimpleParameterTest {
     @Test
     public void testLatitude() {
         final SimpleParameter param = new SimpleParameter(null, "latitude", SimpleParameter.Type.LATITUDE);
-        assertEquals("Minimum",               Double.valueOf(-90),  param.getMinimumValue());
-        assertEquals("Maximum",               Double.valueOf(+90),  param.getMaximumValue());
-        assertEquals("Initial value",         0.0,                  param.doubleValue(), 0.0);
-        assertEquals("Lenient cast",          0,                    param.intValue());
-        assertEquals("Lenient behavior",      false,                param.booleanValue());
-        assertArrayEquals("Lenient behavior", new double[] {0.0},   param.doubleValueList(), 0.0);
-        assertArrayEquals("Lenient behavior", new int[]    {0},     param.intValueList());
-        assertEquals     ("Unit conversion",  0.0,                  param.doubleValue(SimpleParameter.GRAD), STRICT);
-        assertArrayEquals("Unit conversion",  new double[] {0.0},   param.doubleValueList(SimpleParameter.GRAD), STRICT);
+        assertEquals(Double.valueOf(-90),     param.getMinimumValue(), "Minimum");
+        assertEquals(Double.valueOf(+90),     param.getMaximumValue(), "Maximum");
+        assertEquals(0.0,                     param.doubleValue(),     "Initial value");
+        assertEquals(0,                       param.intValue(),        "Lenient cast");
+        assertEquals(false,                   param.booleanValue(),    "Lenient behavior");
+        assertArrayEquals(new double[] {0.0}, param.doubleValueList(), "Lenient behavior");
+        assertArrayEquals(new int[]    {0},   param.intValueList(),    "Lenient behavior");
+        assertEquals     (              0.0,  param.doubleValue(SimpleParameter.GRAD),     "Unit conversion");
+        assertArrayEquals(new double[] {0.0}, param.doubleValueList(SimpleParameter.GRAD), "Unit conversion");
 
         param.setValue(18);
-        assertEquals("value",                 18.0,                 param.doubleValue(), 0.0);
-        assertEquals("Lenient cast",          18,                   param.intValue());
-        assertArrayEquals("Lenient behavior", new double[] {18.0},  param.doubleValueList(), 0.0);
-        assertArrayEquals("Lenient behavior", new int[]    {18},    param.intValueList());
-        assertEquals     ("Unit conversion",  20.0,                 param.doubleValue(SimpleParameter.GRAD), EPS);
-        assertArrayEquals("Unit conversion",  new double[] {20.0},  param.doubleValueList(SimpleParameter.GRAD), EPS);
+        assertEquals(                   18.0,  param.doubleValue(),     "value");
+        assertEquals(                   18,    param.intValue(),        "Lenient cast");
+        assertArrayEquals(new double[] {18.0}, param.doubleValueList(), "Lenient behavior");
+        assertArrayEquals(new int[]    {18  }, param.intValueList(),    "Lenient behavior");
+        assertEquals     (              20.0,  param.doubleValue(SimpleParameter.GRAD), EPS, "Unit conversion");
+        assertArrayEquals(new double[] {20.0}, param.doubleValueList(SimpleParameter.GRAD), EPS, "Unit conversion");
     }
 }
