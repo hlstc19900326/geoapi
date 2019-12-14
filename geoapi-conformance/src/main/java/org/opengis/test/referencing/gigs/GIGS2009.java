@@ -205,7 +205,7 @@ public strictfp class GIGS2009 extends AuthorityFactoryTestCase<Transformation> 
         validators.validate(transformation);
 
         // Transformation identifier.
-        assertContainsCode("Transformation.getIdentifiers()", "EPSG", code, transformation.getIdentifiers());
+        assertContainsCode("EPSG", code, transformation.getIdentifiers(), "Transformation.getIdentifiers()");
 
         // Transformation name.
         if (isStandardNameSupported) {

@@ -193,7 +193,7 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
         validators.validate(pm);
 
         // Prime meridian identifiers.
-        assertContainsCode("PrimeMeridian.getIdentifiers()", "EPSG", code, pm.getIdentifiers());
+        assertContainsCode("EPSG", code, pm.getIdentifiers(), "PrimeMeridian.getIdentifiers()");
 
         // Prime meridian name.
         if (isStandardNameSupported) {
@@ -205,7 +205,7 @@ public strictfp class GIGS2003 extends AuthorityFactoryTestCase<PrimeMeridian> {
         // Prime meridian alias.
         if (isStandardAliasSupported) {
             configurationTip = Configuration.Key.isStandardAliasSupported;
-            assertContainsAll("PrimeMeridian.getAlias()", aliases, pm.getAlias());
+            assertContainsAll(aliases, pm.getAlias(), "PrimeMeridian.getAlias()");
             configurationTip = null;
         }
         /*

@@ -268,7 +268,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         validators.validate(ellipsoid);
 
         // Ellipsoid identifier.
-        assertContainsCode("Ellipsoid.getIdentifiers()", "EPSG", code, ellipsoid.getIdentifiers());
+        assertContainsCode("EPSG", code, ellipsoid.getIdentifiers(), "Ellipsoid.getIdentifiers()");
 
         // Ellipsoid name.
         if (isStandardNameSupported) {
@@ -280,7 +280,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
         // Ellipsoid alias.
         if (isStandardAliasSupported) {
             configurationTip = Configuration.Key.isStandardAliasSupported;
-            assertContainsAll("Ellipsoid.getAlias()", aliases, ellipsoid.getAlias());
+            assertContainsAll(aliases, ellipsoid.getAlias(), "Ellipsoid.getAlias()");
             configurationTip = null;
         }
         /*

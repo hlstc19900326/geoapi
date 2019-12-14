@@ -225,15 +225,15 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         validators.validate(crs);
 
         // Projected CRS identifier.
-        assertContainsCode("ProjectedCRS.getIdentifiers()", "EPSG", code, crs.getIdentifiers());
+        assertContainsCode("EPSG", code, crs.getIdentifiers(), "ProjectedCRS.getIdentifiers()");
 
         // Projected CRS components.
         if (isDependencyIdentificationSupported) {
             configurationTip = Configuration.Key.isDependencyIdentificationSupported;
 
             // Geodetic datum name.
-            assertContainsCode("ProjectedCRS.getDatum().getIdentifiers()",
-                    "EPSG", datumCode, crs.getDatum().getIdentifiers());
+            assertContainsCode("EPSG", datumCode, crs.getDatum().getIdentifiers(),
+                    "ProjectedCRS.getDatum().getIdentifiers()");
 
             // Base geographic CRS name.
             if (isStandardNameSupported) {

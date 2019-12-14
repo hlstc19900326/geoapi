@@ -207,7 +207,7 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         validators.validate(conversion);
 
         // Map projection identifier.
-        assertContainsCode("Conversion.getIdentifiers()", "EPSG", code, conversion.getIdentifiers());
+        assertContainsCode("EPSG", code, conversion.getIdentifiers(), "Conversion.getIdentifiers()");
 
         // Map projection name.
         if (isStandardNameSupported) {

@@ -225,13 +225,11 @@ public strictfp abstract class AuthorityFactoryTestCase<T> extends GIGSTestCase 
      * This method verifies that the given collection contains at least the expected aliases.
      * However the collection may contain additional aliases, which will be ignored.
      *
-     * @param message   the prefix of the message to show in case of failure.
      * @param expected  the expected aliases.
      * @param aliases   the actual aliases.
+     * @param message   the prefix of the message to show in case of failure.
      */
-    static void assertContainsAll(final String message, final String[] expected,
-            final Collection<GenericName> aliases)
-    {
+    static void assertContainsAll(final String[] expected, final Collection<GenericName> aliases, final String message) {
         assertNotNull(aliases, message);
 next:   for (final String search : expected) {
             for (final GenericName alias : aliases) {
@@ -248,13 +246,13 @@ next:   for (final String search : expected) {
      * Ensures that the given collection contains at least one identifier having the given
      * codespace (ignoring case) and the given code value.
      *
-     * @param message      the message to show in case of failure.
      * @param codespace    the code space of identifiers to search.
      * @param expected     the expected identifier code.
      * @param identifiers  the actual identifiers.
+     * @param message      the message to show in case of failure.
      */
-    static void assertContainsCode(final String message, final String codespace, final int expected,
-            final Collection<? extends Identifier> identifiers)
+    static void assertContainsCode(final String codespace, final int expected,
+            final Collection<? extends Identifier> identifiers, final String message)
     {
         assertNotNull(identifiers, message);
         int found = 0;

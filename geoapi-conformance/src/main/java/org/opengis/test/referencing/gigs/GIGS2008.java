@@ -217,7 +217,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             validators.validate(datum);
 
             // Datum identifier. Important in order to distinguish datum.
-            assertContainsCode("VerticalDatum.getIdentifiers()", "EPSG", datumCode, datum.getIdentifiers());
+            assertContainsCode("EPSG", datumCode, datum.getIdentifiers(), "VerticalDatum.getIdentifiers()");
 
             // Datum name.
             if (isStandardNameSupported) {
@@ -240,7 +240,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             validators.validate(crs);
 
             // CRS identifier.
-            assertContainsCode("VerticalCRS.getIdentifiers()", "EPSG", code, crs.getIdentifiers());
+            assertContainsCode("EPSG", code, crs.getIdentifiers(), "VerticalCRS.getIdentifiers()");
 
             // CRS name.
             if (isStandardNameSupported) {
@@ -256,8 +256,8 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
             // Datum identification.
             if (isDependencyIdentificationSupported) {
                 configurationTip = Configuration.Key.isDependencyIdentificationSupported;
-                assertContainsCode("VerticalCRS.getDatum().getIdentifiers()", "EPSG",
-                        datumCode, datum.getIdentifiers());
+                assertContainsCode("EPSG", datumCode, datum.getIdentifiers(),
+                        "VerticalCRS.getDatum().getIdentifiers()");
 
                 configurationTip = Configuration.Key.isStandardNameSupported;
                 assertEquals(datumName, getVerifiableName(datum), "VerticalCRS.getDatum().getName()");

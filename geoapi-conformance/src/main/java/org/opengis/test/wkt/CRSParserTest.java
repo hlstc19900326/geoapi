@@ -208,11 +208,11 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
      * Asserts the the given character sequence is either null or equals to the given value.
      * This is used for optional elements like remarks.
      *
-     * @param property  the property being tested, for producing a message in case of assertion failure.
      * @param expected  the expected value.
      * @param actual    the actual value.
+     * @param property  the property being tested, for producing a message in case of assertion failure.
      */
-    private static void assertNullOrEquals(final String property, final String expected, final CharSequence actual) {
+    private static void assertNullOrEquals(final String expected, final CharSequence actual, final String property) {
         if (actual != null) {
             assertEquals(expected, actual.toString(), property);
         }
@@ -375,7 +375,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyFlattenedSphere (datum.getEllipsoid(), "Krassowsky 1940", 6378245, 298.3, metre);
         verifyPrimeMeridian   (datum.getPrimeMeridian(), null, 0, degree);
         verifyCoordinateSystem(crs.getCoordinateSystem(), EllipsoidalCS.class, new AxisDirection[] {NORTH,EAST}, degree);
-        assertNullOrEquals("remark", "Система Геодеэических Координвт года 1995(СК-95)", crs.getRemarks());
+        assertNullOrEquals("Система Геодеэических Координвт года 1995(СК-95)", crs.getRemarks(), "remark");
     }
 
     /**
@@ -415,7 +415,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
             configurationTip = null;
         }
         verifyNAD23(crs, true, units.degree(), units.metre());
-        assertNullOrEquals("remark", "1986 realisation", crs.getRemarks());
+        assertNullOrEquals("1986 realisation", crs.getRemarks(), "remark");
     }
 
     /**
@@ -482,7 +482,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyFlattenedSphere (datum.getEllipsoid(), "Clarke 1880 (IGN)", 6378249.2, 293.4660213, metre);
         verifyPrimeMeridian   (datum.getPrimeMeridian(), "Paris", 2.5969213, grad);
         verifyCoordinateSystem(crs.getCoordinateSystem(), EllipsoidalCS.class, new AxisDirection[] {NORTH,EAST}, grad);
-        assertNullOrEquals("remark", "Nouvelle Triangulation Française", crs.getRemarks());
+        assertNullOrEquals("Nouvelle Triangulation Française", crs.getRemarks(), "remark");
     }
 
     /**
@@ -545,8 +545,8 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyCoordinateSystem (cs, CartesianCS.class, new AxisDirection[] {GEOCENTRIC_X, GEOCENTRIC_Y, GEOCENTRIC_Z}, metre);
         verifyGeographicExtent (extent = crs.getDomainOfValidity(), "Japan", 17.09, 122.38, 46.05, 157.64);
         verifyTimeExtent       (extent, new Date(1017619200000L), new Date(1319155200000L), 1);
-        assertNullOrEquals("scope", "Geodesy, topographic mapping and cadastre", crs.getScope());
-        assertNullOrEquals("remark", "注：JGD2000ジオセントリックは現在JGD2011に代わりました。", crs.getRemarks());
+        assertNullOrEquals("Geodesy, topographic mapping and cadastre", crs.getScope(), "scope");
+        assertNullOrEquals("注：JGD2000ジオセントリックは現在JGD2011に代わりました。", crs.getRemarks(), "remark");
     }
 
     /**
@@ -622,7 +622,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyParameter(group, "False northing",         3210000.0, metre);
 
         verifyGeographicExtent(crs.getDomainOfValidity(), "An area description", NaN, NaN, NaN, NaN);
-        assertNullOrEquals("scope", "Description of a purpose", crs.getScope());
+        assertNullOrEquals("Description of a purpose", crs.getScope(), "scope");
     }
 
     /**
@@ -698,7 +698,8 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyAxisAbbreviations(cs = crs.getCoordinateSystem(), "X", "Y");
         verifyCoordinateSystem (cs, CartesianCS.class, new AxisDirection[] {EAST,NORTH}, footSurveyUS);
         verifyTexasSouthCentral(crs, degree, footSurveyUS);
-        assertNullOrEquals("remark", "Fundamental point: Meade’s Ranch KS, latitude 39°13'26.686\"N, longitude 98°32'30.506\"W.", crs.getRemarks());
+        assertNullOrEquals("Fundamental point: Meade’s Ranch KS, latitude 39°13'26.686\"N, longitude 98°32'30.506\"W.",
+                crs.getRemarks(), "remark");
     }
 
     /**
@@ -996,7 +997,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
 
         verifyIdentification   (crs, "A construction site CRS", null);
         verifyDatum            (crs.getDatum(), "P1");
-        assertNullOrEquals     ("datum.anchor", "Peg in south corner", crs.getDatum().getAnchorPoint());
+        assertNullOrEquals     ("Peg in south corner", crs.getDatum().getAnchorPoint(), "datum.anchor");
         verifyCoordinateSystem (crs.getCoordinateSystem(), CartesianCS.class, new AxisDirection[] {SOUTH_WEST, SOUTH_EAST}, metre);
     }
 
@@ -1037,7 +1038,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
 
         verifyIdentification   (crs, "A ship-centred CRS", null);
         verifyDatum            (crs.getDatum(), "Ship reference point");
-        assertNullOrEquals     ("datum.anchor", "Centre of buoyancy", crs.getDatum().getAnchorPoint());
+        assertNullOrEquals     ("Centre of buoyancy", crs.getDatum().getAnchorPoint(), "datum.anchor");
         verifyAxisAbbreviations(cs = crs.getCoordinateSystem(), "x", "y", "z");
         verifyCoordinateSystem (cs, CartesianCS.class, new AxisDirection[] {valueOf("forward"), valueOf("starboard"), DOWN}, metre);
     }

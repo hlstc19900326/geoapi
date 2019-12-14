@@ -325,7 +325,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
         assertNotNull(crs, "GeodeticCRS");
 
         // Geodetic CRS identifier.
-        assertContainsCode("GeodeticCRS.getIdentifiers()", "EPSG", crsCode, crs.getIdentifiers());
+        assertContainsCode("EPSG", crsCode, crs.getIdentifiers(), "GeodeticCRS.getIdentifiers()");
 
         // Geodetic CRS name.
         if (isStandardNameSupported) {
@@ -357,7 +357,7 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
          */
         if (isDependencyIdentificationSupported || (toVerify == datum)) {
             configurationTip = Configuration.Key.isDependencyIdentificationSupported;
-            assertContainsCode("GeodeticDatum.getIdentifiers()", "EPSG", code, toVerify.getIdentifiers());
+            assertContainsCode("EPSG", code, toVerify.getIdentifiers(), "GeodeticDatum.getIdentifiers()");
 
             if (isStandardNameSupported) {
                 configurationTip = Configuration.Key.isStandardNameSupported;
