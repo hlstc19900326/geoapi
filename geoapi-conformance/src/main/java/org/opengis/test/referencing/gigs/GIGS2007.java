@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 
 
 /**
@@ -189,7 +189,7 @@ public strictfp class GIGS2007 extends AuthorityFactoryTestCase<Transformation> 
                 throw e;
             }
             if (operation != null) {                        // For consistency with the behavior in other classes.
-                assertInstanceOf(codeAsString, Transformation.class, operation);
+                assertInstanceOf(Transformation.class, operation, codeAsString);
                 transformation = (Transformation) operation;
             }
         }

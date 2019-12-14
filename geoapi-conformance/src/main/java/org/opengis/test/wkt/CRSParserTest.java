@@ -53,7 +53,7 @@ import org.junit.jupiter.api.Test;
 import static java.lang.Double.NaN;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
 
 
@@ -260,7 +260,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
     private <T extends CoordinateReferenceSystem> T parse(final Class<T> type, final String text) throws FactoryException {
         assumeTrue(crsFactory != null, "No CRSFactory.");
         object = crsFactory.createFromWKT(preprocessWKT(text));
-        assertInstanceOf("CRSFactory.createFromWKT(String)", type, object);
+        assertInstanceOf(type, object, "CRSFactory.createFromWKT(String)");
         return type.cast(object);
     }
 
@@ -1099,7 +1099,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification  (crs, "ETRS89 Lambert Azimuthal Equal Area CRS", null);
         verifyCoordinateSystem(crs.getCoordinateSystem(), EllipsoidalCS.class, new AxisDirection[] {NORTH,EAST}, degree);
 
-        assertInstanceOf("baseCRS", GeodeticCRS.class, crs.getBaseCRS());
+        assertInstanceOf      (GeodeticCRS.class, crs.getBaseCRS(), "baseCRS");
         verifyDatum           (datum = ((GeodeticCRS) crs.getBaseCRS()).getDatum(), "WGS 84");
         verifyFlattenedSphere (datum.getEllipsoid(), "WGS 84", 6378137, 298.2572236, metre);
         verifyPrimeMeridian   (datum.getPrimeMeridian(), null, 0, degree);
@@ -1170,7 +1170,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyCoordinateSystem (crs.getCoordinateSystem(), EllipsoidalCS.class, new AxisDirection[] {EAST,NORTH,UP}, metre);
         verifyAxisAbbreviations(crs.getCoordinateSystem(), "U", "V", "W");
 
-        assertInstanceOf("baseCRS", GeodeticCRS.class, crs.getBaseCRS());
+        assertInstanceOf      (GeodeticCRS.class, crs.getBaseCRS(), "baseCRS");
         verifyDatum           (datum = ((GeodeticCRS) crs.getBaseCRS()).getDatum(), "WGS 84");
         verifyFlattenedSphere (datum.getEllipsoid(), "WGS 84", 6378137, 298.2572236, metre);
         verifyPrimeMeridian   (datum.getPrimeMeridian(), null, 0, degree);
@@ -1295,7 +1295,7 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification   (crs, "Gulf of Mexico speculative seismic survey bin grid", null);
         verifyAxisAbbreviations(cs = crs.getCoordinateSystem(), "I", "J");
         verifyCoordinateSystem (cs, CartesianCS.class, new AxisDirection[] {NORTH_NORTH_WEST, WEST_SOUTH_WEST}, one);
-        assertInstanceOf("baseCRS", ProjectedCRS.class, crs.getBaseCRS());
+        assertInstanceOf(ProjectedCRS.class, crs.getBaseCRS(), "baseCRS");
         verifyTexasSouthCentral((ProjectedCRS) crs.getBaseCRS(), degree, footSurveyUS);
 
         final ParameterValueGroup group = crs.getConversionFromBase().getParameterValues();
@@ -1365,8 +1365,8 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification(crs, "NAD83 + NAVD88", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
         assertEquals(2, components.size(), "components.size()");
-        assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
-        assertInstanceOf("components[1]", VerticalCRS.class, components.get(1));
+        assertInstanceOf(GeodeticCRS.class, components.get(0), "components[0]");
+        assertInstanceOf(VerticalCRS.class, components.get(1), "components[1]");
         verifyNAD23((GeodeticCRS) components.get(0), false, degree, metre);
         verifyNAD28((VerticalCRS) components.get(1), metre);
     }
@@ -1421,8 +1421,8 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification(crs, "GPS position and time", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
         assertEquals(2, components.size(), "components.size()");
-        assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
-        assertInstanceOf("components[1]", TemporalCRS.class, components.get(1));
+        assertInstanceOf(GeodeticCRS.class, components.get(0), "components[0]");
+        assertInstanceOf(TemporalCRS.class, components.get(1), "components[1]");
         verifyWGS84  ((GeodeticCRS) components.get(0), false, degree, metre);
         verifyGPSTime((TemporalCRS) components.get(1));
     }
@@ -1481,13 +1481,13 @@ public strictfp class CRSParserTest extends ReferencingTestCase {
         verifyIdentification(crs, "ICAO layer 0", null);
         final List<CoordinateReferenceSystem> components = crs.getComponents();
         assertEquals(2, components.size(), "components.size()");
-        assertInstanceOf("components[0]", GeodeticCRS.class, components.get(0));
-        assertInstanceOf("components[1]", ParametricCRS.class, components.get(1));
+        assertInstanceOf(GeodeticCRS.class,   components.get(0), "components[0]");
+        assertInstanceOf(ParametricCRS.class, components.get(1), "components[1]");
         verifyWGS84((GeodeticCRS) components.get(0), false, degree, metre);
 
         final ParametricCRS ps = (ParametricCRS) components.get(1);
         verifyIdentification(ps, "WMO standard atmosphere", null);
         verifyDatum(ps.getDatum(), "Mean Sea Level");
-        assertInstanceOf("coordinateSystem", ParametricCS.class, ps.getCoordinateSystem());
+        assertInstanceOf(ParametricCS.class, ps.getCoordinateSystem(), "coordinateSystem");
     }
 }

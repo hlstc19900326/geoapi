@@ -52,7 +52,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 
 
 /**
@@ -226,7 +226,7 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
             validators.validate(definition);
             final CoordinateOperation operation = copFactory.createDefiningConversion(properties, method, definition);
             if (operation != null) {  // For consistency with the behavior in other classes.
-                assertInstanceOf(getName(), Conversion.class, operation);
+                assertInstanceOf(Conversion.class, operation, getName());
                 conversion = (Conversion) operation;
             }
         }

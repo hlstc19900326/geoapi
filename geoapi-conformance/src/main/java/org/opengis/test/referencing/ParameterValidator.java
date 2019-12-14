@@ -36,7 +36,7 @@ import java.util.List;
 import org.opengis.parameter.*;
 import org.opengis.test.ValidatorContainer;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -119,25 +119,26 @@ public strictfp class ParameterValidator extends ReferencingValidator {
             validate(validValues);
             for (final T value : validValues) {
                 if (value != null) {
-                    assertInstanceOf("ParameterDescriptor: getValidValues() has unexpected element.", valueClass, value);
+                    assertInstanceOf(valueClass, value, "ParameterDescriptor: getValidValues() has unexpected element.");
                 }
             }
         }
         final Comparable<T> min = object.getMinimumValue();
         if (min != null) {
-            assertInstanceOf("ParameterDescriptor: getMinimumValue() returns unexpected value.", valueClass, min);
+            assertInstanceOf(valueClass, min, "ParameterDescriptor: getMinimumValue() returns unexpected value.");
         }
         final Comparable<T> max = object.getMaximumValue();
         if (max != null) {
-            assertInstanceOf("ParameterDescriptor: getMaximumValue() returns unexpected value.", valueClass, max);
+            assertInstanceOf(valueClass, max, "ParameterDescriptor: getMaximumValue() returns unexpected value.");
         }
-        assertValidRange("ParameterDescriptor: inconsistent minimum and maximum values.", min, max);
+        assertValidRange(min, max, "ParameterDescriptor: inconsistent minimum and maximum values.");
         final T def = object.getDefaultValue();
         if (def != null) {
-            assertInstanceOf("ParameterDescriptor: getDefaultValue() returns unexpected value.", valueClass, def);
-            assertBetween("ParameterDescriptor: getDefaultValue() out of range.", min, max, def);
+            assertInstanceOf(valueClass, def, "ParameterDescriptor: getDefaultValue() returns unexpected value.");
+            assertBetween(min, max, def, "ParameterDescriptor: getDefaultValue() out of range.");
         }
-        assertBetween("ParameterDescriptor: getMinimumOccurs() shall returns 0 or 1.", 0, 1, object.getMinimumOccurs());
+        assertBetween(0, 1, object.getMinimumOccurs(),
+                "ParameterDescriptor: getMinimumOccurs() shall returns 0 or 1.");
         assertEquals(1, object.getMaximumOccurs(),
                 "ParameterDescriptor: getMaximumOccurs() shall returns exactly 1.");
     }
@@ -171,9 +172,9 @@ public strictfp class ParameterValidator extends ReferencingValidator {
             }
         }
         final int minOccurs = object.getMinimumOccurs();
-        assertPositive("ParameterDescriptor: getMinimumOccurs() can not be negative.", minOccurs);
-        assertValidRange("ParameterDescriptor: getMaximumOccurs() gives inconsistent range.",
-                minOccurs, object.getMaximumOccurs());
+        assertPositive(minOccurs, "ParameterDescriptor: getMinimumOccurs() can not be negative.");
+        assertValidRange(minOccurs, object.getMaximumOccurs(),
+                "ParameterDescriptor: getMaximumOccurs() gives inconsistent range.");
     }
 
     /**
@@ -193,15 +194,15 @@ public strictfp class ParameterValidator extends ReferencingValidator {
         if (value != null) {
             if (descriptor != null) {
                 final Class<T> valueClass = descriptor.getValueClass();
-                assertInstanceOf("ParameterValue: getValue() returns unexpected value.", valueClass, value);
+                assertInstanceOf(valueClass, value, "ParameterValue: getValue() returns unexpected value.");
                 final Set<T> validValues = descriptor.getValidValues();
                 if (validValues != null) {
                     validate(validValues);
-                    assertContains("ParameterValue: getValue() not a member of getValidValues() set.",
-                            validValues, value);
+                    assertContains(validValues, value,
+                            "ParameterValue: getValue() not a member of getValidValues() set.");
                 }
-                assertBetween("ParameterValue: getValue() is out of bounds.",
-                        descriptor.getMinimumValue(), descriptor.getMaximumValue(), value);
+                assertBetween(descriptor.getMinimumValue(), descriptor.getMaximumValue(), value,
+                        "ParameterValue: getValue() is out of bounds.");
             }
         }
     }

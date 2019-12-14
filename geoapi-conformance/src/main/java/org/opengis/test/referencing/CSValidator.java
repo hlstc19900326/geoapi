@@ -36,7 +36,7 @@ import java.util.Iterator;
 import org.opengis.referencing.cs.*;
 import org.opengis.test.ValidatorContainer;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.opengis.test.referencing.Utilities.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,8 +158,8 @@ public strictfp class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         mandatory("CoordinateSystemAxis: abbreviation is mandatory.", object.getAbbreviation());
         mandatory("CoordinateSystemAxis: unit is mandatory.", object.getUnit());
-        assertValidRange("CoordinateSystemAxis: expected maximum >= minimum.",
-                object.getMinimumValue(), object.getMaximumValue());
+        assertValidRange(object.getMinimumValue(), object.getMaximumValue(),
+                "CoordinateSystemAxis: expected maximum >= minimum.");
     }
 
     /**
@@ -194,7 +194,7 @@ public strictfp class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertBetween("EllipsoidalCS: wrong number of dimensions.", 2, 3, dimension);
+        assertBetween(2, 3, dimension, "EllipsoidalCS: wrong number of dimensions.");
     }
 
     /**
@@ -299,7 +299,7 @@ public strictfp class CSValidator extends ReferencingValidator {
         validateIdentifiedObject(object);
         validateAxes(object);
         final int dimension = object.getDimension();
-        assertBetween("UserDefinedCS: wrong number of dimensions.", 2, 3, dimension);
+        assertBetween(2, 3, dimension, "UserDefinedCS: wrong number of dimensions.");
     }
 
     /**
@@ -311,7 +311,7 @@ public strictfp class CSValidator extends ReferencingValidator {
      */
     private void validateAxes(final CoordinateSystem object) {
         final int dimension = object.getDimension();
-        assertStrictlyPositive("CoordinateSystem: dimension must be greater than zero.", dimension);
+        assertStrictlyPositive(dimension, "CoordinateSystem: dimension must be greater than zero.");
         for (int i=0; i<dimension; i++) {
             final CoordinateSystemAxis axis = object.getAxis(i);
             mandatory("CoordinateSystem: axis can't be null.", axis);

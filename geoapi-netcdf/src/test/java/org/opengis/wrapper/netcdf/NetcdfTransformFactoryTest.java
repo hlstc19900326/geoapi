@@ -33,7 +33,7 @@ import org.opengis.test.TestCase;
 
 import org.junit.jupiter.api.Test;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -204,8 +204,8 @@ public strictfp class NetcdfTransformFactoryTest extends TestCase {
             final String projectionName = type.getSimpleName();
             final ParameterValueGroup group = factory.getDefaultParameters(projectionName);
             final MathTransform projection = factory.createParameterizedTransform(group);
-            assertInstanceOf("Expected a netCDF wrapper.", NetcdfProjection.class, projection);
-            assertInstanceOf("Expected a netCDF projection.", type, ((NetcdfProjection) projection).delegate());
+            assertInstanceOf(NetcdfProjection.class, projection, "Expected a netCDF wrapper");
+            assertInstanceOf(type, ((NetcdfProjection) projection).delegate(), "Expected a netCDF projection");
         }
     }
 

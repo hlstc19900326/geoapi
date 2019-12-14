@@ -37,7 +37,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.test.ValidatorContainer;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -114,7 +114,7 @@ public strictfp class OperationValidator extends ReferencingValidator {
         }
         final int sourceDimension = transform.getSourceDimensions();
         for (int i : index) {
-            assertBetween("PassThroughOperation: invalid modified coordinate index.", 0, sourceDimension-1, i);
+            assertBetween(0, sourceDimension-1, i, "PassThroughOperation: invalid modified coordinate index.");
         }
     }
 
@@ -325,10 +325,10 @@ public strictfp class OperationValidator extends ReferencingValidator {
         final Integer sourceDimension = object.getSourceDimensions();
         final Integer targetDimension = object.getTargetDimensions();
         if (sourceDimension != null) {
-            assertStrictlyPositive("OperationMethod: source dimension must be greater than zero.", sourceDimension);
+            assertStrictlyPositive(sourceDimension, "OperationMethod: source dimension must be greater than zero.");
         }
         if (targetDimension != null) {
-            assertStrictlyPositive("OperationMethod: target dimension must be greater than zero.", targetDimension);
+            assertStrictlyPositive(targetDimension, "OperationMethod: target dimension must be greater than zero.");
         }
         validate(object.getFormula());
         container.validate(object.getParameters());
@@ -359,8 +359,8 @@ public strictfp class OperationValidator extends ReferencingValidator {
         }
         final int sourceDimension = object.getSourceDimensions();
         final int targetDimension = object.getTargetDimensions();
-        assertStrictlyPositive("MathTransform: source dimension must be greater than zero.", sourceDimension);
-        assertStrictlyPositive("MathTransform: target dimension must be greater than zero.", targetDimension);
+        assertStrictlyPositive(sourceDimension, "MathTransform: source dimension must be greater than zero.");
+        assertStrictlyPositive(targetDimension, "MathTransform: target dimension must be greater than zero.");
         if (object instanceof MathTransform1D) {
             assertEquals(1, sourceDimension, "MathTransform1D: source dimension must be 1.");
             assertEquals(1, targetDimension, "MathTransform1D: target dimension must be 1.");

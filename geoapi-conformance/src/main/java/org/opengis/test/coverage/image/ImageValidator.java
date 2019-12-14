@@ -42,7 +42,7 @@ import javax.imageio.metadata.IIOMetadataFormatImpl;
 import org.opengis.test.Validator;
 import org.opengis.test.ValidatorContainer;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -215,7 +215,7 @@ public strictfp class ImageValidator extends Validator {
      */
     private static void validateArray(final String field, final Object[] array) {
         if (array != null) {
-            assertStrictlyPositive("The " + field + " array shall be either null or non-empty.", array.length);
+            assertStrictlyPositive(array.length, "The `" + field + "` array shall be either null or non-empty.");
             for (int i=0; i<array.length; i++) {
                 final Object element = array[i];
                 assertNotNull(element, field + '[' + i + ']');

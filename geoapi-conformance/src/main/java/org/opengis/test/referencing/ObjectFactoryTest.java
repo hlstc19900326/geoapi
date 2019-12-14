@@ -52,7 +52,7 @@ import org.opengis.test.Units;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
 
 

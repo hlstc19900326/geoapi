@@ -37,7 +37,7 @@ import org.opengis.util.InternationalString;
 import org.opengis.test.Validator;
 import org.opengis.test.ValidatorContainer;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -81,7 +81,7 @@ public abstract strictfp class MetadataValidator extends Validator {
         int count = 0;
         for (final T element : objects) {
             assertNotNull(element, "Collection should not contain null element.");
-            assertInstanceOf("Wrong element type in the collection.", elementType, element);
+            assertInstanceOf(elementType, element, "Wrong element type in the collection.");
             array[count++] = element;
         }
         assertEquals(array.length, count, "Unexpected end of iteration");

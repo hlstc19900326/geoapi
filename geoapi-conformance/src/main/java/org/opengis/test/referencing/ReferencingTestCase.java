@@ -63,7 +63,7 @@ import org.opengis.test.TestCase;
 import org.opengis.util.Factory;
 
 import static java.lang.Double.isNaN;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -165,7 +165,7 @@ public strictfp abstract class ReferencingTestCase extends TestCase {
     protected void verifyIdentification(final IdentifiedObject object, final String name, final String identifier) {
         if (object != null) {
             if (name != null) {
-                assertUnicodeIdentifierEquals("getName().getCode()", name, Utilities.getName(object), true);
+                assertUnicodeIdentifierEquals(name, Utilities.getName(object), true, "getName().getCode()");
             }
             if (identifier != null) {
                 for (final Identifier id : object.getIdentifiers()) {
@@ -212,8 +212,8 @@ public strictfp abstract class ReferencingTestCase extends TestCase {
     {
         if (ellipsoid != null) {
             if (name != null) {
-                assertUnicodeIdentifierEquals("Ellipsoid.getName().getCode()",
-                        name, Utilities.getName(ellipsoid), true);
+                assertUnicodeIdentifierEquals(name, Utilities.getName(ellipsoid), true,
+                        "Ellipsoid.getName().getCode()");
             }
             final Unit<Length> actualUnit = ellipsoid.getAxisUnit();
             assertNotNull(actualUnit,
@@ -258,8 +258,8 @@ public strictfp abstract class ReferencingTestCase extends TestCase {
     {
         if (primeMeridian != null) {
             if (name != null) {
-                assertUnicodeIdentifierEquals("PrimeMeridian.getName().getCode()",
-                        name, Utilities.getName(primeMeridian), true);
+                assertUnicodeIdentifierEquals(name, Utilities.getName(primeMeridian), true,
+                        "PrimeMeridian.getName().getCode()");
             }
             final Unit<Angle> actualUnit = primeMeridian.getAngularUnit();
             assertNotNull(actualUnit,

@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 
 
 /**
@@ -204,8 +204,8 @@ public strictfp class NameTest extends TestCase {
             }
             configurationTip = null;
         }
-        assertContains("toString() should returns one of the values given to the factory method.",
-                names.values(), localized.toString());
+        assertContains(names.values(), localized.toString(),
+                "toString() should returns one of the values given to the factory method.");
     }
 
     /**

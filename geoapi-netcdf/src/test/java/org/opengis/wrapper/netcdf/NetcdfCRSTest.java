@@ -51,7 +51,7 @@ import org.opengis.test.dataset.TestData;
 
 import org.junit.jupiter.api.Test;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.opengis.referencing.cs.AxisDirection.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -227,23 +227,23 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
             final Class<T> horizontalType, final boolean hasVerticalCRS)
     {
         validator.dispatch(crs);
-        assertInstanceOf(message, CompoundCRS.class, crs);
+        assertInstanceOf(CompoundCRS.class, crs, message);
         assertAxisDirectionsEqual(message, crs.getCoordinateSystem(),
                 hasVerticalCRS ? new AxisDirection[] {EAST, NORTH, UP, FUTURE}
                                : new AxisDirection[] {EAST, NORTH, FUTURE});
         final List<CoordinateReferenceSystem> components = ((CompoundCRS) crs).getComponents();
         int n = hasVerticalCRS ? 3 : 2;
-        assertEquals(n, components.size(), "CompoundCRS number of components:");
+        assertEquals(n, components.size(), "CompoundCRS number of components");
         CoordinateReferenceSystem candidate = components.get(--n);
-        assertInstanceOf("CompoundCRS.component[last] type:", TemporalCRS.class, candidate);
+        assertInstanceOf(TemporalCRS.class, candidate, "CompoundCRS.component[last] type");
         temporalCRS = (TemporalCRS) candidate;
         if (hasVerticalCRS) {
             candidate = components.get(--n);
-            assertInstanceOf("CompoundCRS.component[1] type:", VerticalCRS.class, candidate);
+            assertInstanceOf(VerticalCRS.class, candidate, "CompoundCRS.component[1] type");
             verticalCRS = (VerticalCRS) candidate;
         }
         candidate = components.get(--n);
-        assertInstanceOf("CompoundCRS.component[0] type:", horizontalType, candidate);
+        assertInstanceOf(horizontalType, candidate, "CompoundCRS.component[0] type");
         return horizontalType.cast(candidate);
     }
 
@@ -268,7 +268,7 @@ public strictfp class NetcdfCRSTest extends IOTestCase {
     public void testGeographic2D() throws IOException {
         try (NetcdfDataset file = new NetcdfDataset(open(TestData.NETCDF_2D_GEOGRAPHIC))) {
             crs = wrap(assertSingleton(file.getCoordinateSystems()), file);
-            assertInstanceOf("Expected a geographic CRS.", GeographicCRS.class, crs);
+            assertInstanceOf(GeographicCRS.class, crs, null);
             final EllipsoidalCS ellp = ((GeographicCRS) crs).getCoordinateSystem();
             assertAxisDirectionsEqual("GeographicCRS.cs", ellp, EAST, NORTH);
             assertAxisEquals("lon", Units.DEGREE, ellp.getAxis(0));

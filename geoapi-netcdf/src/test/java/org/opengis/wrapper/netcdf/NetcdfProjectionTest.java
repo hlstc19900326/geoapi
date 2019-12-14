@@ -24,7 +24,7 @@ import org.opengis.test.referencing.TransformTestCase;
 
 import org.junit.jupiter.api.Test;
 
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -131,9 +131,9 @@ public strictfp class NetcdfProjectionTest extends TransformTestCase {
         final SingleOperation operation = this.operation;               // Protect from changes.
         final GeographicBoundingBox box = (GeographicBoundingBox)
                 operation.getDomainOfValidity().getGeographicElements().iterator().next();
-        assertBetween("westBoundLongitude", -180, -152, box.getWestBoundLongitude());
-        assertBetween("eastBoundLongitude",  -58, +180, box.getEastBoundLongitude());
-        assertBetween("southBoundLatitude",  -90,  -43, box.getSouthBoundLatitude());
-        assertBetween("northBoundLatitude",   43,  +90, box.getNorthBoundLatitude());
+        assertBetween(-180, -152, box.getWestBoundLongitude(), "westBoundLongitude");
+        assertBetween( -58, +180, box.getEastBoundLongitude(), "eastBoundLongitude");
+        assertBetween( -90,  -43, box.getSouthBoundLatitude(), "southBoundLatitude");
+        assertBetween(  43,  +90, box.getNorthBoundLatitude(), "northBoundLatitude");
     }
 }

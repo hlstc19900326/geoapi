@@ -50,7 +50,7 @@ import org.opengis.test.Configuration;
 import org.opengis.test.TestCase;
 
 import static java.lang.StrictMath.*;
-import static org.opengis.test.Assert.*;
+import static org.opengis.test.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -465,8 +465,8 @@ public strictfp abstract class TransformTestCase extends TestCase {
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int sourceDimension = transform.getSourceDimensions();
         final int targetDimension = transform.getTargetDimensions();
-        assertStrictlyPositive("Source dimension shall be positive.", sourceDimension);
-        assertStrictlyPositive("Target dimension shall be positive.", targetDimension);
+        assertStrictlyPositive(sourceDimension, "Source dimension shall be positive.");
+        assertStrictlyPositive(targetDimension, "Target dimension shall be positive.");
         final MathTransform inverse;
         if (isInverseTransformSupported) {
             final Configuration.Key<Boolean> oldTip = configurationTip;
@@ -557,8 +557,8 @@ public strictfp abstract class TransformTestCase extends TestCase {
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int sourceDimension = transform.getSourceDimensions();
         final int targetDimension = transform.getTargetDimensions();
-        assertStrictlyPositive("Source dimension shall be positive.", sourceDimension);
-        assertStrictlyPositive("Target dimension shall be positive.", targetDimension);
+        assertStrictlyPositive(sourceDimension, "Source dimension shall be positive.");
+        assertStrictlyPositive(targetDimension, "Target dimension shall be positive.");
         final MathTransform inverse = transform.inverse();
         assertNotNull(inverse,
                 "MathTransform.inverse() shall not return null.");
