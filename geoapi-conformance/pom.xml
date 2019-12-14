@@ -75,17 +75,23 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
     </dependency>
+
+    <!-- For org.opengis.test.TestSuite — needed only if user wants to launch all tests in one class. -->
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-suite-api</artifactId>
       <optional>true</optional>
     </dependency>
+
+    <!-- For org.opengis.test.runner — launching tests in a Swing application. -->
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
       <version>${junit.platform.version}</version>
       <optional>true</optional>
     </dependency>
+
+    <!-- For testing geoapi-conformance itself. -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>

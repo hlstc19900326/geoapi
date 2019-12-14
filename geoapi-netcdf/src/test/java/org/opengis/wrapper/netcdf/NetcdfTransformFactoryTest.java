@@ -214,7 +214,7 @@ public strictfp class NetcdfTransformFactoryTest extends TestCase {
      * The output of this method can be copy-and-pasted in the {@link NetcdfTransformFactory}
      * class javadoc.
      *
-     * <p>This method is not a real test case. Users need to invoke this method explicitely,
+     * <p>This method is not a real test case. Users need to invoke this method explicitly,
      * or to declare this method as a test method, in order to get the output.</p>
      */
     @SuppressWarnings("UseOfSystemOutOrSystemErr")

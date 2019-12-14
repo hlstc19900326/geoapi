@@ -151,6 +151,8 @@ public strictfp abstract class TestCase {
      * If the failure occurred in an optional part of the test, then this class logs an
      * information message for helping the developer to disable that test if (s)he wish.
      *
+     * <p>Note: this field is not {@code private} because of JUnit 5 requirement.</p>
+     *
      * @since 3.1
      */
     @RegisterExtension
@@ -168,7 +170,7 @@ public strictfp abstract class TestCase {
      * {@link javax.measure.Unit} instances compatible with the units created by the {@link Factory}
      * instances to be tested. Those {@code Unit<?>} instances depend on the Unit of Measurement (JSR-373)
      * implementation used by the factories.
-     * If no units were {@linkplain org.opengis.test.Configuration.Key#units explicitely specified},
+     * If no units were {@linkplain org.opengis.test.Configuration.Key#units explicitly specified},
      * then the {@linkplain Units#getDefault() default units} are used.
      *
      * @since 3.1
@@ -177,7 +179,7 @@ public strictfp abstract class TestCase {
 
     /**
      * The set of {@link Validator} instances to use for verifying objects conformance (never {@code null}).
-     * If no validators were {@linkplain org.opengis.test.Configuration.Key#validators explicitely specified},
+     * If no validators were {@linkplain org.opengis.test.Configuration.Key#validators explicitly specified},
      * then the {@linkplain Validators#DEFAULT default validators} are used.
      *
      * @since 3.1

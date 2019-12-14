@@ -582,7 +582,7 @@ public class PJFactory implements Factory {
         /**
          * Returns the authority for this factory, which is EPSG. This is actually the default
          * authority when no codespace is explicitly given to a {@code createFoo(String)}
-         * method. If a codespace is explicitely given, any authority recognized by the Proj.4
+         * method. If a codespace is explicitly given, any authority recognized by the Proj.4
          * library will be accepted.
          */
         @Override
