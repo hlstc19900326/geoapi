@@ -1634,7 +1634,7 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
      * Asserts that a matrix of derivatives is equals to the expected ones within a positive delta.
      */
     @Override
-    protected void assertMatrixEquals(final String message, final Matrix expected, final Matrix actual, final Matrix tolmat)
+    protected void assertMatrixEquals(final Matrix expected, final Matrix actual, final Matrix tolmat, final String message)
             throws DerivativeFailure
     {
         if (tolmat != null) {
@@ -1646,6 +1646,6 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
                 }
             }
         }
-        super.assertMatrixEquals(message, expected, actual, tolmat);
+        super.assertMatrixEquals(expected, actual, tolmat, message);
     }
 }
