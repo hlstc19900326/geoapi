@@ -195,6 +195,7 @@ public strictfp class GIGS3003 extends UserObjectFactoryTestCase<PrimeMeridian> 
         }
         final String name = getName();
         final String code = getCode();
+        @SuppressWarnings("LocalVariableHidesMemberVariable")           // Should be same instance.
         final PrimeMeridian primeMeridian = getIdentifiedObject();
         assertNotNull(primeMeridian, "PrimeMeridian");
         validators.validate(primeMeridian);

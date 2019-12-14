@@ -110,6 +110,7 @@ public strictfp class NetcdfProjectionTest extends TransformTestCase {
     @Test
     public void testNames() {
         createMercatorProjection();
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         final SingleOperation operation = this.operation;               // Protect from changes.
         assertEquals("Mercator", operation.getName().getCode());
         assertEquals("Mercator", operation.getMethod().getName().getCode());
@@ -128,6 +129,7 @@ public strictfp class NetcdfProjectionTest extends TransformTestCase {
     @Test
     public void testDomainOfValidity() {
         createMercatorProjection();
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         final SingleOperation operation = this.operation;               // Protect from changes.
         final GeographicBoundingBox box = (GeographicBoundingBox)
                 operation.getDomainOfValidity().getGeographicElements().iterator().next();

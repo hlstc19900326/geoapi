@@ -162,6 +162,7 @@ public strictfp class PixelIterator {
      * @param ySubsampling  the iteration step when moving to the next scan line.
      * @param sourceBands   the source bands, or {@code null} if none.
      */
+    @SuppressWarnings("LocalVariableHidesMemberVariable")                       // Before field final values.
     public PixelIterator(final RenderedImage image, final Rectangle subArea,
             final int xSubsampling, final int ySubsampling, final int[] sourceBands)
     {

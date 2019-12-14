@@ -123,6 +123,7 @@ public strictfp class OperationValidator extends ReferencingValidator {
      *
      * @param  object  the object to validate, or {@code null}.
      */
+    @SuppressWarnings("null")
     public void validate(final ConcatenatedOperation object) {
         if (object == null) {
             return;

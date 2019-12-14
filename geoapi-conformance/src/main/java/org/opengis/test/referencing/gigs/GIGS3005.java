@@ -242,6 +242,7 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
         }
         final String name = getName();
         final String code = getCode();
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final Conversion conversion = getIdentifiedObject();
         assertNotNull(conversion, "Conversion");
         validators.validate(conversion);

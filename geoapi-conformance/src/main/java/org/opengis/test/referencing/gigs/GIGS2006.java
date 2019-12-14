@@ -220,6 +220,7 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         this.code = code;
         crs = null;                 // For forcing the fetch of a new projected CRS.
 
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final ProjectedCRS crs = getIdentifiedObject();
         assertNotNull(crs, "ProjectedCRS");
         validators.validate(crs);
@@ -319,8 +320,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "AGD66";
         projectionNames = new String[] {"Australian Map Grid zones"};
         datumCode       = 6202;
-        for (int code = 20249; code <= 20256; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 20249; c <= 20256; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -343,8 +344,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "AGD84";
         projectionNames = new String[] {"Australian Map Grid zones"};
         datumCode       = 6203;
-        for (int code = 20349; code <= 20356; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 20349; c <= 20356; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -458,8 +459,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"6-degree Gauss-Kruger"};
         datumCode        = 6214;
         isNorthAxisFirst = true;
-        for (int code = 21413; code <= 21423; code++) {    // Loop over 11 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 21413; c <= 21423; c++) {    // Loop over 11 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -482,8 +483,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames      = new String[] {"Colombia zones"};
         datumCode            = 6218;
         isNorthAxisFirst = true;
-        for (int code = 21896; code <= 21899; code++) {    // Loop over 4 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 21896; c <= 21899; c++) {    // Loop over 4 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -530,8 +531,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"Argentina zones", "UTM"};
         datumCode        = 6221;
         isNorthAxisFirst = true;
-        for (int code = 22191; code <= 22197; code++) {    // Loop over 7 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 22191; c <= 22197; c++) {    // Loop over 7 codes
+            createAndVerifyProjectedCRS(c);
         }
         isNorthAxisFirst = false;
         createAndVerifyProjectedCRS(2315);
@@ -623,11 +624,11 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "DGN95";
         projectionNames = new String[] {"UTM"};
         datumCode       = 6755;
-        for (int code = 23866; code <= 23872; code++) {    // Loop over 7 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 23866; c <= 23872; c++) {    // Loop over 7 codes
+            createAndVerifyProjectedCRS(c);
         }
-        for (int code = 23877; code <= 23884; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 23877; c <= 23884; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -651,8 +652,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"3-degree Gauss-Kruger"};
         datumCode        = 6314;
         isNorthAxisFirst = true;
-        for (int code = 31466; code <= 31469; code++) {    // Loop over 4 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 31466; c <= 31469; c++) {    // Loop over 4 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -675,8 +676,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "ED50";
         projectionNames = new String[] {"UTM", "TM 5 NE", "TM 0 N"};
         datumCode       = 6230;
-        for (int code = 23028; code <= 23035; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 23028; c <= 23035; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
         createAndVerifyProjectedCRS(23090);
         createAndVerifyProjectedCRS(23095);
@@ -723,8 +724,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "Egypt 1907";
         projectionNames = new String[] {"Egypt belts"};
         datumCode       = 6229;
-        for (int code = 22991; code <= 22994; code++) {    // Loop over 4 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 22991; c <= 22994; c++) {    // Loop over 4 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -768,8 +769,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "ELD79";
         projectionNames = new String[] {"Libya zones", "UTM"};
         datumCode       = 6159;
-        for (int code = 2068; code <= 2080; code++) {    // Loop over 13 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 2068; c <= 2080; c++) {    // Loop over 13 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -792,8 +793,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "ETRS89";
         projectionNames = new String[] {"UTM"};
         datumCode       = 6258;
-        for (int code = 25828; code <= 25835; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 25828; c <= 25835; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -859,8 +860,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "GDA94";
         projectionNames = new String[] {"Australian Map Grid zones"};
         datumCode       = 6283;
-        for (int code = 28349; code <= 28356; code++) {    // Loop over 8 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 28349; c <= 28356; c++) {    // Loop over 8 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1153,8 +1154,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames = new String[] {"Libya zones", "UTM"};
         datumCode       = 6754;
         createAndVerifyProjectedCRS(3177);
-        for (int code = 3190; code <= 3199; code++) {    // Loop over 10 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 3190; c <= 3199; c++) {    // Loop over 10 codes
+            createAndVerifyProjectedCRS(c);
         }
         createAndVerifyProjectedCRS(3201);
         createAndVerifyProjectedCRS(3202);
@@ -1179,8 +1180,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "Luzon 1911";
         projectionNames = new String[] {"Philippine zones"};
         datumCode       = 6253;
-        for (int code = 25391; code <= 25395; code++) {    // Loop over 5 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 25391; c <= 25395; c++) {    // Loop over 5 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1203,8 +1204,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"Colombia zones"};
         datumCode        = 6686;
         isNorthAxisFirst = true;
-        for (int code = 3114; code <= 3118; code++) {    // Loop over 5 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 3114; c <= 3118; c++) {    // Loop over 5 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1795,8 +1796,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"Argentina zones"};
         datumCode        = 6694;
         isNorthAxisFirst = true;
-        for (int code = 22181; code <= 22187; code++) {    // Loop over 7 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 22181; c <= 22187; c++) {    // Loop over 7 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1819,8 +1820,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"Argentina zones"};
         datumCode        = 6190;
         isNorthAxisFirst = true;
-        for (int code = 22171; code <= 22177; code++) {    // Loop over 7 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 22171; c <= 22177; c++) {    // Loop over 7 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1842,8 +1843,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "PRS92";
         projectionNames = new String[] {"Philippine zones"};
         datumCode       = 6683;
-        for (int code = 3121; code <= 3125; code++) {    // Loop over 5 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 3121; c <= 3125; c++) {    // Loop over 5 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -1866,8 +1867,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         name            = "PSAD56";
         projectionNames = new String[] {"UTM", "Peru zones"};
         datumCode       = 6248;
-        for (int code = 24817; code <= 24820; code++) {    // Loop over 4 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 24817; c <= 24820; c++) {    // Loop over 4 codes
+            createAndVerifyProjectedCRS(c);
         }
         createAndVerifyProjectedCRS(24877);
         createAndVerifyProjectedCRS(24878);
@@ -2299,11 +2300,11 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames = new String[] {"UTM"};
         datumCode       = 6326;
         createAndVerifyProjectedCRS(3832);
-        for (int code = 32601; code <= 32660; code++) {    // Loop over 60 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 32601; c <= 32660; c++) {    // Loop over 60 codes
+            createAndVerifyProjectedCRS(c);
         }
-        for (int code = 32701; code <= 32760; code++) {    // Loop over 60 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 32701; c <= 32760; c++) {    // Loop over 60 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 
@@ -2327,8 +2328,8 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
         projectionNames  = new String[] {"6-degree Gauss-Kruger"};
         datumCode        = 6610;
         isNorthAxisFirst = true;
-        for (int code = 2338; code <= 2348; code++) {    // Loop over 11 codes
-            createAndVerifyProjectedCRS(code);
+        for (int c = 2338; c <= 2348; c++) {    // Loop over 11 codes
+            createAndVerifyProjectedCRS(c);
         }
     }
 

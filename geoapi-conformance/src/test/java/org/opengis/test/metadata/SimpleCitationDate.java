@@ -92,6 +92,6 @@ final class SimpleCitationDate implements CitationDate {
      */
     @Override
     public Date getDate() {
-        return time;
+        return (time != null) ? (Date) time.clone() : null;
     }
 }

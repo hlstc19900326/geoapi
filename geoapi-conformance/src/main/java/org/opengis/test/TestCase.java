@@ -222,6 +222,7 @@ public strictfp abstract class TestCase {
      *
      * @since 3.1
      */
+    @SuppressWarnings("LocalVariableHidesMemberVariable")       // Before field final values.
     protected TestCase(final Factory... factories) {
         Objects.requireNonNull(factories, "Given `factories` array can not be null.");
         this.factories = factories;

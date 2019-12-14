@@ -98,6 +98,7 @@ final strictfp class IdentifiedObjects {
      * @return -1 if {@code s1} should appears before {@code s2}, +1 for the converse,
      *         or 0 if the two strings are equal.
      */
+    @SuppressWarnings("StringEquality")
     static int compare(String s1, String s2) {
         if (s1 == s2)   return  0;  // Identity comparison ok here, since this is only an optimization for a common case.
         if (s1 == null) return +1;

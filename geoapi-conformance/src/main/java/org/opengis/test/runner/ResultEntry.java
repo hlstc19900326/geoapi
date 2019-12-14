@@ -178,7 +178,7 @@ final strictfp class ResultEntry {
     /**
      * An estimation of the test coverage, as a floating point value between 0 and 1.
      */
-    private float coverage;
+    private final float coverage;
 
     /**
      * {@code true} if the tolerance threshold has been relaxed.
@@ -222,7 +222,11 @@ final strictfp class ResultEntry {
         final TestCase source = (TestCase) event.getRequiredTestInstance();
         int numTests=1, numSupported=1;
         final Configuration.Key<Boolean> configurationTip = getConfigurationTip(source);
+
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Before field final values.
         final List<String[]> factories = new ArrayList<>();
+
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Before field final values.
         final List<Map.Entry<Configuration.Key<?>, StatusOptional>> configuration = new ArrayList<>();
         for (Map.Entry<Configuration.Key<?>,Object> entry : source.configuration().map().entrySet()) {
             final Configuration.Key<?> key = entry.getKey();
@@ -243,7 +247,7 @@ final strictfp class ResultEntry {
                         numSupported++;
                         so = (key == configurationTip) ? StatusOptional.FAILED : StatusOptional.ENABLED;
                     }
-                    configuration.add(new AbstractMap.SimpleImmutableEntry<Configuration.Key<?>, StatusOptional>(key, so));
+                    configuration.add(new AbstractMap.SimpleImmutableEntry<>(key, so));
                     numTests++;
                 } else if (name.equals("isToleranceRelaxed")) {
                     isToleranceRelaxed = (Boolean) value;

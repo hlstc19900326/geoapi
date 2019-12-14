@@ -242,6 +242,7 @@ public abstract strictfp class Validator {
      *
      * @since 3.1
      */
+    @SuppressWarnings("ObjectEqualsNull")
     protected void validate(final Collection<?> collection) {
         if (collection == null) {
             return;

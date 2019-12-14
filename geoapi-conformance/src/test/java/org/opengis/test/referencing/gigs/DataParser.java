@@ -244,20 +244,20 @@ final class DataParser {
      * @throws ClassCastException if the value in the given column is not a string.
      */
     public String[] getStrings(final int column) {
-        final String data = getString(column);
+        final String s = getString(column);
         final List<String> elements = new ArrayList<>(4);
-        if (data != null) {
+        if (s != null) {
             int lower = 0;
-            int upper = data.indexOf(LIST_ELEMENT_SEPARATOR);
+            int upper = s.indexOf(LIST_ELEMENT_SEPARATOR);
             boolean stop = false;
             do {
                 if (upper < 0) {
-                    upper = data.length();
+                    upper = s.length();
                     stop = true;
                 }
-                elements.add(data.substring(lower, upper).trim());
+                elements.add(s.substring(lower, upper).trim());
                 lower = upper+1;
-                upper = data.indexOf(LIST_ELEMENT_SEPARATOR, lower);
+                upper = s.indexOf(LIST_ELEMENT_SEPARATOR, lower);
             } while (!stop);
         }
         return elements.toArray(new String[elements.size()]);

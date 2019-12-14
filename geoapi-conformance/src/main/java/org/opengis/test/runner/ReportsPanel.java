@@ -191,11 +191,7 @@ final class ReportsPanel extends JPanel implements ActionListener {
         final JLabel label = new JLabel("Directory:");
         label.setLabelFor(directory);
         final JButton browse = new JButton("Browse", new ImageIcon(ReportsPanel.class.getResource("mydocuments.png")));
-        browse.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(final ActionEvent event) {
-                showDialogChooser();
-            }
-        });
+        browse.addActionListener((event) -> showDialogChooser());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridy++; c.gridwidth=1; c.insets.left=0; add(label,     c);
         c.gridx++; c.weightx=1;   c.insets.left=6; add(directory, c);
@@ -247,14 +243,14 @@ final class ReportsPanel extends JPanel implements ActionListener {
      * {@link #directory} text field will be updated accordingly.
      */
     final void showDialogChooser() {
-        final String directory = this.directory.getText();
-        final JFileChooser chooser = new JFileChooser(directory != null ? new File(directory) : null);
+        final String dir = directory.getText();
+        final JFileChooser chooser = new JFileChooser(dir != null ? new File(dir) : null);
         chooser.setDialogTitle("Select a destination directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             final String selected = chooser.getSelectedFile().getAbsolutePath();
             preferences.put(REPORTS_DIRECTORY_KEY, selected);
-            this.directory.setText(selected);
+            directory.setText(selected);
         }
     }
 
@@ -280,7 +276,7 @@ final class ReportsPanel extends JPanel implements ActionListener {
         properties.setProperty("PRODUCT.NAME",    manifest.vendor);
         properties.setProperty("PRODUCT.VERSION", manifest.version);
         properties.setProperty("PRODUCT.URL",     manifest.url);
-        final File directory = new File(this.directory.getText());
+        final File dir = new File(directory.getText());
         final Controller[] controllers = Controller.values();
         int count = 0;
         for (int i=0; i<controllers.length; i++) {
@@ -294,7 +290,7 @@ final class ReportsPanel extends JPanel implements ActionListener {
          * to be the index) in the web browser. This code is invoked in the Swing thread,
          * and starts a worker in the background thread.
          */
-        final Worker worker = new Worker(directory);
+        final Worker worker = new Worker(dir);
         worker.reports = new Reports(properties) {
             /** Creates reports only of the kind selected by the user. */
             @Override

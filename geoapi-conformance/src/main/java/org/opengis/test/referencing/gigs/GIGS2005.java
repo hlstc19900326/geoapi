@@ -202,6 +202,7 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         this.code = code;
         conversion = null;              // For forcing the fetch of a new operation.
 
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final Conversion conversion = getIdentifiedObject();
         assertNotNull(conversion, "Conversion");
         validators.validate(conversion);
@@ -236,11 +237,11 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "UTM";
         methodName = "Transverse Mercator";
-        for (int code = 16001; code <= 16060; code++) {    // Loop over 60 codes
-            createAndVerifyProjection(code);
+        for (int c = 16001; c <= 16060; c++) {    // Loop over 60 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 16101; code <= 16160; code++) {    // Loop over 60 codes
-            createAndVerifyProjection(code);
+        for (int c = 16101; c <= 16160; c++) {    // Loop over 60 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -263,8 +264,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "6-degree Gauss-Kruger";
         methodName = "Transverse Mercator";
-        for (int code = 16201; code <= 16260; code++) {    // Loop over 60 codes
-            createAndVerifyProjection(code);
+        for (int c = 16201; c <= 16260; c++) {    // Loop over 60 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -287,8 +288,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "6-degree Gauss-Kruger";
         methodName = "Transverse Mercator";
-        for (int code = 16301; code <= 16360; code++) {    // Loop over 60 codes
-            createAndVerifyProjection(code);
+        for (int c = 16301; c <= 16360; c++) {    // Loop over 60 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -311,15 +312,15 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "3-degree Gauss-Kruger";
         methodName = "Transverse Mercator";
-        for (int code = 16261; code <= 16299; code++) {    // Loop over 39 codes
-            createAndVerifyProjection(code);
+        for (int c = 16261; c <= 16299; c++) {    // Loop over 39 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 16070; code <= 16089; code++) {    // Loop over 20 codes
-            createAndVerifyProjection(code);
+        for (int c = 16070; c <= 16089; c++) {    // Loop over 20 codes
+            createAndVerifyProjection(c);
         }
         createAndVerifyProjection(16099);
-        for (int code = 16091; code <= 16094; code++) {    // Loop over 4 codes
-            createAndVerifyProjection(code);
+        for (int c = 16091; c <= 16094; c++) {    // Loop over 4 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -342,11 +343,11 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "3-degree Gauss-Kruger";
         methodName = "Transverse Mercator";
-        for (int code = 16362; code <= 16398; code += 2) {    // Loop over 19 codes
-            createAndVerifyProjection(code);
+        for (int c = 16362; c <= 16398; c += 2) {    // Loop over 19 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 16170; code <= 16194; code += 2) {    // Loop over 13 codes
-            createAndVerifyProjection(code);
+        for (int c = 16170; c <= 16194; c += 2) {    // Loop over 13 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -387,8 +388,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Argentina zones";
         methodName = "Transverse Mercator";
-        for (int code = 18031; code <= 18037; code++) {    // Loop over 7 codes
-            createAndVerifyProjection(code);
+        for (int c = 18031; c <= 18037; c++) {    // Loop over 7 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -413,8 +414,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Australian Map Grid zones";
         methodName = "Transverse Mercator";
-        for (int code = 17449; code <= 17458; code++) {    // Loop over 10 codes
-            createAndVerifyProjection(code);
+        for (int c = 17449; c <= 17458; c++) {    // Loop over 10 codes
+            createAndVerifyProjection(c);
         }
         if (isDeprecatedObjectCreationSupported) {
             createAndVerifyProjection(17448);
@@ -439,8 +440,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "BLM zones";
         methodName = "Transverse Mercator";
-        for (int code = 15914; code <= 15917; code++) {    // Loop over 4 codes
-            createAndVerifyProjection(code);
+        for (int c = 15914; c <= 15917; c++) {    // Loop over 4 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -502,8 +503,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Colombia zones";
         methodName = "Transverse Mercator";
-        for (int code = 18051; code <= 18059; code++) {    // Loop over 9 codes
-            createAndVerifyProjection(code);
+        for (int c = 18051; c <= 18059; c++) {    // Loop over 9 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -524,8 +525,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Egypt belts";
         methodName = "Transverse Mercator";
-        for (int code = 18071; code <= 18074; code++) {    // Loop over 4 codes
-            createAndVerifyProjection(code);
+        for (int c = 18071; c <= 18074; c++) {    // Loop over 4 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -631,8 +632,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "India zones";
         methodName = "Lambert Conic Conformal (1SP)";
-        for (int code = 18231; code <= 18238; code++) {    // Loop over 8 codes
-            createAndVerifyProjection(code);
+        for (int c = 18231; c <= 18238; c++) {    // Loop over 8 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -739,11 +740,11 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Libya zones";
         methodName = "Transverse Mercator";
-        for (int code = 18240; code <= 18248; code++) {    // Loop over 9 codes
-            createAndVerifyProjection(code);
+        for (int c = 18240; c <= 18248; c++) {    // Loop over 9 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 18310; code <= 18319; code++) {    // Loop over 10 codes
-            createAndVerifyProjection(code);
+        for (int c = 18310; c <= 18319; c++) {    // Loop over 10 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -890,8 +891,8 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "Philippine zones";
         methodName = "Transverse Mercator";
-        for (int code = 18171; code <= 18175; code++) {    // Loop over 5 codes
-            createAndVerifyProjection(code);
+        for (int c = 18171; c <= 18175; c++) {    // Loop over 5 codes
+            createAndVerifyProjection(c);
         }
     }
 
@@ -1020,11 +1021,11 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         important  = true;
         name       = "US State Plane zones";
         methodName = "Transverse Mercator";
-        for (int code = 15002; code <= 15009; code++) {    // Loop over 8 codes
-            createAndVerifyProjection(code);
+        for (int c = 15002; c <= 15009; c++) {    // Loop over 8 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 15032; code <= 15039; code++) {    // Loop over 8 codes
-            createAndVerifyProjection(code);
+        for (int c = 15032; c <= 15039; c++) {    // Loop over 8 codes
+            createAndVerifyProjection(c);
         }
         createAndVerifyProjection(13001);
         createAndVerifyProjection(13031);
@@ -1083,14 +1084,14 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
         createAndVerifyProjection(13532);
         createAndVerifyProjection(15349);
         createAndVerifyProjection(15350);
-        for (int code = 14201; code <= 14205; code++) {    // Loop over 5 codes
-            createAndVerifyProjection(code);
+        for (int c = 14201; c <= 14205; c++) {    // Loop over 5 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 14231; code <= 14235; code++) {    // Loop over 5 codes
-            createAndVerifyProjection(code);
+        for (int c = 14231; c <= 14235; c++) {    // Loop over 5 codes
+            createAndVerifyProjection(c);
         }
-        for (int code = 15357; code <= 15361; code++) {    // Loop over 5 codes
-            createAndVerifyProjection(code);
+        for (int c = 15357; c <= 15361; c++) {    // Loop over 5 codes
+            createAndVerifyProjection(c);
         }
         if (isDeprecatedObjectCreationSupported) {
             createAndVerifyProjection(12112);

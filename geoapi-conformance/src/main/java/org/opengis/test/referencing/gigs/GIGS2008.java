@@ -233,6 +233,7 @@ public strictfp class GIGS2008 extends AuthorityFactoryTestCase<VerticalCRS> {
      */
     private void verifyVerticalCRS() throws FactoryException {
         if (crsAuthorityFactory != null) {
+            @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
             final VerticalCRS crs = getIdentifiedObject();
 
             // CRS validation.

@@ -54,6 +54,7 @@ public strictfp class SimpleEnvelopeTest {
      * In this test, the invalid ordinate values is in the last dimension.
      */
     @Test
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public void testInvalidOrdinateValues() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             new SimpleEnvelope(new SimpleDirectPosition(null, 4, 8, -2),
@@ -66,6 +67,7 @@ public strictfp class SimpleEnvelopeTest {
      * Tests the creation of a {@code SimpleEnvelope} with mismatched dimensions.
      */
     @Test
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     public void testMismatchedDimension() {
         assertThrows(MismatchedDimensionException.class, () -> {
             new SimpleEnvelope(new SimpleDirectPosition(null, 4, 8, -2),

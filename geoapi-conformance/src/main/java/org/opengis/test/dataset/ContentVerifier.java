@@ -334,7 +334,7 @@ public strictfp class ContentVerifier {
                         values = ((Map<?,?>) value).keySet().iterator();
                         if (!values.hasNext()) continue;
                     } else if (Iterable.class.isAssignableFrom(valueType)) {
-                        values = ((Collection<?>) value).iterator();
+                        values = ((Iterable<?>) value).iterator();
                         if (!values.hasNext()) continue;
                     } else {
                         values = null;

@@ -273,6 +273,7 @@ public strictfp class GIGS3004 extends UserObjectFactoryTestCase<GeodeticDatum> 
         final String name = getName();
         final String code = getCode();
         final String anchorPoint = (String) properties.get(GeodeticDatum.ANCHOR_POINT_KEY);
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final GeodeticDatum datum = getIdentifiedObject();
         assertNotNull(datum, "GeodeticDatum");
         validators.validate(datum);

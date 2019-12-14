@@ -263,6 +263,7 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
      * Verifies the properties of the ellipsoid given by {@link #getIdentifiedObject()}.
      */
     private void verifyEllipsoid() throws FactoryException {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final Ellipsoid ellipsoid = getIdentifiedObject();
         assertNotNull(ellipsoid, "Ellipsoid");
         validators.validate(ellipsoid);

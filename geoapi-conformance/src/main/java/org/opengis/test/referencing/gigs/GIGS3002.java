@@ -222,6 +222,7 @@ public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
         }
         final String name = getName();
         final String code = getCode();
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final Ellipsoid ellipsoid = getIdentifiedObject();
         assertNotNull(ellipsoid, "Ellipsoid");
         validators.validate(ellipsoid);

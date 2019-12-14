@@ -456,12 +456,13 @@ public strictfp abstract class TransformTestCase extends TestCase {
     protected void verifyTransform(final double[] coordinates, final double[] expected)
             throws TransformException
     {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
+        final MathTransform transform = this.transform;                 // Protect from changes.
         /*
          * Checks the state of this TransformTestCase object, including a shallow inspection of
          * the MathTransform. We check only the parts that are significant to this test method.
          * Full MathTransform validation is not the job of this method.
          */
-        final MathTransform transform = this.transform;             // Protect from changes.
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int sourceDimension = transform.getSourceDimensions();
         final int targetDimension = transform.getTargetDimensions();
@@ -547,13 +548,14 @@ public strictfp abstract class TransformTestCase extends TestCase {
      * @throws TransformException if at least one coordinate can't be transformed.
      */
     protected void verifyInverse(final double... coordinates) throws TransformException {
-        assertTrue(isInverseTransformSupported, "isInverseTransformSupported == false.");
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
+        final MathTransform transform = this.transform;                 // Protect from changes.
         /*
          * Checks the state of this TransformTestCase object, including a shallow inspection of
          * the MathTransform. We check only the parts that are significant to this test method.
          * Full MathTransform validation is not the job of this method.
          */
-        final MathTransform transform = this.transform;                 // Protect from changes.
+        assertTrue(isInverseTransformSupported, "isInverseTransformSupported == false.");
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int sourceDimension = transform.getSourceDimensions();
         final int targetDimension = transform.getTargetDimensions();
@@ -648,7 +650,9 @@ public strictfp abstract class TransformTestCase extends TestCase {
      * @see #isOverlappingArraySupported
      */
     protected float[] verifyConsistency(final float... sourceFloats) throws TransformException {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         final MathTransform transform = this.transform;                 // Protect from changes.
+
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int sourceDimension = transform.getSourceDimensions();
         final int targetDimension = transform.getTargetDimensions();
@@ -828,9 +832,12 @@ public strictfp abstract class TransformTestCase extends TestCase {
      * @since 3.1
      */
     protected void verifyDerivative(final double... coordinate) throws TransformException {
-        assertTrue(isDerivativeSupported, "isDerivativeSupported == false.");
-        final MathTransform   transform = this.transform;                               // Protect from changes.
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
+        final MathTransform transform = this.transform;                                 // Protect from changes.
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         final double[] derivativeDeltas = this.derivativeDeltas;                        // Protect from changes.
+
+        assertTrue(isDerivativeSupported, "isDerivativeSupported == false.");
         assertNotNull(transform,
                 "TransformTestCase.transform shall be assigned a value.");
         assertNotNull(derivativeDeltas,
@@ -939,7 +946,9 @@ public strictfp abstract class TransformTestCase extends TestCase {
     protected float[] verifyInDomain(final double[] minOrdinates, final double[] maxOrdinates,
             final int[] numOrdinates, final Random randomGenerator) throws TransformException
     {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         final MathTransform transform = this.transform;             // Protect from changes.
+
         assertNotNull(transform, "TransformTestCase.transform shall be assigned a value.");
         final int dimension = transform.getSourceDimensions();
         assertEquals(dimension, minOrdinates.length, "The minOrdinates array doesn't have the expected length.");

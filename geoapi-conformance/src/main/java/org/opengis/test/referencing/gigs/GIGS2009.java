@@ -200,6 +200,7 @@ public strictfp class GIGS2009 extends AuthorityFactoryTestCase<Transformation> 
      * Verifies the properties of the transformation given by {@link #getIdentifiedObject()}.
      */
     private void verifyTransformation() throws FactoryException {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")               // Should be same instance.
         final Transformation transformation = getIdentifiedObject();
         assertNotNull(transformation, "Transformation");
         validators.validate(transformation);

@@ -511,7 +511,6 @@ search:     for (final Responsibility responsibility : vendor.getCitedResponsibl
      *        different invocations if the report gets a better estimation about the number of rows to be created.
      */
     protected void progress(final int position, final int count) {
-        final ProgressListener listener = this.listener;
         if (listener != null) {
             listener.progress(position, count);
         }

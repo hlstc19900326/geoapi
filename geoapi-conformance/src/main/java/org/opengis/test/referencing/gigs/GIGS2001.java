@@ -209,6 +209,7 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
      * @throws FactoryException if an error occurred while creating the unit from the EPSG code.
      */
     private UnitConverter createConverter() throws FactoryException {
+        @SuppressWarnings("LocalVariableHidesMemberVariable")       // Should be same instance.
         final Unit<?> unit = getIdentifiedObject();
         assertNotNull(unit, "Unit");
         final UnitConverter converter;

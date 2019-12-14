@@ -35,8 +35,6 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -127,11 +125,9 @@ final class SwingPanelBuilder extends GridBagConstraints {
         tabs.addTab("Factories",     createScrollPane(factories));
         tabs.addTab("Configuration", createScrollPane(configuration));
         tabs.addTab("Exception",     createScrollPane(exception));
-        exception.addPropertyChangeListener("enabled", new PropertyChangeListener() {
-            @Override public void propertyChange(final PropertyChangeEvent event) {
-                tabs.setEnabledAt(2, (Boolean) event.getNewValue());
-                // Number 2 above is the index of "Exception" tab.
-            }
+        exception.addPropertyChangeListener("enabled", (event) -> {
+            tabs.setEnabledAt(2, (Boolean) event.getNewValue());
+            // Number 2 above is the index of "Exception" tab.
         });
         exception.setEnabled (false);               // Shall be invoked only after we have set the above listener.
         exception.setEditable(false);
