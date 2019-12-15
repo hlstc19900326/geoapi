@@ -31,9 +31,6 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.datum.DatumAuthorityFactory;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -47,8 +44,6 @@ import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.test.Configuration;
-import org.opengis.test.FactoryFilter;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -179,27 +174,13 @@ public strictfp class GIGS2004 extends AuthorityFactoryTestCase<GeodeticDatum> {
     protected final CRSAuthorityFactory crsAuthorityFactory;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS2004} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class, CRSAuthorityFactory.class);
-    }
-
-    /**
      * Creates a new test using the given factories. If a given factory is {@code null},
      * then the tests which depend on it will be skipped.
      *
      * @param datumFactory  factory for creating {@link GeodeticDatum} instances.
      * @param crsFactory    factory for creating {@link GeodeticCRS} instances.
      */
-    public GIGS2004(final DatumAuthorityFactory datumFactory, final CRSAuthorityFactory crsFactory) {
+    public GIGS2004(@EPSG DatumAuthorityFactory datumFactory, @EPSG CRSAuthorityFactory crsFactory) {
         super(datumFactory);
         datumAuthorityFactory = datumFactory;
         crsAuthorityFactory = crsFactory;

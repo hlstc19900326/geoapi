@@ -31,19 +31,15 @@
  */
 package org.opengis.test.referencing;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.Random;
 import java.awt.geom.AffineTransform;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static java.lang.StrictMath.*;
@@ -127,22 +123,8 @@ public strictfp class AffineTransformTest extends TransformTestCase {
     protected boolean isNonBidimensionalSpaceSupported;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * sub-classed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code AffineTransformTest} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(MathTransformFactory.class);
-    }
-
-    /**
-     * Creates a new test using the given factory. If the given factory is {@code null},
-     * then the tests will be skipped.
+     * Creates a new test using the given factory.
+     * If the given factory is {@code null}, then the tests will be skipped.
      *
      * @param factory  factory for creating {@link MathTransform} instances.
      */

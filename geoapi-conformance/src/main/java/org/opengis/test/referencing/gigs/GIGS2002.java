@@ -31,18 +31,13 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.datum.DatumAuthorityFactory;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.test.Configuration;
-import org.opengis.test.FactoryFilter;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -156,26 +151,12 @@ public strictfp class GIGS2002 extends AuthorityFactoryTestCase<Ellipsoid> {
     protected final DatumAuthorityFactory datumAuthorityFactory;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS2002} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(FactoryFilter.ByAuthority.EPSG, DatumAuthorityFactory.class);
-    }
-
-    /**
      * Creates a new test using the given factory. If a given factory is {@code null},
      * then the tests which depend on it will be skipped.
      *
      * @param datumFactory  factory for creating {@link Ellipsoid} instances.
      */
-    public GIGS2002(final DatumAuthorityFactory datumFactory) {
+    public GIGS2002(@EPSG DatumAuthorityFactory datumFactory) {
         super(datumFactory);
         datumAuthorityFactory = datumFactory;
     }

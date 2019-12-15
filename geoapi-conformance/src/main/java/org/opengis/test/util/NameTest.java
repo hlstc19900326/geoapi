@@ -32,15 +32,12 @@
 package org.opengis.test.util;
 
 import java.util.Map;
-import java.util.List;
 import java.util.Locale;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-
 import org.opengis.util.*;
 import org.opengis.test.TestCase;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -100,22 +97,6 @@ public strictfp class NameTest extends TestCase {
      * </ul>
      */
     protected boolean isMixedNameSyntaxSupported;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code NameTest} constructor.
-     *
-     * @since 3.1
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(NameFactory.class);
-    }
 
     /**
      * Creates a new test using the given factory. If the given factory is {@code null},

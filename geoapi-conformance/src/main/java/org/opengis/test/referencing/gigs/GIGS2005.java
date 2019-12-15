@@ -31,17 +31,12 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.util.NoSuchIdentifierException;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.opengis.test.Configuration;
-import org.opengis.test.FactoryFilter;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -113,26 +108,12 @@ public strictfp class GIGS2005 extends AuthorityFactoryTestCase<Conversion> {
     protected final CoordinateOperationAuthorityFactory copAuthorityFactory;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS2005} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(FactoryFilter.ByAuthority.EPSG, CoordinateOperationAuthorityFactory.class);
-    }
-
-    /**
      * Creates a new test using the given factory. If a given factory is {@code null},
      * then the tests which depend on it will be skipped.
      *
      * @param copFactory  factory for creating {@link CoordinateOperation} instances.
      */
-    public GIGS2005(final CoordinateOperationAuthorityFactory copFactory) {
+    public GIGS2005(@EPSG CoordinateOperationAuthorityFactory copFactory) {
         super(copFactory);
         copAuthorityFactory = copFactory;
     }

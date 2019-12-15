@@ -32,12 +32,10 @@
 package org.opengis.test.referencing;
 
 import java.util.Map;
-import java.util.List;
 import java.util.Collections;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-
 import org.opengis.parameter.*;
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
@@ -45,10 +43,8 @@ import org.opengis.referencing.datum.*;
 import org.opengis.referencing.operation.*;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.ObjectFactory;
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.test.Units;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -101,22 +97,6 @@ public strictfp class ObjectFactoryTest extends ReferencingTestCase {
      * Factory to use for building {@link Conversion} instances, or {@code null} if none.
      */
     protected final CoordinateOperationFactory copFactory;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code ObjectFactoryTest} constructor.
-     *
-     * @since 3.1
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(DatumFactory.class, CSFactory.class, CRSFactory.class, CoordinateOperationFactory.class);
-    }
 
     /**
      * Creates a new test using the given factories. If a given factory is {@code null},

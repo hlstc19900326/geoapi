@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -134,9 +135,9 @@ public class Reports extends Report {
 
     /**
      * Adds every kinds of report applicable to every factories of the given class found on
-     * the classpath. This method scans the classpath for factories in the way documented
-     * in the {@link org.opengis.test.TestCase#factories(Class[])} method. For each instance
-     * found, {@link #add(Factory, Class)} is invoked.
+     * the classpath. This method scans the classpath for factories in the way documented in
+     * the {@link ServiceLoader} class. For each instance found, {@link #add(Factory, Class)}
+     * is invoked.
      *
      * @param  type  the kind of factories to add.
      * @return {@code true} if this method will generate at least one report for the factories
@@ -145,7 +146,7 @@ public class Reports extends Report {
      */
     public boolean addAll(final Class<? extends Factory> type) throws FactoryException {
         boolean modified = false;
-        for (final Factory factory : FactoryProvider.forType(type)) {
+        for (final Factory factory : ServiceLoader.load(type)) {
             modified |= add(factory, type);
         }
         return modified;

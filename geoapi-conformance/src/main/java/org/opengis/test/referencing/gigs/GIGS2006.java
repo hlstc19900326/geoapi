@@ -31,9 +31,6 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.util.NoSuchIdentifierException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -41,8 +38,6 @@ import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.test.Configuration;
-import org.opengis.test.FactoryFilter;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -137,26 +132,12 @@ public strictfp class GIGS2006 extends AuthorityFactoryTestCase<ProjectedCRS> {
     protected final CRSAuthorityFactory crsAuthorityFactory;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS2006} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(FactoryFilter.ByAuthority.EPSG, CRSAuthorityFactory.class);
-    }
-
-    /**
      * Creates a new test using the given factory. If a given factory is {@code null},
      * then the tests which depend on it will be skipped.
      *
      * @param crsFactory  factory for creating {@link ProjectedCRS} instances.
      */
-    public GIGS2006(final CRSAuthorityFactory crsFactory) {
+    public GIGS2006(@EPSG CRSAuthorityFactory crsFactory) {
         super(crsFactory);
         crsAuthorityFactory = crsFactory;
     }

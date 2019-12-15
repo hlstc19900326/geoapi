@@ -32,10 +32,7 @@
 package org.opengis.test.referencing;
 
 import java.util.Set;
-import java.util.List;
 import java.awt.geom.Rectangle2D;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
@@ -52,7 +49,6 @@ import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.test.CalculationType;
 import org.opengis.test.ToleranceModifier;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -214,22 +210,6 @@ public strictfp class AuthorityFactoryTest extends ReferencingTestCase {
      * </ul>
      */
     private final ParameterizedTransformTest test;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code AuthorityFactoryTest} constructor.
-     *
-     * @since 3.1
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(CRSAuthorityFactory.class, CSAuthorityFactory.class, DatumAuthorityFactory.class);
-    }
 
     /**
      * Creates a new test using the given factories. If a given factory is {@code null},

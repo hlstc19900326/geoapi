@@ -31,12 +31,9 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.util.NoSuchIdentifierException;
 import org.opengis.parameter.ParameterValue;
@@ -47,7 +44,6 @@ import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -125,20 +121,6 @@ public strictfp class GIGS3005 extends UserObjectFactoryTestCase<Conversion> {
      * This is the factory used by the {@link #getIdentifiedObject()} method.
      */
     protected final CoordinateOperationFactory copFactory;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS3004} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(CoordinateOperationFactory.class);
-    }
 
     /**
      * Creates a new test using the given factory. If a given factory is {@code null},

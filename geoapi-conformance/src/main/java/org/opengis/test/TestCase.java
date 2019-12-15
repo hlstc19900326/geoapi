@@ -31,26 +31,19 @@
  */
 package org.opengis.test;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.ServiceConfigurationError;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.opengis.util.Factory;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 
 /**
- * Base class of all GeoAPI tests. All concrete subclasses need at least one {@linkplain Factory
- * factory} for instantiating the objects to test. The factories must be specified at subclasses
- * construction time either directly by the implementer, or indirectly by calls to the
- * {@link #factories(Class[])} method.
+ * Base class of all GeoAPI tests. All concrete subclasses need at least one {@linkplain Factory factory}
+ * for instantiating the objects to test. The factories must be specified at construction time either
+ * directly by a implementation-specific subclass, or indirectly by JUnit 5 dependency injection.
+ * Dependency injections can be done by {@link org.junit.jupiter.api.extension.ParameterResolver}.
  *
  * @author  Martin Desruisseaux (Geomatys)
  * @version 3.1
@@ -60,40 +53,18 @@ import org.junit.jupiter.api.extension.RegisterExtension;
  */
 public strictfp abstract class TestCase {
     /**
-     * An empty array of factories, as a convenience for
-     * {@linkplain #TestCase() no-argument constructors}.
-     */
-    private static final Factory[] NO_FACTORY = new Factory[0];
-
-    /**
-     * The factories specified explicitly by the implementers, or the {@link ServiceLoader}
-     * to use for loading those factories.
-     *
-     * <p>Accesses to this field must be synchronized on itself.</p>
-     *
-     * @see TestSuite#setFactories(Class, Factory[])
-     */
-    static final Map<Class<? extends Factory>, Iterable<? extends Factory>> FACTORIES = new HashMap<>();
-
-    /**
-     * The service loader to use for loading {@link FactoryFilter}.
-     *
-     * <p>Accesses to this field must be synchronized on itself. If both {@code FACTORIES} and
-     * {@code FACTORY_FILTER} are synchronized, then {@code FACTORIES} must be synchronized first.</p>
-     */
-    private static ServiceLoader<FactoryFilter> factoryFilter;
-
-    /**
      * The service loader to use for loading {@link ImplementationDetails}.
-     *
-     * <p>Accesses to this field must be synchronized on itself. If both {@code FACTORIES}
-     * and {@code IMPLEMENTATION_DETAILS} are synchronized, then {@code FACTORIES} must be
-     * synchronized first.</p>
+     * Accesses to this field must be synchronized on itself.
      */
     private static ServiceLoader<ImplementationDetails> implementationDetails;
 
     /**
      * The class loader to use for searching implementations, or {@code null} for the default.
+     *
+     * @todo Need to find a way to remove this field, or at least to make it non-static.
+     *       A possible way could be to create an JUnit extension with a method expecting
+     *       a {@link org.junit.jupiter.api.TestInfo} argument,
+     *       then search for a {@link TestSuite} instance in the chain of parents.
      */
     private static ClassLoader classLoader;
 
@@ -103,47 +74,30 @@ public strictfp abstract class TestCase {
      *
      * @param loader  the class loader to use, or {@code null} for the default.
      */
-    static void setClassLoader(final ClassLoader loader) {
-        synchronized (FACTORIES) {
-            if (loader != classLoader) {
-                classLoader = loader;
-                factoryFilter = null;
-                implementationDetails = null;
-            }
+    static synchronized void setClassLoader(final ClassLoader loader) {
+        if (loader != classLoader) {
+            classLoader = loader;
+            implementationDetails = null;
         }
     }
 
     /**
-     * Creates a service loader for the given type. This method must be invoked from a block
-     * synchronized on {@link FACTORIES}.
+     * Creates a service loader for the given type.
      */
-    private static <T> ServiceLoader<T> load(final Class<T> service) {
-        return (classLoader == null) ? ServiceLoader.load(service)
-                : ServiceLoader.load(service, classLoader);
-    }
-
-    /**
-     * Returns the current {@link #factoryFilter} instance, creating a new one if needed.
-     */
-    static ServiceLoader<FactoryFilter> getFactoryFilter() {
-        synchronized (FACTORIES) {
-            if (factoryFilter == null) {
-                factoryFilter = load(FactoryFilter.class);
-            }
-            return factoryFilter;
-        }
+    static synchronized <T> ServiceLoader<T> load(final Class<T> service) {
+        return (classLoader == null)
+               ? ServiceLoader.load(service)
+               : ServiceLoader.load(service, classLoader);
     }
 
     /**
      * Returns the current {@link #implementationDetails} instance, creating a new one if needed.
      */
-    static ServiceLoader<ImplementationDetails> getImplementationDetails() {
-        synchronized (FACTORIES) {
-            if (implementationDetails == null) {
-                implementationDetails = load(ImplementationDetails.class);
-            }
-            return implementationDetails;
+    static synchronized ServiceLoader<ImplementationDetails> getImplementationDetails() {
+        if (implementationDetails == null) {
+            implementationDetails = load(ImplementationDetails.class);
         }
+        return implementationDetails;
     }
 
     /**
@@ -206,19 +160,11 @@ public strictfp abstract class TestCase {
     protected transient Configuration.Key<Boolean> configurationTip;
 
     /**
-     * Creates a new test without factory. This constructor is provided for subclasses
-     * that instantiate their test object directly, without using any factory.
-     */
-    protected TestCase() {
-       this(NO_FACTORY);
-    }
-
-    /**
      * Creates a new test which will use the given factories to execute.
+     * The given factories are forwarded to {@link ImplementationDetails#configuration(Factory[])}
+     * in order to decide which {@linkplain #validators} to use.
      *
-     * @param factories  the factories to be used by the test. Those factories will be given to
-     *        {@link ImplementationDetails#configuration(Factory[])} in order to decide which
-     *        {@linkplain #validators} to use.
+     * @param factories  the factories to be used by the test. This array is not cloned.
      *
      * @since 3.1
      */
@@ -253,172 +199,6 @@ public strictfp abstract class TestCase {
         }
         this.units = units;
         this.validators = validators;
-    }
-
-    /**
-     * Returns factory instances for given factory interfaces. Each element in the returned list
-     * is the arguments to give to the subclass constructor. There is typically only one element
-     * in the list, but more elements could be included if many factory implementations are found
-     * for the same interface.
-     *
-     * <p>This method is used by static methods having the {@link org.junit.runners.Parameterized.Parameters}
-     * annotation in subclasses. For example if a subclass constructor expects 3 factories of kind
-     * {@link org.opengis.referencing.crs.CRSFactory}, {@link org.opengis.referencing.cs.CSFactory}
-     * and {@link org.opengis.referencing.datum.DatumFactory} in that order, then that subclass
-     * contains the following method:</p>
-     *
-     * <blockquote><pre>&#64;Parameterized.Parameters
-     *public static List&lt;Factory[]&gt; factories() {
-     *    return factories(CRSFactory.class, CSFactory.class, DatumFactory.class);
-     *}</pre></blockquote>
-     *
-     * Note that the arrays may contain null elements if no factory implementation were found
-     * for a given interface. All GeoAPI test cases use {@link org.junit.jupiter.api.Assumptions} checks in order
-     * to disable any tests that require a missing factory.
-     *
-     * <p>If many factory implementations were found for a given interface, then this method
-     * returns all possible combinations of those factories. For example if two instances
-     * of interface {@code A} are found (named {@code A1} and {@code A2}), and two instances
-     * of interface {@code B} are also found (named {@code B1} and {@code B2}), then this
-     * method returns a list containing:</p>
-     *
-     * <blockquote><pre>{A1, B1}
-     *{A2, B1}
-     *{A1, B2}
-     *{A2, B2}</pre></blockquote>
-     *
-     * The current implementation first checks the factories explicitly specified by calls to the
-     * {@link TestSuite#setFactories(Class, Factory[])} method. In no factories were explicitly
-     * specified, then this method searches the classpath using {@link ServiceLoader}.
-     *
-     * @param  types  the kind of factories to fetch.
-     * @return all combinations of factories of the given kind. Each list element is an array
-     *         having the same length than {@code types}.
-     *
-     * @see org.opengis.test.util.NameTest#factories()
-     * @see org.opengis.test.referencing.ObjectFactoryTest#factories()
-     * @see org.opengis.test.referencing.AuthorityFactoryTest#factories()
-     * @see org.opengis.test.referencing.AffineTransformTest#factories()
-     * @see org.opengis.test.referencing.ParameterizedTransformTest#factories()
-     *
-     * @since 3.1
-     */
-    @SafeVarargs
-    protected static List<Factory[]> factories(final Class<? extends Factory>... types) {
-        return factories(null, types);
-    }
-
-    /**
-     * Returns factory instances for given factory interfaces, excluding the factories filtered
-     * by the given filter. This method performs the same work than {@link #factories(Class[])}
-     * except that the given filter is applied in addition to any filter found on the classpath.
-     *
-     * <p>The main purpose of this method is to get {@link org.opengis.referencing.AuthorityFactory}
-     * instances for a given authority name.</p>
-     *
-     * @param  filter  an optional factory filter to use in addition to any filter declared in
-     *                 the classpath, or {@code null} if none.
-     * @param  types   the kind of factories to fetch.
-     * @return all combinations of factories of the given kind. Each list element is an array
-     *         having the same length than {@code types}.
-     *
-     * @since 3.1
-     */
-    @SafeVarargs
-    protected static List<Factory[]> factories(final FactoryFilter filter, final Class<? extends Factory>... types) {
-        final List<Factory[]> factories = new ArrayList<>(4);
-        try {
-            synchronized (FACTORIES) {
-                if (!factories(filter, types, factories)) {
-                    // The user has invoked TestSuite.setFactories(…), for example inside
-                    // his FactoryFilter.filter(…) method. Let be lenient and try again.
-                    // If the second try fails for the same raison, we will give up.
-                    factories.clear();
-                    if (!factories(filter, types, factories)) {
-                        throw new ServiceConfigurationError("TestSuite.setFactories(…) has been invoked "
-                                + "in the middle of a search for factories.");
-                    }
-                }
-            }
-        } catch (ServiceConfigurationError e) {
-            // JUnit 4.10 eats the exception silently, so we need to log
-            // it in order to allow users to figure out what is going.
-            Logger.getLogger("org.opengis.test").log(Level.WARNING, e.toString(), e);
-            throw e;                                          // To be caught by JUnit.
-        }
-        return factories;
-    }
-
-    /**
-     * Implementation of the above {@code factories} method. The factories are added to
-     * the given list. This method returns {@code true} on success, or {@code false} if
-     * we detected that {@link TestSuite#setFactories(Class, T[])} has been invoked by
-     * some user method while we were iterating. This check is done in an opportunist;
-     * it is not fully reliable.
-     */
-    private static boolean factories(final FactoryFilter filter,
-            final Class<? extends Factory>[] types, final List<Factory[]> factories)
-    {
-        factories.add(new Factory[types.length]);
-        for (int i=0; i<types.length; i++) {
-            final Class<? extends Factory> type = types[i];
-            Iterable<? extends Factory> choices = FACTORIES.get(type);
-            if (choices == null) {
-                choices = load(type);
-                final Iterable<? extends Factory> old = FACTORIES.put(type, choices);
-                if (old != null) {
-                    // TestSuite.setFactories(…) has been invoked,  maybe as a result of user
-                    // class initialization. Restores the user-provided value and declares that
-                    // this operation failed.
-                    FACTORIES.put(type, old);
-                    return false;
-                }
-            }
-            List<Factory[]> toUpdate = factories;
-            for (final Factory factory : choices) {
-                if (filter(type, factory, filter)) {
-                    if (toUpdate == factories) {
-                        toUpdate = Arrays.asList(factories.toArray(new Factory[factories.size()][]));
-                    } else {
-                        for (int j=toUpdate.size(); --j>=0;) {
-                            toUpdate.set(j, toUpdate.get(j).clone());
-                        }
-                        factories.addAll(toUpdate);
-                    }
-                    for (final Factory[] previous : toUpdate) {
-                        previous[i] = factory;
-                    }
-                }
-            }
-            // Check if TestSuite.setFactories(…) has been invoked while we were iterating.
-            // The method may have been invoked by a FactoryFilter.filter(…) method for
-            // example. While not an encouraged practice, we try to be a little bit more
-            // robust than not checking at all.
-            if (FACTORIES.get(type) != choices) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns {@code true} if the given factory can be tested. This method iterates over all
-     * registered {@link FactoryFilter} and ensures that all of them accept the given factory.
-     */
-    private static <T extends Factory> boolean filter(final Class<T> category, final Factory factory, final FactoryFilter filter) {
-        final T checked = category.cast(factory);
-        if (filter != null && !filter.filter(category, checked)) {
-            return false;
-        }
-        final ServiceLoader<FactoryFilter> services = getFactoryFilter();
-        synchronized (services) {
-            for (final FactoryFilter impl : services) {
-                if (!impl.filter(category, checked)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**

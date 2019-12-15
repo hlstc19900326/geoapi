@@ -2,7 +2,7 @@
  *    GeoAPI - Java interfaces for OGC/ISO standards
  *    http://www.geoapi.org
  *
- *    Copyright (C) 2012-2019 Open Geospatial Consortium, Inc.
+ *    Copyright (C) 2019 Open Geospatial Consortium, Inc.
  *    All Rights Reserved. http://www.opengeospatial.org/ogc/legal
  *
  *    Permission to use, copy, and modify this software and its documentation, with
@@ -29,46 +29,24 @@
  *    Title to copyright in this software and any associated documentation will at all
  *    times remain with copyright holders.
  */
-package org.opengis.test.report;
+package org.opengis.test.referencing.gigs;
 
-import java.util.List;
-import java.util.Arrays;
-import java.lang.reflect.Array;
-import org.opengis.test.TestCase;
-import org.opengis.util.Factory;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
- * Provides factory implementations for the given type. This utility class is implemented as a
- * subclass of {@link TestCase} only in order to get access to the {@link #factories(Class[])}
- * protected method.
+ * An annotation for specifying that a parameter shall be an EPSG authority factory.
  *
- * @author Martin Desruisseaux
+ * @author  Martin Desruisseaux (Geomatys)
+ * @version 3.1
+ * @since   3.1
  */
-final class FactoryProvider extends TestCase {
-    /**
-     * Do not allow instantiation of this class.
-     */
-    private FactoryProvider() {
-    }
-
-    /**
-     * Returns all factory of the given types, or an empty array if none.
-     */
-    @SuppressWarnings("unchecked")
-    static <T extends Factory> T[] forType(final Class<T> type) {
-        final List<Factory[]> factories = factories(type);
-        T[] selected = (T[]) Array.newInstance(type, factories.size());
-        int count = 0;
-        for (final Factory[] candidates : factories) {
-            final T candidate = (T) candidates[0];
-            if (candidate != null) {
-                selected[count++] = candidate;
-            }
-        }
-        if (count != selected.length) {
-            selected = Arrays.copyOf(selected, count);
-        }
-        return selected;
-    }
+@Documented
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EPSG {
 }

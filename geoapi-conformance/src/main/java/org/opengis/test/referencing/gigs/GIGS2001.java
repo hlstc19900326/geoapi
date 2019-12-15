@@ -31,20 +31,15 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
 import java.util.Random;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.IncommensurableException;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.cs.CSAuthorityFactory;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.test.Configuration;
-import org.opengis.test.FactoryFilter;
 import org.opengis.test.Units;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -132,26 +127,12 @@ public strictfp class GIGS2001 extends AuthorityFactoryTestCase<Unit<?>> {
     protected final CSAuthorityFactory csAuthorityFactory;
 
     /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS2001} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(FactoryFilter.ByAuthority.EPSG, CSAuthorityFactory.class);
-    }
-
-    /**
      * Creates a new test using the given factory. If a given factory is {@code null},
      * then the tests which depend on it will be skipped.
      *
      * @param csFactory  factory for creating {@link Unit} instances.
      */
-    public GIGS2001(final CSAuthorityFactory csFactory) {
+    public GIGS2001(@EPSG CSAuthorityFactory csFactory) {
         super(csFactory);
         csAuthorityFactory = csFactory;
     }

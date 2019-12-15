@@ -31,14 +31,11 @@
  */
 package org.opengis.test.referencing;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.Random;
 import java.awt.geom.Rectangle2D;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.util.NoSuchIdentifierException;
 import org.opengis.geometry.DirectPosition;
@@ -57,7 +54,6 @@ import org.opengis.test.ToleranceModifiers;
 import org.opengis.test.ToleranceModifier;
 import org.opengis.test.CalculationType;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static java.lang.StrictMath.*;
@@ -202,20 +198,6 @@ public strictfp class ParameterizedTransformTest extends TransformTestCase {
      * </ul>
      */
     protected String description;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code ParameterizedTransformTest} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(MathTransformFactory.class);
-    }
 
     /**
      * Creates a new test without factory and with the given {@code isFooSupported} flags.

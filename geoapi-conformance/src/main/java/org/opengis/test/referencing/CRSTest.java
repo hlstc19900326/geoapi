@@ -31,13 +31,9 @@
  */
 package org.opengis.test.referencing;
 
-import java.util.List;
-
 import org.opengis.referencing.crs.*;
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-
 import org.junit.jupiter.api.Test;
 
 
@@ -73,22 +69,6 @@ public strictfp class CRSTest extends ReferencingTestCase {
      * or {@code null} if none.
      */
     protected final CRSAuthorityFactory factory;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code CRSTest} constructor.
-     *
-     * @since 3.1
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(CRSAuthorityFactory.class);
-    }
 
     /**
      * Creates a new test using the given factory. If the given factory is {@code null},

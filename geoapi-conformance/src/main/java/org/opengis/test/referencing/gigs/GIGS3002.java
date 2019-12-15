@@ -31,16 +31,12 @@
  */
 package org.opengis.test.referencing.gigs;
 
-import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-
-import org.opengis.util.Factory;
 import org.opengis.util.FactoryException;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.DatumFactory;
 import org.opengis.test.Configuration;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assumptions.*;
@@ -135,20 +131,6 @@ public strictfp class GIGS3002 extends UserObjectFactoryTestCase<Ellipsoid> {
      * This is the factory used by the {@link #getIdentifiedObject()} method.
      */
     protected final DatumFactory datumFactory;
-
-    /**
-     * Returns a default set of factories to use for running the tests. Those factories are given
-     * in arguments to the constructor when this test class is instantiated directly by JUnit (for
-     * example as a {@linkplain org.junit.runners.Suite.SuiteClasses suite} element), instead than
-     * subclassed by the implementer. The factories are fetched as documented in the
-     * {@link #factories(Class[])} javadoc.
-     *
-     * @return the default set of arguments to be given to the {@code GIGS3002} constructor.
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Factory[]> factories() {
-        return factories(DatumFactory.class);
-    }
 
     /**
      * Creates a new test using the given factory. If a given factory is {@code null},

@@ -33,6 +33,7 @@ package org.opengis.test;
 
 import java.util.Locale;
 import java.util.Set;
+import org.opengis.util.Factory;
 import org.opengis.util.InternationalString;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
@@ -40,11 +41,10 @@ import org.opengis.referencing.IdentifiedObject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.opengis.test.FactoryFilter.ByAuthority.EPSG;
 
 
 /**
- * Tests {@link FactoryFilter}.
+ * Tests {@link TestSuite#isAuthorityFactory(Factory, String...)}.
  *
  * @author  Martin Desruisseaux (Geomatys)
  * @version 3.1
@@ -69,12 +69,11 @@ public strictfp class FactoryFilterTest implements AuthorityFactory, Citation, I
     }
 
     /**
-     * Returns the result of {@link FactoryFilter#filter} when given a factory for the
-     * given authority.
+     * Returns the result of {@code isAuthorityFactory(this, "EPSG")} when given a factory for the given authority.
      */
-    private boolean filter(final String expected) {
-        authority = expected;
-        return EPSG.filter(AuthorityFactory.class, this);
+    private boolean filter(final String name) {
+        authority = name;
+        return TestSuite.isAuthorityFactory(this, "EPSG");
     }
 
     /*

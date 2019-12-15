@@ -38,8 +38,8 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * Provides optional information about the implementation being tested. Implementers can
  * provide an instance of this interface in their test packages and declare their instance
- * in the {@code META-INF/services/org.opengis.test.ImplementationDetails} file. GeoAPI
- * will iterate over every {@code ImplementationDetails} found on the classpath when needed:
+ * as a service. GeoAPI will iterate over every {@code ImplementationDetails} found on the
+ * classpath when needed:
  *
  * <ul>
  *   <li>Before each execution of a configurable {@link TestCase}, in order to check which tests
@@ -48,6 +48,24 @@ import org.opengis.referencing.operation.MathTransform;
  *   <li>Before each execution of a {@link TestCase} performing numerical calculation, in
  *   order to determine if a specific implementation needs to relax the tolerance threshold.</li>
  * </ul>
+ *
+ * <div class="note"><b>Example:</b>
+ * the class below declares that the tolerance threshold for {@code MyProjection}
+ * needs to be relaxed by a factor 10 during inverse projections.
+ *
+ * <blockquote><pre>public class MyImplInfo implements {@linkplain ImplementationDetails} {
+ *    &#64;Override
+ *    public {@linkplain ToleranceModifier} {@linkplain ImplementationDetails#tolerance tolerance}({@linkplain MathTransform} transform) {
+ *        if (transform instanceof <var>MyProjection</var>) {
+ *            return {@linkplain ToleranceModifiers#scale ToleranceModifiers.scale}(EnumSet.of({@linkplain CalculationType#INVERSE_TRANSFORM}), 1, 10);
+ *        }
+ *        return null;
+ *    }
+ *}</pre></blockquote>
+ *
+ * The above {@code MyImplInfo} class needs to be registered as a service discoverable by
+ * {@link java.util.ServiceLoader}, otherwise the tests will be run but the implementation
+ * details will be ignored.</div>
  *
  * If no instance of {@code ImplementationDetails} is registered, then GeoAPI assumes that
  * all tests are enabled with their default tolerance threshold. This is equivalent to using
@@ -81,7 +99,9 @@ public strictfp interface ImplementationDetails {
      *
      * @see TestCase#configuration()
      */
-    Configuration configuration(Factory... factories);
+    default Configuration configuration(Factory... factories) {
+        return null;
+    }
 
     /**
      * Returns an object for modifying the tolerance thresholds when testing the given math transform,
@@ -95,5 +115,7 @@ public strictfp interface ImplementationDetails {
      * @param  transform  the transform being tested.
      * @return an object for modifying the tolerance thresholds, or {@code null} if no change is needed.
      */
-    ToleranceModifier tolerance(MathTransform transform);
+    default ToleranceModifier tolerance(MathTransform transform) {
+        return null;
+    }
 }

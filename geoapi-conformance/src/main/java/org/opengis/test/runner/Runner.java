@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 import java.util.Optional;
 import java.io.File;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.net.MalformedURLException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -121,7 +120,7 @@ final class Runner implements TestExecutionListener, TestWatcher {
         for (int i=0; i<urls.length; i++) {
             urls[i] = files[i].toURI().toURL();
         }
-        TestSuite.setClassLoader(new URLClassLoader(urls, TestSuite.class.getClassLoader()));
+        AllTests.setFactoryClassLoader(urls);
     }
 
    /**
